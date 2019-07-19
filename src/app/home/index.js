@@ -13,14 +13,14 @@ export default props => {
   const dispatch = useDispatch ();
 
   useEffect (() => {
-    if (data.length <= 0) {
-      fetchUserData () (dispatch);
-    }
+    // if (data.length <= 0) {
+    //   fetchUserData () (dispatch);
+    // }
     return () => {};
   }, []);
 
   return (
-    <div className="main" styleName="main">
+    <div>
       <MetaTags>
         <title>home</title>
         <meta name="description" content="Some description." />
@@ -28,12 +28,8 @@ export default props => {
         <meta property="og:image" content="path/to/image.jpg" />
       </MetaTags>
 
-      <div className="zs" styleName="zs">
+      <div>
         <img src={require ('./images/avatar.jpg')} />
-        {/* {state.map ((item, index) => <span key={item}>{item}</span>)} */}
-        {data.map ((item, index) => (
-          <div key={item.circuitId}>{item.circuitId}</div>
-        ))}
       </div>
     </div>
   );

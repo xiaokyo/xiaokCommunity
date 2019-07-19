@@ -1,11 +1,13 @@
 import {createStore, combineReducers, applyMiddleware} from 'redux';
-import thunkMiddleware from 'redux-thunk';
+import thunk from 'redux-thunk';
+import logger from 'redux-logger';
 
 //reducer
-import session from './reducer/session';
 import userInfo from './reducer/userInfo';
 
-const reducer = combineReducers ({session, userInfo});
+const reducer = combineReducers ({userInfo});
+
+const middleware = [thunk, logger];
 
 export default initialState =>
-  createStore (reducer, initialState, applyMiddleware (thunkMiddleware));
+  createStore (reducer, initialState, applyMiddleware (...middleware));

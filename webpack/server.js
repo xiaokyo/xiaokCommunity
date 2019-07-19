@@ -6,6 +6,9 @@ const OptimizeCssAssetsPlugin = require ('optimize-css-assets-webpack-plugin');
 
 const nodeExternals = require ('webpack-node-externals');
 
+//babelOptions
+const babelOptions = require ('../babel.config');
+
 module.exports = {
   mode: process.env.NODE_ENV,
   target: 'node',
@@ -25,6 +28,20 @@ module.exports = {
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: 'babel-loader',
+          options: {
+            ...babelOptions,
+            plugins: [
+              ...babelOptions.plugins,
+              [
+                'import',
+                {
+                  libraryName: 'antd',
+                  libraryDirectory: 'lib',
+                  style: false, // or 'css'
+                },
+              ],
+            ],
+          },
         },
       },
       {
@@ -40,7 +57,6 @@ module.exports = {
               onlyLocals: true,
             },
           },
-          'postcss-loader',
           'less-loader',
         ],
       },
@@ -49,7 +65,7 @@ module.exports = {
         use: [
           {
             loader: 'url-loader',
-            options: {limit: 8192, name: '../assets/files/[name].[hash].[ext]'},
+            options: {limit: 8192, name: '../assets/files/[hash].[ext]'},
           },
         ],
       },
@@ -57,15 +73,6 @@ module.exports = {
   },
   optimization: {
     minimize: false, //devMode ? false : true
-    splitChunks: {
-      chunks: 'all',
-    },
   },
-  plugins: [
-    new CleanWebpackPlugin (),
-    // new webpack.DefinePlugin ({
-    //   __SERVER__: 'true',
-    //   __CLIENT__: 'false',
-    // }),
-  ],
+  plugins: [new CleanWebpackPlugin ()],
 };

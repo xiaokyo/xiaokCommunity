@@ -22,4 +22,4 @@ const jsx = (
 );
 
 const app = document.getElementById ('app');
-__CLIENT__ ? ReactDOM.render (jsx, app) : ReactDOM.hydrate (jsx, app);
+__DEV__ ? ReactDOM.render (jsx, app) : ReactDOM.hydrate (jsx, app);

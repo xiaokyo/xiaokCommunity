@@ -7,6 +7,9 @@ const OptimizeCssAssetsPlugin = require ('optimize-css-assets-webpack-plugin');
 const {CleanWebpackPlugin} = require ('clean-webpack-plugin');
 const devMode = process.env.NODE_ENV == 'development' ? true : false;
 
+//babelOptions
+const babelOptions = require ('../babel.config');
+
 const devServer = devMode
   ? {
       contentBase: path.join (__dirname, '../dist'), // boolean | string | array, static file location
@@ -45,6 +48,20 @@ module.exports = {
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: 'babel-loader',
+          options: {
+            ...babelOptions,
+            plugins: [
+              ...babelOptions.plugins,
+              [
+                'import',
+                {
+                  libraryName: 'antd',
+                  libraryDirectory: 'es',
+                  style: true, // or 'css'
+                },
+              ],
+            ],
+          },
         },
       },
       {
@@ -60,7 +77,6 @@ module.exports = {
               javascriptEnabled: true,
             },
           },
-          'postcss-loader',
         ],
       },
       {
@@ -87,7 +103,7 @@ module.exports = {
             loader: 'url-loader',
             options: {
               limit: 8192, //小于8kg的会进行base64的保存方式导出到js
-              name: 'assets/files/[name].[hash].[ext]',
+              name: 'assets/files/[name].[ext]',
             },
           },
         ],
@@ -101,8 +117,7 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin ({
-      __SERVER__: 'false',
-      __CLIENT__: 'true',
+      __DEV__: devMode,
     }),
     new HtmlWebpackPlugin ({
       ...htmlWebpackOptions,
