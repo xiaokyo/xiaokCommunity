@@ -1,8 +1,8 @@
 {
-  "name": "chatroom",
+  "name": "xiaokyo-community",
   "version": "1.0.0",
   "main": "./src/client/index.js",
-  "repository": "https://github.com/xiaokyo/ChatRoom.git",
+  "repository": "https://github.com/xiaokyo/xiaokCommunity.git",
   "author": "xiaokyo <904656778@qq.com>",
   "license": "MIT",
   "dependencies": {

@@ -12,7 +12,7 @@ import {MetaTagsContext} from 'react-meta-tags';
 import {StaticRouter as Router, Route, Link, matchPath} from 'react-router-dom';
 import {Provider as ReduxProvider} from 'react-redux';
 import routers from '../routers';
-import createStore, {initializeSession, storeData} from '../redux';
+import createStore from '../redux';
 
 //components
 import Layout from '../app/layout';

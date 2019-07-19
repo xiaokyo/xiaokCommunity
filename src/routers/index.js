@@ -3,20 +3,20 @@ import Notification from '../app/notification';
 import Error from '../app/error';
 
 //redux
-import {fetchData, TimeoutData} from '../redux';
+import {fetchUserData, TimeUserData} from '../redux/actions/userInfo';
 
 export default [
   {
     path: '/',
     component: Home,
     exact: true,
-    loadData: fetchData,
+    loadData: fetchUserData,
   },
   {
     path: '/notification',
     exact: true,
     component: Notification,
-    loadData: TimeoutData,
+    loadData: TimeUserData,
   },
   {
     path: '*',
