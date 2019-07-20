@@ -4,8 +4,9 @@ import logger from 'redux-logger';
 
 //reducer
 import userInfo from './reducer/userInfo';
+import postlist from './reducer/postlist';
 
-const reducer = combineReducers ({userInfo});
+const reducer = combineReducers ({userInfo, postlist});
 
 const middleware = [thunk, logger];
 

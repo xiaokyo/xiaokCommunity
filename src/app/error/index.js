@@ -1,5 +1,5 @@
 import React from 'react';
 
 export default props => {
-  return <div>404</div>;
+  return <div>未找到页面</div>;
 };

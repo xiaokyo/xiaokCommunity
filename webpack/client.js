@@ -74,6 +74,10 @@ module.exports = {
           {
             loader: 'less-loader',
             options: {
+              modifyVars: {
+                'primary-color': '#e3a86c',
+                'link-color': '#e3a86c',
+              },
               javascriptEnabled: true,
             },
           },
@@ -88,7 +92,7 @@ module.exports = {
             loader: 'css-loader',
             options: {
               modules: {
-                localIdentName: '[local]--[hash:base64:5]',
+                localIdentName: '[local]--[hash:base64:8]',
               },
             },
           },

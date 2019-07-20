@@ -1,14 +1,105 @@
 :global {
+  * {
+    padding: 0;
+    margin: 0;
+  }
+
+  ul,
+  ol {
+    list-style: none;
+  }
+
+  a {
+    text-decoration: none;
+    color: #666;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  input,
+  textarea {
+    outline: none;
+  }
+
+  body {
+    background-color: #fff;
+    height: auto;
+  }
+
+  .layout {
+    padding-top: 66px;
+  }
 
   .header {
-    .item {
-      background-color: red;
-      height:30px;
+    padding: 10px 0;
+    width: 100%;
+    border-bottom: 1px solid #f0f0f0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    z-index: 999;
+
+    ._box {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      width: 960px;
+      margin: auto;
+
+      .left_login {
+        display: flex;
+        flex-direction: row;
+
+        .logo {
+          height: 45px;
+
+          img {
+            width: 45px;
+            height: 45px;
+          }
+        }
+
+        .search {
+          margin-left: 20px;
+          border-radius: 25px;
+          height: 40px;
+          background-color: #eee;
+          padding: 0 15px;
+
+          input {
+            border: 0;
+            width: 60px;
+            height: 100%;
+            background: none;
+
+            transition: all .45s;
+
+            &:focus {
+              width: 130px;
+            }
+          }
+
+          i.iconfont {
+            cursor: pointer;
+          }
+        }
+
+      }
+
+      .right_login {
+        a {
+          margin-left: 25px;
+        }
+      }
     }
   }
 
   .container {
-    width: 75%;
-    margin: 0 auto;
+    width: 960px;
+    margin: auto;
   }
 }
