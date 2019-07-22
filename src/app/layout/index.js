@@ -59,6 +59,7 @@ export default props => {
   );
 };
 
+// 登陆后可访问的路由
 function PrivateRoute({component: Component, ...rest}) {
   const userInfo = useSelector (state => state.userInfo);
   // console.log (userInfo);

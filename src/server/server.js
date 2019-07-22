@@ -39,7 +39,7 @@ app.get ('*', async (req, res) => {
 
   let currentRoute = null;
   routers.some (route => {
-    const match = matchPath (req.path, route);
+    let match = matchPath (req.path, route);
     // console.log (match);
     if (match) currentRoute = route;
     return match;
@@ -48,6 +48,9 @@ app.get ('*', async (req, res) => {
   if (currentRoute.loadData) {
     await currentRoute.loadData () (dispatch);
   }
+
+  //组件预加载
+  await currentRoute.component.preload ();
 
   const metaTagsInstance = MetaTagsServer ();
 

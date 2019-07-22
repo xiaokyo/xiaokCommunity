@@ -1,21 +1,5 @@
-import React from 'react';
 import Loadable from 'react-loadable';
-import {Spin, Icon} from 'antd';
-const antIcon = <Icon type="loading" style={{fontSize: 24}} spin />;
-
-const Loading = props => (
-  <div
-    style={{
-      padding: '25px',
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}
-  >
-    <Spin indicator={antIcon} />
-  </div>
-);
+import Loading from '../components/loading';
 //loadable
 const loadCp = func => {
   return Loadable ({
@@ -24,25 +8,25 @@ const loadCp = func => {
   });
 };
 //redux
-import {fetchUserData} from '../redux/actions/userInfo';
+import {load_postlist} from '../redux/actions/postlist';
 
 export default [
   {
     path: '/',
     component: loadCp (() => import ('../app/home')),
     exact: true,
-    loadData: fetchUserData,
+    loadData: load_postlist,
+  },
+  {
+    path: '/post/:id',
+    exact: true,
+    component: loadCp (() => import ('../app/post')),
   },
   {
     path: '/notification',
     exact: true,
     private: true,
     component: loadCp (() => import ('../app/notification')),
-  },
-  {
-    path: '/post/:id',
-    exact: true,
-    component: loadCp (() => import ('../app/post')),
   },
   {
     path: '/login',

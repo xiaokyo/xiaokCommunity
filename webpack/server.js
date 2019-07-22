@@ -1,4 +1,5 @@
 const path = require ('path');
+const webpack = require ('webpack');
 const {CleanWebpackPlugin} = require ('clean-webpack-plugin');
 const devMode = process.env.NODE_ENV == 'development' ? true : false;
 const MiniCssExtractPlugin = require ('mini-css-extract-plugin');
@@ -74,5 +75,10 @@ module.exports = {
   optimization: {
     minimize: false, //devMode ? false : true
   },
-  plugins: [new CleanWebpackPlugin ()],
+  plugins: [
+    new webpack.DefinePlugin ({
+      __DEV__: devMode,
+    }),
+    new CleanWebpackPlugin (),
+  ],
 };
