@@ -7,15 +7,6 @@ export const getPostById = id => {
       return item.id === id;
     });
 
-    // let isExist = false;
-    // for (let i = 0; i < postsState.length; i++) {
-    //   if (postsState[i].id === id) {
-    //     currentPost = postsState[i];
-    //     isExist = true;
-    //     break;
-    //   }
-    // }
-
     if (isExist) {
       return currentPost;
     }
@@ -46,6 +37,6 @@ export const savePostById = id => {
           },
         });
         resolve (true);
-      }, 2000);
+      }, 1000);
     });
 };

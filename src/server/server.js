@@ -37,16 +37,20 @@ app.get ('*', async (req, res) => {
   const store = createStore ();
   const dispatch = store.dispatch;
 
-  let currentRoute = null;
+  let currentRoute = null, match = null;
   routers.some (route => {
-    let match = matchPath (req.path, route);
+    let _match = matchPath (req.path, route);
     // console.log (match);
-    if (match) currentRoute = route;
-    return match;
+    if (_match) {
+      currentRoute = route;
+      match = _match;
+    }
+    return _match;
   });
 
+  //加载redux数据的方法
   if (currentRoute.loadData) {
-    await currentRoute.loadData () (dispatch);
+    await currentRoute.loadData () (dispatch, match);
   }
 
   //组件预加载

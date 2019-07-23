@@ -7,8 +7,9 @@ const loadCp = func => {
     loading: Loading,
   });
 };
-//redux
+//serverload
 import {load_postlist} from '../redux/actions/postlist';
+import loadCurrentPost from '../app/post/serverLoad';
 
 export default [
   {
@@ -21,6 +22,7 @@ export default [
     path: '/post/:id',
     exact: true,
     component: loadCp (() => import ('../app/post')),
+    loadData: loadCurrentPost,
   },
   {
     path: '/notification',

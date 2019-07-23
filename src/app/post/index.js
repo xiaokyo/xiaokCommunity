@@ -11,9 +11,8 @@ import './style.less';
 import {getPostById, savePostById} from '../../redux/actions/posts';
 
 export default props => {
-  console.log ('render');
+  // console.log ('render');
   const postid = props.match.params.id;
-  const [loading, setLoading] = useState (true);
   const dispacth = useDispatch ();
   const posts = useSelector (state => state.posts);
   const currentPost = getPostById (postid) (posts);
@@ -21,15 +20,13 @@ export default props => {
   //加载redux此id未有的帖子详情
   useEffect (() => {
     if (!currentPost.title) {
-      savePostById (postid) (dispacth).then (res => setLoading (false));
-    } else {
-      setLoading (false);
+      savePostById (postid) (dispacth);
     }
   }, []);
 
   return (
     <div>
-      {loading
+      {!currentPost.title
         ? <Loading />
         : <div styleName="post">
             <h1 styleName="tit">{currentPost.title}</h1>
@@ -78,12 +75,12 @@ export default props => {
               </div>
             </div>
 
-            <div styleName="reply_con">
+            {/* <div styleName="reply_con">
               <div styleName="reply_tit">看看都有谁评论了~汪(10)</div>
               <ul styleName="reply_list">
                 <ReplyItem />
               </ul>
-            </div>
+            </div> */}
 
           </div>}
 

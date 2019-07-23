@@ -1,5 +1,7 @@
-import {savePostById} from '../../redux/actions/posts'
+import {savePostById} from '../../redux/actions/posts';
 
-export default ({store,match})=>{
-  savePostById()
-}
+export default () => {
+  return async (dispatch, match) => {
+    await savePostById (match.params.id) (dispatch);
+  };
+};

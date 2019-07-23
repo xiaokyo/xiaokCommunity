@@ -16,6 +16,7 @@ export default props => {
   const dispatch = useDispatch ();
   const [loading, setLoading] = useState (false);
   const [loadmore, setLoadmore] = useState (false);
+  console.log (data);
 
   //处理滚动
   const handlerScroll = e => {
