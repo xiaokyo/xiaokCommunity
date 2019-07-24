@@ -3,13 +3,16 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter as Router} from 'react-router-dom';
 import {Provider as ReduxProvider} from 'react-redux';
 
+//mock
+import '../../mock';
+
 //components
-import Layout from '../app/layout';
-import Home from '../app/home';
-import Notification from '../app/notification';
+import Layout from '@app/layout';
+import Home from '@app/home';
+import Notification from '@app/notification';
 
 //store
-import createStore from '../redux';
+import createStore from '@redux';
 
 const store = createStore (window.REDUX_DATA);
 

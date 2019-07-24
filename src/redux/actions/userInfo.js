@@ -1,25 +1,41 @@
+import axios from 'axios';
+
 export const saveUser = data => ({
   type: 'SAVE_USER',
   data,
 });
 
-export const fetchUserData = () => {
+export const removeUser = () => ({type: 'REMOVE_USER'});
+
+export const fetchUserData = accessToken => {
   return dispatch =>
     new Promise (resolve => {
-      setTimeout (() => {
-        dispatch (saveUser ({username: 'xiaokyo'}));
+      axios ('/profile').then (res => {
+        dispatch (saveUser (res.data));
         resolve (true);
-      }, 1000);
+      });
     });
 };
 
+//{userid,username,accessToken}
 export const login = (username, password) => {
   return dispatch =>
-    new Promise (resolve => {
-      setTimeout (() => {
-        localStorage.setItem ('username', username);
-        dispatch (saveUser ({username, password}));
-        resolve (true);
-      }, 1000);
+    new Promise ((resolve, reject) => {
+      axios ({
+        method: 'post',
+        url: '/login',
+        data: {
+          username,
+          password,
+        },
+      })
+        .then (function (res) {
+          dispatch (saveUser (res.data));
+          localStorage.setItem ('accessToken', res.data.accessToken);
+          resolve (true);
+        })
+        .catch (function (error) {
+          reject (error);
+        });
     });
 };

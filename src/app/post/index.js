@@ -2,13 +2,13 @@ import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 import {Button, Input} from 'antd';
-import Loading from '../../components/loading';
+import Loading from '@components/loading';
 const {TextArea} = Input;
 //style
 import './style.less';
 
 //actions
-import {getPostById, savePostById} from '../../redux/actions/posts';
+import {getPostById, savePostById} from '@redux/actions/posts';
 
 export default props => {
   // console.log ('render');

@@ -10,6 +10,15 @@ const nodeExternals = require ('webpack-node-externals');
 //babelOptions
 const babelOptions = require ('../babel.config');
 
+// common
+const common = require ('./common');
+
+//alias
+let alias = {};
+for (let i in common.alias) {
+  alias[i] = path.resolve (__dirname, common.alias[i]);
+}
+
 module.exports = {
   mode: process.env.NODE_ENV,
   target: 'node',
@@ -22,6 +31,9 @@ module.exports = {
     libraryTarget: 'commonjs2',
   },
   externals: [nodeExternals ()],
+  resolve: {
+    alias,
+  },
   module: {
     rules: [
       {
@@ -53,7 +65,7 @@ module.exports = {
             loader: `css-loader`,
             options: {
               modules: {
-                localIdentName: '[local]--[hash:base64:8]',
+                localIdentName: common.localIdentName,
               },
               onlyLocals: true,
             },

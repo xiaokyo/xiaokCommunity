@@ -1,14 +1,55 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Route, Link, Switch, Redirect} from 'react-router-dom';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {Menu, Dropdown, Icon} from 'antd';
+import doPromise from '@common/doPromise';
 
 //routers
-import routers from '../../routers';
+import routers from '@routers';
+
+//actions
+import {fetchUserData, removeUser} from '@redux/actions/userInfo';
 
 //style
 import './style.less';
 
+const MenuView = () => (
+  <Menu>
+    <Menu.Item key="0">
+      <Link to="/setting">设置</Link>
+    </Menu.Item>
+    <Menu.Item key="1">
+      <Link to="/setting">个人主页</Link>
+    </Menu.Item>
+    <Menu.Divider />
+    <Menu.Item key="3"><div>退出</div></Menu.Item>
+  </Menu>
+);
+
 export default props => {
+  console.log ('layout render');
+  const userInfo = useSelector (state => state.userInfo);
+  const dispatch = useDispatch ();
+
+  //退出并删除本地token
+  const logout = () => {
+    localStorage.removeItem ('accessToken');
+    dispatch (removeUser ());
+  };
+
+  //利用本地token来获取当前用户信息
+  const reqUserInfoByToken = async () => {
+    const accessToken = localStorage.getItem ('accessToken');
+    // console.log (accessToken);
+    if (accessToken) {
+      const [err] = await doPromise (fetchUserData (accessToken) (dispatch));
+    }
+  };
+
+  useEffect (() => {
+    reqUserInfoByToken ();
+  }, []);
+
   return (
     <div className="layout">
       <div className="header">
@@ -24,10 +65,19 @@ export default props => {
             </div>
           </div>
 
-          <div className="right_login">
-            <Link to="/login">登入</Link>
-            <Link to="/register">注册</Link>
-          </div>
+          {userInfo.username
+            ? <div className="right_login">
+                <Dropdown overlay={MenuView} trigger={['click']}>
+                  <a className="ant-dropdown-link" href="#">
+                    {userInfo.username} <Icon type="down" />
+                  </a>
+                </Dropdown>
+              </div>
+            : <div className="right_login">
+                <Link to="/login">登入</Link>
+                {/* <Link to="/register">注册</Link> */}
+              </div>}
+
         </div>
       </div>
       <div className="container">

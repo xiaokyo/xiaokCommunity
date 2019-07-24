@@ -11,13 +11,13 @@ import MetaTagsServer from 'react-meta-tags/server';
 import {MetaTagsContext} from 'react-meta-tags';
 import {StaticRouter as Router, Route, Link, matchPath} from 'react-router-dom';
 import {Provider as ReduxProvider} from 'react-redux';
-import routers from '../routers';
-import createStore from '../redux';
+import routers from '@routers';
+import createStore from '@redux';
 
 //components
-import Layout from '../app/layout';
-import Home from '../app/home';
-import Notification from '../app/notification';
+import Layout from '@app/layout';
+import Home from '@app/home';
+import Notification from '@app/notification';
 
 const app = express ();
 

@@ -4,43 +4,49 @@ import MetaTags from 'react-meta-tags';
 import {useSelector, useDispatch} from 'react-redux';
 import {Skeleton} from 'antd';
 
+import doPromise from '@common/doPromise';
+
 //redux
-import {load_postlist, load_more_postlist} from '../../redux/actions/postlist';
+import {load_postlist, load_more_postlist} from '@redux/actions/postlist';
 
 //style
 import './style.less';
 
 export default props => {
-  // console.log ('render');
-  const data = useSelector (state => state.postlist);
+  console.log ('home render');
+  const postlist = useSelector (state => state.postlist);
   const dispatch = useDispatch ();
   const [loading, setLoading] = useState (false);
   const [loadmore, setLoadmore] = useState (false);
-  console.log (data);
+  // console.log (postlist);
 
   //处理滚动
-  const handlerScroll = e => {
+  const handlerScroll = async e => {
     if (loadmore) return;
 
     const scrollT = document.documentElement.scrollTop;
     const clientH = document.documentElement.clientHeight;
     const scrollH = document.documentElement.scrollHeight;
 
-    // console.log(scrollT, clientH, scrollH);
-
     if (scrollH - (scrollT + clientH) <= 100) {
       setLoadmore (true);
-      console.log (loadmore);
-      load_more_postlist () (dispatch).then (res => setLoadmore (false));
+      const [err] = await doPromise (load_more_postlist () (dispatch));
+      if (!err) setLoadmore (false);
+    }
+  };
+
+  const initLoad = async () => {
+    if (postlist.data.length <= 0) {
+      setLoading (true);
+      // load_postlist () (dispatch).then (res => setLoading (false));
+      const [err] = await doPromise (load_postlist () (dispatch));
+      if (!err) setLoading (false);
     }
   };
 
   useEffect (() => {
     // console.log ('startscroll');
-    if (data.length <= 0) {
-      setLoading (true);
-      load_postlist () (dispatch).then (res => setLoading (false));
-    }
+    initLoad ();
   }, []);
 
   //监听滚动
@@ -61,7 +67,7 @@ export default props => {
 
       <div styleName="left">
         <Skeleton active loading={loading}>
-          {data.map ((item, index) => <Card key={index} {...item} />)}
+          {postlist.data.map ((item, index) => <Card key={index} {...item} />)}
         </Skeleton>
 
         <Skeleton active loading={true} />

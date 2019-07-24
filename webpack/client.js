@@ -10,6 +10,15 @@ const devMode = process.env.NODE_ENV == 'development' ? true : false;
 //babelOptions
 const babelOptions = require ('../babel.config');
 
+// common
+const common = require ('./common');
+
+//alias
+let alias = {};
+for (let i in common.alias) {
+  alias[i] = path.resolve (__dirname, common.alias[i]);
+}
+
 const devServer = devMode
   ? {
       contentBase: path.join (__dirname, '../dist'), // boolean | string | array, static file location
@@ -40,6 +49,9 @@ module.exports = {
     filename: 'assets/js/[name].js',
     chunkFilename: 'assets/js/chunks/[name].[hash].js',
     publicPath: '/',
+  },
+  resolve: {
+    alias,
   },
   module: {
     rules: [
@@ -92,7 +104,7 @@ module.exports = {
             loader: 'css-loader',
             options: {
               modules: {
-                localIdentName: '[local]--[hash:base64:8]',
+                localIdentName: common.localIdentName,
               },
             },
           },

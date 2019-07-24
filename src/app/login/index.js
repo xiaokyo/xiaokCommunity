@@ -3,7 +3,7 @@ import {useDispatch} from 'react-redux';
 import {Form, Icon, Input, Button, Checkbox} from 'antd';
 
 //actions
-import {login} from '../../redux/actions/userInfo';
+import {login} from '@redux/actions/userInfo';
 
 //style
 import './style.less';

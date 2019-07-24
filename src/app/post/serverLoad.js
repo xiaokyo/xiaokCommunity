@@ -1,4 +1,4 @@
-import {savePostById} from '../../redux/actions/posts';
+import {savePostById} from '@redux/actions/posts';
 
 export default () => {
   return async (dispatch, match) => {
