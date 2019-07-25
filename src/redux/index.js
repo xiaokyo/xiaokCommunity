@@ -10,7 +10,7 @@ import posts from './reducer/posts';
 const reducer = combineReducers ({userInfo, postlist, posts});
 
 //middleware
-const middleware = [thunk];
+let middleware = [thunk];
 
 //development
 if (__DEV__) {

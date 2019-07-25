@@ -25,4 +25,20 @@ const jsx = (
 );
 
 const app = document.getElementById ('app');
-__DEV__ ? ReactDOM.render (jsx, app) : ReactDOM.hydrate (jsx, app);
+
+// render
+import doPromise from '@common/doPromise';
+import {fetchUserData} from '@redux/actions/userInfo';
+
+const render = async () => {
+  const accessToken = localStorage.getItem ('accessToken');
+  if (!accessToken) return false;
+  const [err] = await doPromise (fetchUserData (accessToken) (store.dispatch));
+  if (!err) return true;
+  return false;
+};
+
+render ().then (res => {
+  // console.log (res);
+  __DEV__ ? ReactDOM.render (jsx, app) : ReactDOM.hydrate (jsx, app);
+});

@@ -25,6 +25,12 @@ export default [
     loadData: loadCurrentPost,
   },
   {
+    path: '/sendPost',
+    exact: true,
+    private: true,
+    component: loadCp (() => import ('@app/sendPost')),
+  },
+  {
     path: '/notification',
     exact: true,
     private: true,

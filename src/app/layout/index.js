@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Route, Link, Switch, Redirect} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
-import {Menu, Dropdown, Icon} from 'antd';
+import {Menu, Dropdown, Icon, message, Button} from 'antd';
 import doPromise from '@common/doPromise';
 
 //routers
@@ -12,19 +12,6 @@ import {fetchUserData, removeUser} from '@redux/actions/userInfo';
 
 //style
 import './style.less';
-
-const MenuView = () => (
-  <Menu>
-    <Menu.Item key="0">
-      <Link to="/setting">设置</Link>
-    </Menu.Item>
-    <Menu.Item key="1">
-      <Link to="/setting">个人主页</Link>
-    </Menu.Item>
-    <Menu.Divider />
-    <Menu.Item key="3"><div>退出</div></Menu.Item>
-  </Menu>
-);
 
 export default props => {
   console.log ('layout render');
@@ -37,18 +24,39 @@ export default props => {
     dispatch (removeUser ());
   };
 
-  //利用本地token来获取当前用户信息
-  const reqUserInfoByToken = async () => {
-    const accessToken = localStorage.getItem ('accessToken');
-    // console.log (accessToken);
-    if (accessToken) {
-      const [err] = await doPromise (fetchUserData (accessToken) (dispatch));
-    }
+  // menu item handle click
+  const handleMenuClick = e => {
+    if (e.key == '/logout') return logout ();
+    // props.history.push (e.key);
   };
 
-  useEffect (() => {
-    reqUserInfoByToken ();
-  }, []);
+  // 个人下拉菜单
+  const MenuView = () => (
+    <Menu onClick={handleMenuClick}>
+      <Menu.Item key="/profile">
+        <Link to="/profile" styleName="menu_item">
+          <Icon type="user" />个人主页
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="/setting">
+        <Link to="/setting" styleName="menu_item">
+          <Icon type="setting" />设置
+        </Link>
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="/sendPost">
+        <Link to="/sendPost" styleName="menu_item">
+          <Icon type="form" />我要发帖
+        </Link>
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="/logout">退出</Menu.Item>
+    </Menu>
+  );
+
+  // useEffect (() => {
+  //   reqUserInfoByToken ();
+  // }, []);
 
   return (
     <div className="layout">
