@@ -12,5 +12,8 @@
     yarn build
     yarn start
 
+## 预览
+<div align=center style="padding-top:30px;"><img src ="./index.jpg"/></div>
+
 ## 开源协议
 MIT
