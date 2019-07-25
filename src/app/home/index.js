@@ -74,8 +74,8 @@ export default props => {
       </div>
 
       <div styleName="right">
-        <div styleName="adv" onClick={() => setLoadmore (!loadmore)}>
-          {loadmore ? '1' : 0}
+        <div styleName="adv">
+          adv
         </div>
       </div>
     </div>
