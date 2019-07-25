@@ -30,7 +30,11 @@ module.exports = {
     publicPath: '/',
     libraryTarget: 'commonjs2',
   },
-  externals: [nodeExternals ()],
+  externals: [
+    nodeExternals ({
+      whitelist: /\.css$/,
+    }),
+  ],
   resolve: {
     alias,
   },
@@ -38,7 +42,7 @@ module.exports = {
     rules: [
       {
         test: /\.m?js$/,
-        exclude: /(node_modules|bower_components)/,
+        include: /(src)/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -58,7 +62,7 @@ module.exports = {
         },
       },
       {
-        test: /\.(less|css)$/,
+        test: /\.(less)$/,
         exclude: /(node_modules|bower_components)/, //排除文件件
         use: [
           {
@@ -71,6 +75,17 @@ module.exports = {
             },
           },
           'less-loader',
+        ],
+      },
+      {
+        test: /\.(css)$/,
+        use: [
+          {
+            loader: `css-loader`,
+            options: {
+              onlyLocals: true,
+            },
+          },
         ],
       },
       {

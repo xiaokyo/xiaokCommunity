@@ -120,7 +120,7 @@ module.exports = {
             loader: 'url-loader',
             options: {
               limit: 8192, //小于8kg的会进行base64的保存方式导出到js
-              name: 'assets/files/[name].[ext]',
+              name: 'assets/files/[hash].[ext]',
             },
           },
         ],

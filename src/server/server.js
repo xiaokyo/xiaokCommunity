@@ -40,7 +40,6 @@ app.get ('*', async (req, res) => {
   let currentRoute = null, match = null;
   routers.some (route => {
     let _match = matchPath (req.path, route);
-    // console.log (match);
     if (_match) {
       currentRoute = route;
       match = _match;
@@ -51,10 +50,11 @@ app.get ('*', async (req, res) => {
   //加载redux数据的方法
   if (currentRoute.loadData) {
     await currentRoute.loadData () (dispatch, match);
+    //组件预加载
+    await currentRoute.component.preload ();
+  } else {
+    currentRoute.component = () => <div />;
   }
-
-  //组件预加载
-  await currentRoute.component.preload ();
 
   const metaTagsInstance = MetaTagsServer ();
 

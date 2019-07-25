@@ -9,7 +9,7 @@ import {login} from '@redux/actions/userInfo';
 import './style.less';
 
 export default Form.create ({name: 'login'}) (props => {
-  console.log (props);
+  console.log ('login render');
   const {getFieldDecorator} = props.form;
   const dispatch = useDispatch ();
 
