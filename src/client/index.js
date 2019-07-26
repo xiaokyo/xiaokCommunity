@@ -14,6 +14,9 @@ import Notification from '@app/notification';
 //store
 import createStore from '@redux';
 
+//graphql
+import {graphql} from '../graphql';
+
 const store = createStore (window.REDUX_DATA);
 
 const jsx = (
