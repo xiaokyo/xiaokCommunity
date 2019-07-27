@@ -1,6 +1,6 @@
 import React from 'react';
 import {useDispatch} from 'react-redux';
-import {Form, Icon, Input, Button, Checkbox} from 'antd';
+import {Form, Icon, Input, Button, Checkbox, message} from 'antd';
 
 //actions
 import {login} from '@redux/actions/userInfo';
@@ -23,9 +23,12 @@ export default Form.create ({name: 'login'}) (props => {
         const fromPath = props.location.state
           ? props.location.state.from.pathname
           : '/';
-        login (username, password) (dispatch).then (res => {
-          props.history.push (fromPath);
-        });
+        login (username, password) (dispatch)
+          .then (res => {
+            message.success ('登入成功');
+            props.history.push (fromPath);
+          })
+          .catch (err => message.warning (err));
       }
     });
   };

@@ -26,6 +26,9 @@ const devServer = devMode
       historyApiFallback: true, // true for index.html upon 404, object for multiple paths
       hot: true, // hot module replacement. Depends on
       host: '0.0.0.0',
+      proxy: {
+        '/graphql': 'http://localhost:3000/graphql',
+      },
     }
   : {};
 

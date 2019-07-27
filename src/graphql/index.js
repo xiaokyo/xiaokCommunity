@@ -3,25 +3,45 @@ import gql from 'graphql-tag';
 import doPromise from '@common/doPromise';
 
 const client = new ApolloClient ({
-  uri: 'http://127.0.0.1:3000/graphql',
+  uri: '/graphql',
 });
 
-export const graphql = ({type = 'query', args}) => {
+export const graphql = ({type = 'query', args, headers = {}}) => {
   return doPromise (
-    new Promise ((resolve, reject) => {
-      client
-        .query ({
-          query: gql`
+    new Promise (async (resolve, reject) => {
+      if (type == 'query') {
+        await client
+          .query ({
+            query: gql`
         ${type}${args}
       `,
-        })
-        .then (data => {
-          console.log (data);
-          resolve (data);
-        })
-        .catch (error => reject (error));
+            context: {
+              headers,
+            },
+          })
+          .then (data => {
+            console.log (data);
+            resolve (data);
+          })
+          .catch (error => reject (error));
+      } else {
+        await client
+          .mutate ({
+            mutation: gql`
+        ${type}${args}
+      `,
+            context: {
+              headers,
+            },
+          })
+          .then (data => {
+            console.log (data);
+            resolve (data);
+          })
+          .catch (error => reject (error));
+      }
     })
   );
 };
 
-graphql ({args: '{users{username password}}'});
+// graphql ({args: '{users{username password}}'});

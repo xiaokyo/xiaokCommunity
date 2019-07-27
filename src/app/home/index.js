@@ -36,7 +36,7 @@ export default props => {
   };
 
   const initLoad = async () => {
-    if (postlist.data.length <= 0) {
+    if (postlist.length <= 0) {
       setLoading (true);
       // load_postlist () (dispatch).then (res => setLoading (false));
       const [err] = await doPromise (load_postlist () (dispatch));
@@ -67,7 +67,7 @@ export default props => {
 
       <div styleName="left">
         <Skeleton active loading={loading}>
-          {postlist.data.map ((item, index) => <Card key={index} {...item} />)}
+          {postlist.map ((item, index) => <Card key={index} {...item} />)}
         </Skeleton>
 
         <Skeleton active loading={true} />
@@ -82,12 +82,12 @@ export default props => {
   );
 };
 
-const Card = ({id, title, descrption, nickname, commentNum, likeNum}) => {
+const Card = ({id, title, content,descrption, nickname, commentNum, likeNum}) => {
   return (
     <div styleName="card">
       <div styleName="tit"><Link to={`/post/${id}`}>{title}</Link></div>
       <div styleName="desc">
-        {descrption}
+        {descrption}{content}
       </div>
       <div styleName="bottom">
         <div styleName="nickname"><Link to="/">{nickname}</Link></div>

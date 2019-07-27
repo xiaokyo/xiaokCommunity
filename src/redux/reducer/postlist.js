@@ -1,9 +1,9 @@
-export default (state = {data: []}, action) => {
+export default (state = [], action) => {
   switch (action.type) {
     case 'SAVE_POSTLIST':
-      return {...state, ...action.data};
+      return [...state, ...action.data];
     case 'LOAD_MORE_POSTLIST':
-      return {data: [...state.data, ...action.data.data]};
+      return [...state, ...action.data];
     default:
       return state;
   }
