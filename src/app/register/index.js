@@ -2,14 +2,11 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Form, Icon, Input, Button, message } from 'antd';
 
-//actions
-import { login } from '@redux/actions/userInfo';
-
 //style
 import './style.less';
 
-export default Form.create({ name: 'login' })(props => {
-  console.log('login render');
+export default Form.create({ name: 'register' })(props => {
+  console.log('register render');
   const { getFieldDecorator } = props.form;
   const dispatch = useDispatch();
 
@@ -34,8 +31,8 @@ export default Form.create({ name: 'login' })(props => {
   };
 
   return (
-    <div styleName="login">
-      <h1>登录</h1>
+    <div styleName="register">
+      <h1>注册</h1>
       <div styleName="_box">
         <Form onSubmit={handleSubmit} className="login-form">
           <Form.Item>
@@ -56,6 +53,17 @@ export default Form.create({ name: 'login' })(props => {
                 prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 type="password"
                 placeholder="密码"
+              />
+            )}
+          </Form.Item>
+          <Form.Item>
+            {getFieldDecorator('password', {
+              rules: [{ required: true, message: '请确认密码！' }],
+            })(
+              <Input
+                prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                type="password"
+                placeholder="确认密码"
               />
             )}
           </Form.Item>

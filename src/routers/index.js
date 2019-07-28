@@ -2,48 +2,53 @@ import Loadable from 'react-loadable';
 import Loading from '@components/loading';
 //loadable
 const loadCp = func => {
-  return Loadable ({
+  return Loadable({
     loader: func,
     loading: Loading,
   });
 };
 //serverload
-import {load_postlist} from '@redux/actions/postlist';
+import { load_postlist } from '@redux/actions/postlist';
 import loadCurrentPost from '@app/post/serverLoad';
 
 export default [
   {
     path: '/',
-    component: loadCp (() => import ('@app/home')),
+    component: loadCp(() => import('@app/home')),
     exact: true,
     loadData: load_postlist,
   },
   {
     path: '/post/:id',
     exact: true,
-    component: loadCp (() => import ('@app/post')),
+    component: loadCp(() => import('@app/post')),
     loadData: loadCurrentPost,
   },
   {
     path: '/sendPost',
     exact: true,
     private: true,
-    component: loadCp (() => import ('@app/sendPost')),
+    component: loadCp(() => import('@app/sendPost')),
   },
   {
     path: '/notification',
     exact: true,
     private: true,
-    component: loadCp (() => import ('@app/notification')),
+    component: loadCp(() => import('@app/notification')),
   },
   {
     path: '/login',
     exact: true,
-    component: loadCp (() => import ('@app/login')),
+    component: loadCp(() => import('@app/login')),
+  },
+  {
+    path: '/register',
+    exact: true,
+    component: loadCp(() => import('@app/register')),
   },
   {
     path: '*',
     exact: true,
-    component: loadCp (() => import ('@app/error')),
+    component: loadCp(() => import('@app/error')),
   },
 ];

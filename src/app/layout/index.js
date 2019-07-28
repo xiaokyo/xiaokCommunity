@@ -8,7 +8,7 @@ import doPromise from '@common/doPromise';
 import routers from '@routers';
 
 //actions
-import {fetchUserData, removeUser} from '@redux/actions/userInfo';
+import {removeUser} from '@redux/actions/userInfo';
 
 //style
 import './style.less';
@@ -54,9 +54,6 @@ export default props => {
     </Menu>
   );
 
-  // useEffect (() => {
-  //   reqUserInfoByToken ();
-  // }, []);
 
   return (
     <div className="layout">
@@ -83,7 +80,7 @@ export default props => {
               </div>
             : <div className="right_login">
                 <Link to="/login">登入</Link>
-                {/* <Link to="/register">注册</Link> */}
+                <Link to="/register">注册</Link>
               </div>}
 
         </div>
