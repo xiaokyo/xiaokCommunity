@@ -5,6 +5,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {Skeleton} from 'antd';
 
 import doPromise from '@common/doPromise';
+import {delHtmlTag} from '@common/delHtmlTag';
 
 //redux
 import {load_postlist, load_more_postlist} from '@redux/actions/postlist';
@@ -17,35 +18,45 @@ export default props => {
   const postlist = useSelector (state => state.postlist);
   const dispatch = useDispatch ();
   const [loading, setLoading] = useState (false);
-  const [loadmore, setLoadmore] = useState (false);
+  const [loadmore, setLoadmore] = useState (true);
+  const [refresh, setRefresh] = useState (false);
+  const [page, setPage] = useState (0);
   // console.log (postlist);
 
   //处理滚动
   const handlerScroll = async e => {
-    if (loadmore) return;
-
+    if (!loadmore) return;
+    if (refresh) return;
     const scrollT = document.documentElement.scrollTop;
     const clientH = document.documentElement.clientHeight;
     const scrollH = document.documentElement.scrollHeight;
 
     if (scrollH - (scrollT + clientH) <= 100) {
-      setLoadmore (true);
-      const [err] = await doPromise (load_more_postlist () (dispatch));
-      if (!err) setLoadmore (false);
+      setRefresh (true);
+      const [err, res] = await doPromise (
+        load_more_postlist (page + 1) (dispatch)
+      );
+      if (err) {
+        setLoadmore (false);
+        setRefresh (false);
+        return;
+      }
+      setRefresh (false);
+      setPage (page + 1);
+      if (res.length <= 10) setLoadmore (false);
     }
   };
 
   const initLoad = async () => {
     if (postlist.length <= 0) {
       setLoading (true);
-      // load_postlist () (dispatch).then (res => setLoading (false));
-      const [err] = await doPromise (load_postlist () (dispatch));
+      const [err, res] = await doPromise (load_postlist () (dispatch));
       if (!err) setLoading (false);
+      if (res.length < 10) setLoadmore (false); //初始数据小于10条直接loadmore直接为false，不允许触发滚动加载
     }
   };
 
   useEffect (() => {
-    // console.log ('startscroll');
     initLoad ();
   }, []);
 
@@ -55,7 +66,7 @@ export default props => {
       document.addEventListener ('scroll', handlerScroll);
       return () => document.removeEventListener ('scroll', handlerScroll);
     },
-    [loadmore]
+    [refresh]
   );
 
   return (
@@ -70,7 +81,7 @@ export default props => {
           {postlist.map ((item, index) => <Card key={index} {...item} />)}
         </Skeleton>
 
-        <Skeleton active loading={true} />
+        <Skeleton active loading={refresh} />
       </div>
 
       <div styleName="right">
@@ -82,15 +93,17 @@ export default props => {
   );
 };
 
-const Card = ({id, title, content,descrption, nickname, commentNum, likeNum}) => {
+const Card = ({_id, title, description, user, commentNum = 0, likeNum = 0}) => {
   return (
     <div styleName="card">
-      <div styleName="tit"><Link to={`/post/${id}`}>{title}</Link></div>
+      <div styleName="tit"><Link to={`/post/${_id}`}>{title}</Link></div>
       <div styleName="desc">
-        {descrption}{content}
+        {delHtmlTag (description)}
       </div>
       <div styleName="bottom">
-        <div styleName="nickname"><Link to="/">{nickname}</Link></div>
+        <div styleName="nickname">
+          <Link to="/profile">{user.username}</Link>
+        </div>
         <div styleName="comment">
           <i className="iconfont icon-comment" />{commentNum}
         </div>

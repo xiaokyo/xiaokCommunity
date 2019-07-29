@@ -14,6 +14,7 @@ module.exports = {
     [
       'react-css-modules',
       {
+        autoResolveMultipleImports: true,
         generateScopedName: '[local]--[hash:base64:8]',
         filetypes: {
           '.less': {

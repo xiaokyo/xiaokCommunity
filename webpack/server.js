@@ -105,6 +105,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin ({
       __DEV__: devMode,
+      __CLIENT__: false,
     }),
     new CleanWebpackPlugin (),
   ],

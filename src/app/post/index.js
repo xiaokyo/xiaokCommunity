@@ -4,7 +4,9 @@ import {useSelector, useDispatch} from 'react-redux';
 import {Button, Input} from 'antd';
 import Loading from '@components/loading';
 const {TextArea} = Input;
+import {formatDate} from '@common/formatDate';
 //style
+import 'braft-editor/dist/output.css';
 import './style.less';
 
 //actions
@@ -16,6 +18,8 @@ export default props => {
   const dispacth = useDispatch ();
   const posts = useSelector (state => state.posts);
   const currentPost = getPostById (postid) (posts);
+  // console.log (`posts:${JSON.stringify (posts)}`);
+  // console.log (`currentPost:${JSON.stringify (currentPost)}`);
 
   //加载redux此id未有的帖子详情
   useEffect (() => {
@@ -44,7 +48,7 @@ export default props => {
                   </Button>
                 </div>
                 <div styleName="bottom">
-                  <span>{currentPost.createDate}</span>
+                  <span>{formatDate (currentPost.createDate)}</span>
                   <span>阅读 26620</span>
                   <span>喜欢 {currentPost.likeNum}</span>
                   <span>评论 {currentPost.commentNum}</span>
@@ -53,7 +57,10 @@ export default props => {
             </div>
 
             <div styleName="content">
-              {currentPost.content}
+              <div
+                className="braft-output-content"
+                dangerouslySetInnerHTML={{__html: currentPost.content}}
+              />
             </div>
 
             <div styleName="operation">

@@ -12,18 +12,13 @@ export const removeUser = () => ({type: 'REMOVE_USER'});
 export const fetchUserData = accessToken => {
   return dispatch =>
     new Promise (async (resolve, reject) => {
-
       const args = `{
         verifyToken{
           username
         }
       }`;
 
-      const headers = {
-        authorization: `bearer ${accessToken}`,
-      };
-
-      const [err, res] = await graphql ({args, headers});
+      const [err, res] = await graphql ({args});
       if (err) return reject (err);
       if (res.data.verifyToken.username == '') return reject ('用户不匹配');
 

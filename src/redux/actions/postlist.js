@@ -8,11 +8,17 @@ const loadMorePostList = data => ({type: 'LOAD_MORE_POSTLIST', data});
 export const load_postlist = () => {
   return dispatch =>
     new Promise (async (resolve, reject) => {
-
       const args = `{
-        getPosts{
+        getPosts(limit:10,skip:0){
+          _id
           title
-          content
+          like
+          createDate
+          description
+          user{
+            _id
+            username
+          }
         }
       }`;
 
@@ -20,16 +26,31 @@ export const load_postlist = () => {
       if (err) return reject (err);
       if (res.data.getPosts.length < 0) return reject ('没有帖子');
       dispatch (savePostList (res.data.getPosts));
-      resolve ();
+      resolve (res.data.getPosts);
     });
 };
 
-export const load_more_postlist = () => {
+export const load_more_postlist = pageIndex => {
   return dispatch =>
     new Promise (async (resolve, reject) => {
-      const [err, res] = await doPromise (axios ('/loadMorePost'));
-      if (err) reject (err);
-      dispatch (loadMorePostList (res.data));
-      resolve ('');
+      const args = `{
+        getPosts(limit:10,skip:${pageIndex}){
+          _id
+          title
+          description
+          like
+          createDate
+          user{
+            _id
+            username
+          }
+        }
+      }`;
+
+      const [err, res] = await graphql ({args});
+      if (err) return reject (err);
+      if (res.data.getPosts.length <= 0) return reject ('没有帖子');
+      dispatch (loadMorePostList (res.data.getPosts));
+      resolve (res.data.getPosts);
     });
 };
