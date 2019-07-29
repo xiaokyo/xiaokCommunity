@@ -6,6 +6,8 @@
 下拉加载更多帖子<br/>
 详情<br/>
 登录<br/>
+注册<br/>
+添加帖子<br/>
 
 ## 快速使用
     yarn install
@@ -13,7 +15,7 @@
     yarn start
 
 ## 预览
-<div align=center style="padding-top:30px;"><img src ="./index.jpg"/></div>
+<div align=center style="padding-top:30px;border:1px solid #666;"><img src ="./index.jpg"/></div>
 
 ## 开源协议
 MIT
