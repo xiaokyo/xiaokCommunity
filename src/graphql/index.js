@@ -3,11 +3,13 @@ import gql from 'graphql-tag';
 import doPromise from '@common/doPromise';
 import fetch from 'node-fetch';
 
-const client = new ApolloClient ({
+//新建graphql客户链接
+export const client = new ApolloClient ({
   uri: __DEV__ ? '/graphql' : 'http://127.0.0.1:3000/graphql',
   fetch,
 });
-
+console.log (client);
+//封装graphql的请求
 export const graphql = ({type = 'query', args}) => {
   return doPromise (
     new Promise (async (resolve, reject) => {
@@ -15,39 +17,49 @@ export const graphql = ({type = 'query', args}) => {
       let headers = {
         authorization: `bearer ${accessToken}`,
       };
-      if (type == 'query') {
-        await client
-          .query ({
-            query: gql`
-        ${type}${args}
-      `,
-            context: {
-              headers,
-            },
-          })
-          .then (data => {
-            console.log (data);
-            resolve (data);
-          })
-          .catch (error => reject (error));
-      } else {
-        await client
-          .mutate ({
-            mutation: gql`
-        ${type}${args}
-      `,
-            context: {
-              headers,
-            },
-          })
-          .then (data => {
-            console.log (data);
-            resolve (data);
-          })
-          .catch (error => reject (error));
-      }
+
+      let _send = graphqlQuery;
+      console.log (type);
+      if (type == 'mutation') _send = graphqlMutate;
+
+      const [err, res] = await doPromise (_send ({args, headers}));
+      if (err) return reject (err);
+      return resolve (res);
     })
   );
+};
+
+//query
+const graphqlQuery = async ({args, headers}) => {
+  const [err, res] = await doPromise (
+    client.query ({
+      query: gql`
+      query${args}
+    `,
+      context: {
+        headers,
+      },
+    })
+  );
+  if (err) throw new Error (err);
+  return res;
+};
+
+//mutate
+const graphqlMutate = async ({args, headers}) => {
+  const [err, res] = await doPromise (
+    client.mutate ({
+      mutation: gql`
+        mutation${args}
+      `,
+      context: {
+        headers,
+      },
+    })
+  );
+
+  if (err) throw new Error (err);
+  return res;
 };
 
 // graphql ({args: '{users{username password}}'});

@@ -3,11 +3,12 @@ import {Input, Button, message, Upload} from 'antd';
 import BraftEditor from 'braft-editor';
 import {ContentUtils} from 'braft-utils';
 import {ImageUtils} from 'braft-finder';
-
 //style
 import 'braft-editor/dist/index.css';
 import './style.less';
-import {graphql} from '@graphql';
+
+import gql from 'graphql-tag';
+import {graphql, client} from '@graphql';
 import {useSelector} from 'react-redux';
 
 export default props => {
@@ -41,6 +42,7 @@ export default props => {
     if (!res.data.addPost.success) return message.warn ('添加失败');
 
     message.success ('添加成功');
+    setTimeout (() => (window.location.href = '/'), 1500);
   };
 
   //tit onchange
@@ -52,6 +54,10 @@ export default props => {
       return false;
     }
 
+    uploadImage (param.file)
+      .then (res => console.log (res))
+      .catch (err => console.log (err));
+
     seteditorState (
       ContentUtils.insertMedias (editorState, [
         {
@@ -60,6 +66,44 @@ export default props => {
         },
       ])
     );
+  };
+
+  const uploadImage = async file => {
+    // const args = `{
+    //   singleUpload(file:${file}){
+    //     filename
+    //     mimetype
+    //   }
+    // }`;
+    // const [err, res] = await graphql ({type: 'mutation', args});
+    // if (err) throw new Error (err);
+    // return res;
+    console.log (file);
+
+    await client
+      .mutate ({
+        mutation: gql`
+        mutation($file:Upload!) {
+          singleUpload(file:$file) {
+            filename
+            mimetype
+          }
+        }
+      `,
+        variables: {file: file},
+      })
+      .then (res => res)
+      .catch (err => {
+        throw new Error (err);
+      });
+  };
+
+  const handleMyonchange = e => {
+    const _file = e.currentTarget.files[0];
+    uploadImage (_file)
+      .then (res => console.log (res))
+      .catch (err => console.log (err));
+    console.log (_file);
   };
 
   const extendControls = [
@@ -132,6 +176,8 @@ export default props => {
           extendControls={extendControls}
         />
       </div>
+
+      <input type="file" onChange={handleMyonchange} />
 
       <Button type="primary" shape="round" onClick={submitPost}>发布</Button>
     </div>

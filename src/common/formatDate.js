@@ -1,3 +1,4 @@
+//输出格式化的日期  13位时间戳
 export const formatDate = dateline => {
   let date = new Date (parseInt (dateline));
   console.log (date);

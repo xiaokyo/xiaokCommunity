@@ -7,6 +7,9 @@ import {Skeleton} from 'antd';
 import doPromise from '@common/doPromise';
 import {delHtmlTag} from '@common/delHtmlTag';
 
+//component
+import IsMore from '@components/ismore';
+
 //redux
 import {load_postlist, load_more_postlist} from '@redux/actions/postlist';
 
@@ -32,6 +35,7 @@ export default props => {
     const scrollH = document.documentElement.scrollHeight;
 
     if (scrollH - (scrollT + clientH) <= 100) {
+      console.log (`loadmore:${loadmore}`);
       setRefresh (true);
       const [err, res] = await doPromise (
         load_more_postlist (page + 1) (dispatch)
@@ -43,7 +47,7 @@ export default props => {
       }
       setRefresh (false);
       setPage (page + 1);
-      if (res.length <= 10) setLoadmore (false);
+      if (res.length < 10) setLoadmore (false);
     }
   };
 
@@ -66,7 +70,7 @@ export default props => {
       document.addEventListener ('scroll', handlerScroll);
       return () => document.removeEventListener ('scroll', handlerScroll);
     },
-    [refresh]
+    [refresh, loadmore]
   );
 
   return (
@@ -78,10 +82,12 @@ export default props => {
 
       <div styleName="left">
         <Skeleton active loading={loading}>
-          {postlist.map ((item, index) => <Card key={index} {...item} />)}
+          {postlist.map ((item, index) => <Card key={item._id} {...item} />)}
         </Skeleton>
 
         <Skeleton active loading={refresh} />
+
+        {!loadmore ? <IsMore /> : ''}
       </div>
 
       <div styleName="right">

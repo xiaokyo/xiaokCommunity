@@ -18,8 +18,6 @@ export default props => {
   const dispacth = useDispatch ();
   const posts = useSelector (state => state.posts);
   const currentPost = getPostById (postid) (posts);
-  // console.log (`posts:${JSON.stringify (posts)}`);
-  // console.log (`currentPost:${JSON.stringify (currentPost)}`);
 
   //加载redux此id未有的帖子详情
   useEffect (() => {
@@ -43,9 +41,9 @@ export default props => {
                   <div styleName="nickname">
                     <Link to="/user">{currentPost.user.username}</Link>
                   </div>
-                  <Button type="primary" shape="round" size="small">
+                  {/* <Button type="primary" shape="round" size="small">
                     <i className="iconfont icon-add" />关注
-                  </Button>
+                  </Button> */}
                 </div>
                 <div styleName="bottom">
                   <span>{formatDate (currentPost.createDate)}</span>

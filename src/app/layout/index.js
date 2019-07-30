@@ -14,7 +14,7 @@ import {removeUser} from '@redux/actions/userInfo';
 import './style.less';
 
 export default props => {
-  console.log ('layout render');
+  // console.log ('layout render');
   const userInfo = useSelector (state => state.userInfo);
   const dispatch = useDispatch ();
 
@@ -35,7 +35,7 @@ export default props => {
     <Menu onClick={handleMenuClick}>
       <Menu.Item key="/profile">
         <Link to="/profile" styleName="menu_item">
-          <Icon type="user" />个人主页
+          <Icon type="user" />{userInfo.username}
         </Link>
       </Menu.Item>
       <Menu.Item key="/setting">
@@ -54,7 +54,6 @@ export default props => {
     </Menu>
   );
 
-
   return (
     <div className="layout">
       <div className="header">
@@ -70,18 +69,18 @@ export default props => {
             </div>
           </div>
 
-          {userInfo.username
-            ? <div className="right_login">
-                <Dropdown overlay={MenuView} trigger={['click']}>
+          <div className="right_login">
+            {userInfo.username
+              ? <Dropdown overlay={MenuView} trigger={['click']}>
                   <a className="ant-dropdown-link" href="#">
-                    {userInfo.username} <Icon type="down" />
+                    <img src="//img.xiaoduyu.com/88b8737e-870a-45a0-af9e-7ce829fda190.jpg?imageMogr2/crop/!200x200a0a0/thumbnail/!200/quality/90" />
                   </a>
                 </Dropdown>
-              </div>
-            : <div className="right_login">
-                <Link to="/login">登入</Link>
-                <Link to="/register">注册</Link>
-              </div>}
+              : <div className="right_login">
+                  <Link to="/login">登入</Link>
+                  <Link to="/register">注册</Link>
+                </div>}
+          </div>
 
         </div>
       </div>
