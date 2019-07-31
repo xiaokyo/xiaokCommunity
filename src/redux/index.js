@@ -1,4 +1,4 @@
-import {createStore, combineReducers, applyMiddleware} from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
@@ -6,16 +6,16 @@ import logger from 'redux-logger';
 import userInfo from './reducer/userInfo';
 import postlist from './reducer/postlist';
 import posts from './reducer/posts';
+import profile from './reducer/profile';
 
-const reducer = combineReducers ({userInfo, postlist, posts});
+const reducer = combineReducers({ userInfo, postlist, posts, profile });
 
 //middleware
 let middleware = [thunk];
 
 //development
 if (__DEV__) {
-  middleware.push (logger);
+	middleware.push(logger);
 }
 
-export default initialState =>
-  createStore (reducer, initialState, applyMiddleware (...middleware));
+export default initialState => createStore(reducer, initialState, applyMiddleware(...middleware));
