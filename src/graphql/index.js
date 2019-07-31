@@ -2,13 +2,14 @@ import ApolloClient from 'apollo-boost';
 import gql from 'graphql-tag';
 import doPromise from '@common/doPromise';
 import fetch from 'node-fetch';
+import config from '@config';
 
 //新建graphql客户链接
 export const client = new ApolloClient ({
-  uri: __DEV__ ? '/graphql' : 'http://127.0.0.1:3000/graphql',
+  uri: config.graphql,
   fetch,
 });
-console.log (client);
+
 //封装graphql的请求
 export const graphql = ({type = 'query', args}) => {
   return doPromise (

@@ -1,15 +1,20 @@
 import React, {useState} from 'react';
+import {useSelector} from 'react-redux';
 import {Input, Button, message, Upload} from 'antd';
+
+//brafteditor
 import BraftEditor from 'braft-editor';
 import {ContentUtils} from 'braft-utils';
 import {ImageUtils} from 'braft-finder';
+
+import fetch from 'node-fetch';
+
+//config
+import config from '@config';
+
 //style
 import 'braft-editor/dist/index.css';
 import './style.less';
-
-import gql from 'graphql-tag';
-import {graphql, client} from '@graphql';
-import {useSelector} from 'react-redux';
 
 export default props => {
   const [title, setTitle] = useState ('');
@@ -55,56 +60,34 @@ export default props => {
     }
 
     uploadImage (param.file)
-      .then (res => console.log (res))
-      .catch (err => console.log (err));
-
-    seteditorState (
-      ContentUtils.insertMedias (editorState, [
-        {
-          type: 'IMAGE',
-          url: window.URL.createObjectURL (param.file),
-        },
-      ])
-    );
-  };
-
-  const uploadImage = async file => {
-    // const args = `{
-    //   singleUpload(file:${file}){
-    //     filename
-    //     mimetype
-    //   }
-    // }`;
-    // const [err, res] = await graphql ({type: 'mutation', args});
-    // if (err) throw new Error (err);
-    // return res;
-    console.log (file);
-
-    await client
-      .mutate ({
-        mutation: gql`
-        mutation($file:Upload!) {
-          singleUpload(file:$file) {
-            filename
-            mimetype
-          }
-        }
-      `,
-        variables: {file: file},
+      .then (res => {
+        seteditorState (
+          ContentUtils.insertMedias (editorState, [
+            {
+              type: 'IMAGE',
+              url: `${config.ossurl}${res.name}`,
+            },
+          ])
+        );
+        console.log (res.url);
       })
-      .then (res => res)
-      .catch (err => {
-        throw new Error (err);
-      });
+      .catch (err => console.log (err));
   };
 
-  const handleMyonchange = e => {
-    const _file = e.currentTarget.files[0];
-    uploadImage (_file)
-      .then (res => console.log (res))
-      .catch (err => console.log (err));
-    console.log (_file);
-  };
+  const uploadImage = file =>
+    new Promise (async (resolve, reject) => {
+      // console.log (file);
+      let fd = new FormData ();
+      fd.append ('file', file);
+
+      await fetch (config.uploadurl, {
+        method: 'POST',
+        body: fd,
+      })
+        .then (res => res.json ())
+        .then (res => resolve (res))
+        .catch (err => reject (err));
+    });
 
   const extendControls = [
     {
@@ -130,8 +113,8 @@ export default props => {
   ];
 
   const controls = [
-    'undo',
-    'redo',
+    // 'undo',
+    // 'redo',
     'font-size',
     // 'line-height',
     // 'letter-spacing',
@@ -145,17 +128,17 @@ export default props => {
     // 'subscript',
     // 'remove-styles',
     // 'emoji',
-    'text-indent',
-    'text-align',
+    // 'text-indent',
+    // 'text-align',
     // 'headings',
     // 'list-ul',
     // 'list-ol',
     'blockquote',
     'code',
-    'link',
+    // 'link',
     'hr',
     // 'media',
-    'clear',
+    // 'clear',
   ];
 
   return (
@@ -176,9 +159,6 @@ export default props => {
           extendControls={extendControls}
         />
       </div>
-
-      <input type="file" onChange={handleMyonchange} />
-
       <Button type="primary" shape="round" onClick={submitPost}>发布</Button>
     </div>
   );
