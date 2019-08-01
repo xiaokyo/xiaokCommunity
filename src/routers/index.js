@@ -10,6 +10,7 @@ const loadCp = func => {
 //serverload
 import { load_postlist } from '@redux/actions/postlist';
 import loadCurrentPost from '@app/post/serverLoad';
+import loadCurrentProfile from '@app/profile/serverLoad';
 
 export default [
 	{
@@ -39,8 +40,14 @@ export default [
 	{
 		path: '/user/:id',
 		exact: true,
-		private: true,
 		component: loadCp(() => import('@app/profile')),
+		loadData: loadCurrentProfile,
+	},
+	{
+		path: '/setting',
+		exact: true,
+		private: true,
+		component: loadCp(() => import('@app/setting')),
 	},
 	{
 		path: '/login',
