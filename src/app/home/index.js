@@ -77,7 +77,7 @@ export default props => {
 
 			<div styleName="left">
 				<Skeleton active loading={loading}>
-					{postlist.map((item, index) => (
+					{postlist.map(item => (
 						<Card key={item._id} {...item} />
 					))}
 				</Skeleton>

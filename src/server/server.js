@@ -16,8 +16,6 @@ import createStore from '@redux';
 
 //components
 import Layout from '@app/layout';
-import Home from '@app/home';
-import Notification from '@app/notification';
 
 const app = express();
 
@@ -34,52 +32,53 @@ app.use('/', express.static('./public'));
 const htmlTemplate = fs.readFileSync('./dist/app.html', 'utf-8');
 
 app.get('*', async (req, res) => {
-  const store = createStore();
-  const dispatch = store.dispatch;
+	const store = createStore({});
+	const dispatch = store.dispatch;
+	let currentRoute = null,
+		match = null;
+	routers.some(route => {
+		let _match = matchPath(req.path, route);
+		if (_match) {
+			currentRoute = route;
+			match = _match;
+		}
+		return _match;
+	});
 
-  let currentRoute = null, match = null;
-  routers.some(route => {
-    let _match = matchPath(req.path, route);
-    if (_match) {
-      currentRoute = route;
-      match = _match;
-    }
-    return _match;
-  });
+	//加载redux数据的方法
+	if (currentRoute.loadData) {
+		await currentRoute.loadData()(dispatch, match);
+		// console.log(store.getState());
+		//组件预加载
+		await currentRoute.component.preload();
+	} else {
+		currentRoute.component = () => <div />;
+	}
 
-  //加载redux数据的方法
-  if (currentRoute.loadData) {
-    await currentRoute.loadData()(dispatch, match);
-    //组件预加载
-    await currentRoute.component.preload();
-  } else {
-    currentRoute.component = () => <div />;
-  }
+	const metaTagsInstance = MetaTagsServer();
 
-  const metaTagsInstance = MetaTagsServer();
+	// const context = {};
+	const AppComponent = ReactDOMServer.renderToString(
+		<ReduxProvider store={store}>
+			<MetaTagsContext extract={metaTagsInstance.extract}>
+				<Router location={req.url}>
+					<Layout />
+				</Router>
+			</MetaTagsContext>
+		</ReduxProvider>
+	);
 
-  // const context = {};
-  const AppComponent = ReactDOMServer.renderToString(
-    <ReduxProvider store={store}>
-      <MetaTagsContext extract={metaTagsInstance.extract}>
-        <Router location={req.url}>
-          <Layout />
-        </Router>
-      </MetaTagsContext>
-    </ReduxProvider>
-  );
+	const meta = metaTagsInstance.renderToString();
+	const reduxState = JSON.stringify(store.getState()).replace(/</g, '\\x3c');
 
-  const meta = metaTagsInstance.renderToString();
-  const reduxState = JSON.stringify(store.getState()).replace(/</g, '\\x3c');
-
-  let reactDom = htmlTemplate.replace('<!--app-->', AppComponent);
-  // console.log (reactDom);
-  reactDom = reactDom.replace('<!--initState-->', reduxState);
-  reactDom = reactDom.replace('<!--meta-->', meta);
-  res.send(reactDom);
+	let reactDom = htmlTemplate.replace('<!--app-->', AppComponent);
+	// console.log (reactDom);
+	reactDom = reactDom.replace('<!--initState-->', reduxState);
+	reactDom = reactDom.replace('<!--meta-->', meta);
+	res.send(reactDom);
 });
 
 const port = 8080;
-app.listen(port, function () {
-  console.log(`Example app listening on port ${port}!`);
+app.listen(port, function() {
+	console.log(`Example app listening on port ${port}!`);
 });

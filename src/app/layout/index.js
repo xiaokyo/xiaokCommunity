@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { Route, Link, Switch, Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Menu, Dropdown, Icon, message, Button } from 'antd';
-import doPromise from '@common/doPromise';
+import { Menu, Dropdown, Icon } from 'antd';
 
 //routers
 import routers from '@routers';
@@ -34,9 +33,9 @@ export default props => {
 	const MenuView = () => (
 		<Menu onClick={handleMenuClick}>
 			<Menu.Item key="/profile">
-				<Link to={`/user/${userInfo._id}`} styleName="menu_item">
+				<Link to={`/user/${userInfo.my._id}`} styleName="menu_item">
 					<Icon type="user" />
-					{userInfo.username}
+					{userInfo.my.username}
 				</Link>
 			</Menu.Item>
 			<Menu.Item key="/setting">
@@ -75,10 +74,10 @@ export default props => {
 					</div>
 
 					<div className="right_login">
-						{userInfo.username ? (
+						{userInfo.my ? (
 							<Dropdown overlay={MenuView} trigger={['click']}>
 								<a className="ant-dropdown-link" href="#">
-									<img src="//img.xiaoduyu.com/88b8737e-870a-45a0-af9e-7ce829fda190.jpg?imageMogr2/crop/!200x200a0a0/thumbnail/!200/quality/90" />
+									<img src={userInfo.my.avatar} />
 								</a>
 							</Dropdown>
 						) : (
@@ -122,7 +121,7 @@ function PrivateRoute({ component: Component, ...rest }) {
 		<Route
 			{...rest}
 			render={props =>
-				userInfo.username ? (
+				userInfo.my ? (
 					<Component {...props} />
 				) : (
 					<Redirect

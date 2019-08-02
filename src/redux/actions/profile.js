@@ -26,8 +26,7 @@ export const loadProfile = userid => {
       }`;
 			const [err, res] = await graphql({ args });
 			if (err) return reject(err);
-			if (!res.data.homebyuserid) return reject('用户不存在');
-			// console.log (res);
+			if (!res.data.homebyuserid.user) return reject('用户不存在');
 			dispatch(saveProfile(res.data.homebyuserid));
 			return resolve();
 		});

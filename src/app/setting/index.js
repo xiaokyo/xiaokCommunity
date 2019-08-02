@@ -1,21 +1,55 @@
 import React, { useRef, useState } from 'react';
-import { Button, Select, Input } from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
+import { Button, Select, Input, message, Modal } from 'antd';
 const { Option } = Select;
+import axios from 'axios';
+
+//config
+import config from '@config';
+
+//common
+import { fileOrBlobToDataURL, dataURLToBlob } from '@common/base64';
+//actions
+import { saveMy } from '@redux/actions/userInfo';
+
 //cropper
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
+
+//graphql
+import { graphql } from '@graphql';
 
 //style
 import './style.less';
 
 export default props => {
 	const cropper = useRef(null);
-	const [clipimg, setClipimg] = useState();
+	const { my } = useSelector(state => state.userInfo);
+	const dispatch = useDispatch();
+	const [clipImg, setClipImg] = useState();
+	const [visible, setVisible] = useState(false);
 	const [formdata, setFormdata] = useState({
-		username: 'xiaokyo',
-		sex: '1',
-		phone: '18989443542',
+		avatar: my.avatar,
+		username: my.username,
+		sex: my.sex,
+		phone: my.phone,
 	});
+
+	//处理关闭头像裁剪model
+	const handleCancel = () => {
+		setVisible(false);
+	};
+
+	//当有新图片选择后打开裁剪model
+	const fileOnChange = async e => {
+		let _file = e.currentTarget.files[0];
+		if (!_file) return;
+		fileOrBlobToDataURL(_file, function(res) {
+			// console.log(res);
+			setClipImg(res);
+			setVisible(true);
+		});
+	};
 
 	//username onchange
 	const usernameOnChange = e => {
@@ -29,6 +63,7 @@ export default props => {
 		setFormdata({ ...formdata, phone: val });
 	};
 
+	//sex onchange
 	const sexOnChange = e => {
 		// let val = e.currentTarget.value;
 		console.log(e);
@@ -38,26 +73,66 @@ export default props => {
 	//clip image
 	const _crop = () => {
 		// image in dataUrl
-		console.log(cropper.current.getCroppedCanvas().toDataURL());
+		// console.log(cropper.current.getCroppedCanvas().toDataURL());
+		let fd = new FormData();
+		fd.append('file', dataURLToBlob(cropper.current.getCroppedCanvas().toDataURL()));
+		let content = {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		}; //添加请求头
+		axios.post(config.uploadurl, fd, content).then(response => {
+			console.log(response.data);
+			setFormdata({ ...formdata, avatar: response.data.url });
+			// dispatch(saveMy({ avatar: response.data.url }));
+			setVisible(false);
+		});
+	};
+
+	//修改提交到服务器
+	const _submitUpdate = async () => {
+		const { username, sex, phone, avatar } = formdata;
+		const args = `{
+			updateUser(username:"${username}",sex:"${sex}",phone:"${phone}",avatar:"${avatar}"){
+				success
+				msg
+			}
+		}`;
+		const [err, res] = await graphql({ type: 'mutation', args });
+
+		if (err) return message.warn('修改失败，请检查后重新操作');
+		// console.log(err, res);
+		if (!res.data.updateUser.success) return message.warn(res.data.updateUser.msg);
+		message.success(res.data.updateUser.msg);
+		dispatch(saveMy(formdata));
 	};
 
 	return (
 		<div styleName="setting">
-			{/* <Cropper
-				ref={cropper}
-				src="//xiaokyoimg.oss-cn-hangzhou.aliyuncs.com/1564576732838"
-				style={{ height: 400, width: 400, margin: 'auto' }}
-				// Cropper.js options
-				aspectRatio={10 / 10}
-				guides={false}
-				// crop={() => _crop()}
-      /> */}
+			<Modal
+				title="头像裁剪"
+				visible={visible}
+				onOk={_crop}
+				// confirmLoading={confirmLoading}
+				onCancel={handleCancel}
+			>
+				<Cropper
+					ref={cropper}
+					src={clipImg ? clipImg : ''}
+					style={{ height: 250, width: '100%', margin: 'auto' }}
+					// Cropper.js options
+					aspectRatio={19 / 19}
+					guides={false}
+					// crop={() => _crop()}
+				/>
+			</Modal>
 
 			<div styleName="_item">
 				<div styleName="name">头像</div>
 				<div styleName="con">
 					<div styleName="avatar">
-						<img src="//img.xiaoduyu.com/88b8737e-870a-45a0-af9e-7ce829fda190.jpg?imageMogr2/crop/!200x200a0a0/thumbnail/!200/quality/90" />
+						<img src={formdata.avatar} onClick={() => setVisible(true)} />
+						<input type="file" onChange={fileOnChange} styleName="selectImg" />
 					</div>
 				</div>
 			</div>
@@ -86,7 +161,9 @@ export default props => {
 			</div>
 
 			<div styleName="setting_btns">
-				<Button type="primary">保存</Button>
+				<Button type="primary" onClick={_submitUpdate}>
+					保存
+				</Button>
 				<Button type="default">取消</Button>
 			</div>
 		</div>

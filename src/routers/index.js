@@ -39,7 +39,7 @@ export default [
 	},
 	{
 		path: '/user/:id',
-		exact: true,
+		exact: false,
 		component: loadCp(() => import('@app/profile')),
 		loadData: loadCurrentProfile,
 	},

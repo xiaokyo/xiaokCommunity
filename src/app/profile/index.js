@@ -16,11 +16,10 @@ import { loadProfile } from '@redux/actions/profile';
 export default props => {
 	const profile = useSelector(state => state.profile);
 	const dispatch = useDispatch();
-
+	const { id } = props.match.params;
 	useEffect(() => {
-		const userid = props.match.params.id;
-		loadProfile(userid)(dispatch);
-	}, []);
+		loadProfile(id)(dispatch);
+	}, [id]);
 
 	return (
 		<>
@@ -29,7 +28,7 @@ export default props => {
 			) : (
 				<div styleName="profile">
 					<MetaTags>
-						<title>xiaokyo-个人中心</title>
+						<title>{profile.user.username}-个人中心</title>
 						<meta name="description" content="一个简约的交流社区" />
 					</MetaTags>
 					<div styleName="user_info">
@@ -56,11 +55,7 @@ export default props => {
 	);
 };
 
-const Post = ({
-	_id = '5d418be57bb4770858648e78',
-	avatar = '//upload.jianshu.io/users/upload_avatars/15662430/96657d09-f4f6-4cc9-9709-5aa2f8deab3c?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240',
-	title = '新人报道',
-}) => {
+const Post = ({ _id, avatar, title }) => {
 	return (
 		<div styleName="post">
 			<img src={avatar} />

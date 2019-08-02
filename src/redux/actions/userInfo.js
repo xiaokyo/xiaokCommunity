@@ -5,7 +5,20 @@ export const saveUser = data => ({
 	data,
 });
 
+export const saveMy = data => ({
+	type: 'SAVE_MY',
+	data,
+});
+
 export const removeUser = () => ({ type: 'REMOVE_USER' });
+
+const userModel = `
+		_id
+		username
+		avatar
+		phone
+		sex
+`;
 
 //token 验证并获取userinfo
 export const fetchUserData = accessToken => {
@@ -13,9 +26,7 @@ export const fetchUserData = accessToken => {
 		new Promise(async (resolve, reject) => {
 			const args = `{
         verifyToken{
-          _id
-          username
-          avatar
+          ${userModel}
         }
       }`;
 
@@ -24,9 +35,8 @@ export const fetchUserData = accessToken => {
 			if (res.data.verifyToken.username == '') return reject('用户不匹配');
 
 			const userInfo = {
-				_id: res.data.verifyToken._id,
 				accessToken,
-				username: res.data.verifyToken.username,
+				my: res.data.verifyToken,
 			};
 			dispatch(saveUser(userInfo));
 			resolve();
@@ -42,9 +52,7 @@ export const login = (username, password) => {
           code
           accessToken
           user{
-            _id
-            username
-            avatar
+						${userModel}
           }
         }
       }`;
@@ -54,9 +62,8 @@ export const login = (username, password) => {
 			// console.log (res);
 
 			const userInfo = {
-				_id: res.data.login.user._id,
 				accessToken: res.data.login.accessToken,
-				username: res.data.login.user.username,
+				my: res.data.login.user,
 			};
 			dispatch(saveUser(userInfo));
 			await localStorage.setItem('accessToken', res.data.login.accessToken);
