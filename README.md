@@ -2,12 +2,13 @@
 <h1 align=center style="font-size:40px;">xiaokyo</h1>
 
 ## 已实现功能
-社区列表页<br/>
-下拉加载更多帖子<br/>
+列表页<br/>
+下拉加载<br/>
 详情<br/>
 登录<br/>
 注册<br/>
 添加帖子<br/>
+头像裁剪上传<br/>
 
 ## 快速使用
     yarn install
