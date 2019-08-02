@@ -9,6 +9,7 @@ import config from '@config';
 
 //common
 import { fileOrBlobToDataURL, dataURLToBlob } from '@common/base64';
+
 //actions
 import { saveMy } from '@redux/actions/userInfo';
 
@@ -44,6 +45,8 @@ export default props => {
 	const fileOnChange = async e => {
 		let _file = e.currentTarget.files[0];
 		if (!_file) return;
+		// console.log(_file.size);
+		if (_file.size >= 1 * 1024 * 1024) return message.warn('必须小于1mb');
 		fileOrBlobToDataURL(_file, function(res) {
 			// console.log(res);
 			setClipImg(res);

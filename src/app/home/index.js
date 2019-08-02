@@ -17,7 +17,7 @@ import { load_postlist, load_more_postlist } from '@redux/actions/postlist';
 import './style.less';
 
 export default props => {
-	console.log('home render');
+	// console.log('home render');
 	const postlist = useSelector(state => state.postlist);
 	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(false);
@@ -34,8 +34,8 @@ export default props => {
 		const clientH = document.documentElement.clientHeight;
 		const scrollH = document.documentElement.scrollHeight;
 
-		if (scrollH - (scrollT + clientH) <= 100) {
-			console.log(`loadmore:${loadmore}`);
+		if (scrollH - (scrollT + clientH) <= 50) {
+			// console.log(`loadmore:${loadmore}`);
 			setRefresh(true);
 			const [err, res] = await doPromise(load_more_postlist(page + 1)(dispatch));
 			if (err) {
@@ -66,7 +66,7 @@ export default props => {
 	useEffect(() => {
 		document.addEventListener('scroll', handlerScroll);
 		return () => document.removeEventListener('scroll', handlerScroll);
-	}, [refresh, loadmore]);
+	});
 
 	return (
 		<div styleName="home">
@@ -83,7 +83,6 @@ export default props => {
 				</Skeleton>
 
 				<Skeleton active loading={refresh} />
-
 				{!loadmore ? <IsMore /> : ''}
 			</div>
 

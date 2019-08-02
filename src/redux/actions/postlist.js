@@ -32,6 +32,7 @@ export const load_postlist = () => {
 export const load_more_postlist = pageIndex => {
 	return dispatch =>
 		new Promise(async (resolve, reject) => {
+			console.log(pageIndex);
 			const args = `{
         getPosts(limit:10,skip:${pageIndex}){
           _id
