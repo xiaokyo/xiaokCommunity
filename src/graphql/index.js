@@ -20,7 +20,7 @@ export const graphql = ({ type = 'query', args }) => {
 			};
 
 			let _send = graphqlQuery;
-			console.log(type);
+			// console.log(type);
 			if (type == 'mutation') _send = graphqlMutate;
 
 			const [err, res] = await doPromise(_send({ args, headers }));
@@ -59,7 +59,6 @@ const graphqlMutate = async ({ args, headers }) => {
 			},
 		})
 	);
-
 	if (err) throw new Error(err);
 	return res;
 };

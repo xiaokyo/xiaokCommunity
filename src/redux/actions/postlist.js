@@ -24,7 +24,7 @@ export const load_postlist = () => {
 			if (err) return reject(err);
 			if (res.data.getPosts.length < 0) return reject('没有帖子');
 			dispatch(savePostList(res.data.getPosts));
-			console.log(res.data.getPosts);
+			// console.log(res.data.getPosts);
 			resolve(res.data.getPosts);
 		});
 };
@@ -32,7 +32,7 @@ export const load_postlist = () => {
 export const load_more_postlist = pageIndex => {
 	return dispatch =>
 		new Promise(async (resolve, reject) => {
-			console.log(pageIndex);
+			// console.log(pageIndex);
 			const args = `{
         getPosts(limit:10,skip:${pageIndex}){
           _id

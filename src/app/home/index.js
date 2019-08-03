@@ -21,52 +21,34 @@ export default props => {
 	const postlist = useSelector(state => state.postlist);
 	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(false);
-	const [loadmore, setLoadmore] = useState(true);
-	const [refresh, setRefresh] = useState(false);
+	const [loadmore, setLoadmore] = useState('hasmore');
 	const [page, setPage] = useState(0);
 	// console.log (postlist);
 
-	//处理滚动
-	const handlerScroll = async e => {
-		if (!loadmore) return;
-		if (refresh) return;
-		const scrollT = document.documentElement.scrollTop;
-		const clientH = document.documentElement.clientHeight;
-		const scrollH = document.documentElement.scrollHeight;
-
-		if (scrollH - (scrollT + clientH) <= 50) {
-			// console.log(`loadmore:${loadmore}`);
-			setRefresh(true);
-			const [err, res] = await doPromise(load_more_postlist(page + 1)(dispatch));
-			if (err) {
-				setLoadmore(false);
-				setRefresh(false);
-				return;
-			}
-			setRefresh(false);
-			setPage(page + 1);
-			if (res.length < 10) setLoadmore(false);
-		}
+	//loadmore
+	const loadMorePost = async () => {
+		if (loadmore == 'nomore') return false;
+		setLoadmore('loading');
+		const [err, res] = await doPromise(load_more_postlist(page + 1)(dispatch));
+		if (err) return setLoadmore('nomore');
+		if (res.length < 10) return setLoadmore('nomore');
+		setPage(page + 1);
+		setLoadmore('hasmore');
 	};
 
+	//init load
 	const initLoad = async () => {
 		if (postlist.length <= 0) {
 			setLoading(true);
 			const [err, res] = await doPromise(load_postlist()(dispatch));
 			if (!err) setLoading(false);
-			if (res.length < 10) setLoadmore(false); //初始数据小于10条直接loadmore直接为false，不允许触发滚动加载
+			if (res.length < 10) setLoadmore('nomore'); //初始数据小于10条直接loadmore直接为false，不允许触发滚动加载
 		}
 	};
 
 	useEffect(() => {
 		initLoad();
 	}, []);
-
-	//监听滚动
-	useEffect(() => {
-		document.addEventListener('scroll', handlerScroll);
-		return () => document.removeEventListener('scroll', handlerScroll);
-	});
 
 	return (
 		<div styleName="home">
@@ -82,8 +64,7 @@ export default props => {
 					))}
 				</Skeleton>
 
-				<Skeleton active loading={refresh} />
-				{!loadmore ? <IsMore /> : ''}
+				<IsMore status={loadmore} funcLoadMore={loadMorePost} />
 			</div>
 
 			<div styleName="right">
@@ -93,6 +74,7 @@ export default props => {
 	);
 };
 
+//单个帖子
 const Card = ({ _id, title, description, user, commentNum = 0, likeNum = 0 }) => {
 	return (
 		<div styleName="card">

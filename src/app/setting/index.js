@@ -69,7 +69,7 @@ export default props => {
 	//sex onchange
 	const sexOnChange = e => {
 		// let val = e.currentTarget.value;
-		console.log(e);
+		// console.log(e);
 		setFormdata({ ...formdata, sex: e.key });
 	};
 
@@ -85,8 +85,8 @@ export default props => {
 			},
 		}; //添加请求头
 		axios.post(config.uploadurl, fd, content).then(response => {
-			console.log(response.data);
-			setFormdata({ ...formdata, avatar: response.data.url });
+			// console.log(response.data);
+			setFormdata({ ...formdata, avatar: response.data.url + '?x-oss-process=image/resize,m_lfit,h_100,w_100' });
 			// dispatch(saveMy({ avatar: response.data.url }));
 			setVisible(false);
 		});
@@ -135,7 +135,7 @@ export default props => {
 				<div styleName="con">
 					<div styleName="avatar">
 						<img src={formdata.avatar} onClick={() => setVisible(true)} />
-						<input type="file" onChange={fileOnChange} styleName="selectImg" />
+						<input type="file" accept="image/*" onChange={fileOnChange} styleName="selectImg" />
 					</div>
 				</div>
 			</div>
@@ -167,7 +167,7 @@ export default props => {
 				<Button type="primary" onClick={_submitUpdate}>
 					保存
 				</Button>
-				<Button type="default">取消</Button>
+				{/* <Button type="default">取消</Button> */}
 			</div>
 		</div>
 	);

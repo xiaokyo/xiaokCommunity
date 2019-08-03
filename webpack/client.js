@@ -148,7 +148,7 @@ module.exports = {
 		new MiniCssExtractPlugin({
 			filename: 'assets/css/[name].css',
 			chunkFilename: 'assets/css/chunks/[id].css',
-			ignoreOrder: false, // Enable to remove warnings about conflicting order
+			ignoreOrder: true, // Enable to remove warnings about conflicting order
 		}),
 		new OptimizeCssAssetsPlugin(),
 	],

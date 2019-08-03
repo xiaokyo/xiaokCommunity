@@ -27,7 +27,8 @@ export const savePostById = id => {
           _id
           title
           content
-          createDate
+					createDate
+					like
           user{
             _id
             username

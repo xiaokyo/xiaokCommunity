@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
 import { Input, Button, message, Upload } from 'antd';
 
 //brafteditor
@@ -20,6 +19,32 @@ import './style.less';
 export default props => {
 	const [title, setTitle] = useState('');
 	const [editorState, seteditorState] = useState(BraftEditor.createEditorState(null));
+	const { search } = props.location;
+	const postid = search.split('=')[1];
+
+	//获取当前id的帖子赋值为初始值
+	const getPostById = async () => {
+		const args = `{
+			getPostById(id:"5d417ee7594dc30528f18aec"){
+				_id
+				title
+				content
+			}
+		}`;
+
+		const [err, res] = await graphql({ args });
+		if (err) return;
+
+		const { _id, title, content } = res.data.getPostById;
+		setTitle(title);
+		seteditorState(BraftEditor.createEditorState(content));
+	};
+
+	useEffect(() => {
+		if (postid) {
+			getPostById();
+		}
+	}, []);
 
 	// editor onchange
 	const handleEditorChange = State => {
@@ -33,12 +58,23 @@ export default props => {
 			.replace(/"/g, "'")
 			.replace(/“/g, "'")
 			.replace(/”/g, "'");
-		console.log(_title);
+		// console.log(_title);
 		if (_title == '') return message.warn('想到好的标题再来哟~');
 		const htmlContent = editorState.toHTML();
-		console.log(htmlContent.replace(/"/g, "'"));
+		// console.log(htmlContent.replace(/"/g, "'"));
 		if (htmlContent == '<p></p>') return message.warn('我有酒，请写下你的故事~');
 
+		if (postid) {
+			await updatePost(_title, htmlContent);
+		} else {
+			await createPost(_title, htmlContent);
+		}
+
+		setTimeout(() => (window.location.href = '/'), 1500);
+	};
+
+	//创建新的Post
+	const createPost = async (_title, htmlContent) => {
 		const args = `{
       addPost(title:"${_title}",content:"${htmlContent.replace(/"/g, "'")}"){
         success
@@ -51,7 +87,22 @@ export default props => {
 		if (!res.data.addPost.success) return message.warn('添加失败');
 
 		message.success('添加成功');
-		setTimeout(() => (window.location.href = '/'), 1500);
+	};
+
+	//修改Post
+	const updatePost = async (_title, htmlContent) => {
+		const args = `{
+      updatePost(_id:"${postid}",title:"${_title}",content:"${htmlContent.replace(/"/g, "'")}"){
+        success
+        msg 
+      }
+    }`;
+
+		const [err, res] = await graphql({ type: 'mutation', args });
+		if (err) return message.err(err);
+		if (!res.data.updatePost.success) return message.warn('修改失败');
+
+		message.success('修改成功');
 	};
 
 	//tit onchange
@@ -65,6 +116,7 @@ export default props => {
 
 		uploadImage(param.file)
 			.then(res => {
+				if (!res.name) return message.warn(res.msg);
 				seteditorState(
 					ContentUtils.insertMedias(editorState, [
 						{
@@ -73,7 +125,6 @@ export default props => {
 						},
 					])
 				);
-				console.log(res.url);
 			})
 			.catch(err => console.log(err));
 	};
