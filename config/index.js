@@ -1,7 +1,7 @@
-const _host = '192.168.1.13';
+const _host = __CLIENT__ ? 'http://localhost:3000' : 'http://localhost:3000';
 export default {
 	host: _host,
-	uploadurl: `http://${_host}:3000/upload`,
-	graphql: `http://${_host}:3000/graphql`,
+	uploadurl: `${_host}/upload`,
+	graphql: `${_host}/graphql`,
 	ossurl: '//xiaokyoimg.oss-cn-hangzhou.aliyuncs.com/',
 };

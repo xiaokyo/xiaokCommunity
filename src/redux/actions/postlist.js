@@ -3,20 +3,25 @@ import { graphql } from '@graphql';
 const savePostList = data => ({ type: 'SAVE_POSTLIST', data });
 const loadMorePostList = data => ({ type: 'LOAD_MORE_POSTLIST', data });
 
+const field = `
+  _id
+  title
+  description
+  like_count
+  comment_count
+  createDate
+  user{
+    _id
+    username
+  }
+`;
+
 export const load_postlist = () => {
 	return dispatch =>
 		new Promise(async (resolve, reject) => {
 			const args = `{
         getPosts(limit:10,skip:0){
-          _id
-          title
-          like
-          createDate
-          description
-          user{
-            _id
-            username
-          }
+         ${field}
         }
       }`;
 
@@ -35,15 +40,7 @@ export const load_more_postlist = pageIndex => {
 			// console.log(pageIndex);
 			const args = `{
         getPosts(limit:10,skip:${pageIndex}){
-          _id
-          title
-          description
-          like
-          createDate
-          user{
-            _id
-            username
-          }
+          ${field}
         }
       }`;
 

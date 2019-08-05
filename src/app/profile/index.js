@@ -9,6 +9,7 @@ import './style.less';
 
 //components
 import Loading from '@components/loading';
+import IsMore from '@components/ismore';
 
 //actions
 import { loadProfile } from '@redux/actions/profile';
@@ -16,10 +17,26 @@ import { loadProfile } from '@redux/actions/profile';
 export default props => {
 	const profile = useSelector(state => state.profile);
 	const dispatch = useDispatch();
+	const [page, setPage] = useState(0);
+	const [loadmore, setLoadmore] = useState('hasmore');
 	const { id } = props.match.params;
 	useEffect(() => {
-		loadProfile(id)(dispatch);
+		setLoadmore('loading');
+		loadProfile(id)(dispatch).then(res => {
+			setLoadmore('hasmore');
+			if (res.posts.length <= 0) setLoadmore('nomore');
+		});
 	}, [id]);
+
+	const loadMorePost = async () => {
+		setLoadmore('loading');
+		let _page = page + 1;
+		loadProfile(id, 10, _page)(dispatch).then(res => {
+			setLoadmore('hasmore');
+			if (res.posts.length <= 0) setLoadmore('nomore');
+			setPage(_page);
+		});
+	};
 
 	return (
 		<>
@@ -49,6 +66,7 @@ export default props => {
 							))}
 						</TabPane>
 					</Tabs>
+					<IsMore status={loadmore} funcLoadMore={loadMorePost} />
 				</div>
 			)}
 		</>

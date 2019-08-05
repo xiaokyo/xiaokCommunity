@@ -133,6 +133,7 @@ export default props => {
 			<div styleName="_item">
 				<div styleName="name">头像</div>
 				<div styleName="con">
+					<div styleName="default">点击图片修改头像</div>
 					<div styleName="avatar">
 						<img src={formdata.avatar} onClick={() => setVisible(true)} />
 						<input type="file" accept="image/*" onChange={fileOnChange} styleName="selectImg" />

@@ -70,3 +70,22 @@ export const login = (username, password) => {
 			resolve();
 		});
 };
+
+//logout
+export const logout = () => {
+	return dispatch =>
+		new Promise(async (resolve, reject) => {
+			const args = `{
+			logout{
+				success
+				msg
+			}
+		}`;
+			const [err, res] = await graphql({ args });
+			if (err) return reject(err);
+			if (!res.data.logout.success) return reject('用户不匹配');
+
+			dispatch(removeUser());
+			resolve();
+		});
+};

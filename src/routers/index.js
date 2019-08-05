@@ -20,6 +20,11 @@ export default [
 		loadData: load_postlist,
 	},
 	{
+		path: '/search/:key',
+		component: loadCp(() => import('@app/search')),
+		exact: true,
+	},
+	{
 		path: '/post/:id',
 		exact: true,
 		component: loadCp(() => import('@app/post')),

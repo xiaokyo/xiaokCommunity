@@ -80,5 +80,5 @@ app.get('*', async (req, res) => {
 
 const port = 8080;
 app.listen(port, function() {
-	console.log(`Example app listening on port ${port}!`);
+	console.log(`xiaokCommunity on port ${port}!`);
 });

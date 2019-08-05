@@ -13,7 +13,7 @@ import './style.less';
 import { graphql } from '@graphql';
 
 //actions
-import { getPostById, savePostById } from '@redux/actions/posts';
+import { getPostById, savePostById, like } from '@redux/actions/posts';
 
 export default props => {
 	// console.log ('render');
@@ -27,6 +27,7 @@ export default props => {
 
 	//删除当前帖子
 	const delPost = async () => {
+		if (!confirm('确认删除此贴?')) return;
 		const args = `{
 			delPost(_id:"${postid}"){
 				success
@@ -59,11 +60,11 @@ export default props => {
 						_id
 						username
 					}
-					toUser{
+					to_user{
 						_id
 						username
 					}
-					response_content
+					content
 					createDate
 				}
 			}
@@ -95,11 +96,11 @@ export default props => {
 							_id
 							username
 						}
-						toUser{
+						to_user{
 							_id
 							username
 						}
-						response_content
+						content
 						createDate
 					}
 				}
@@ -112,6 +113,12 @@ export default props => {
 		message.success('回复成功');
 		setComments([res.data.addComment.comment, ...comments]);
 		setReplyVal('');
+	};
+
+	//喜欢
+	const likethis = () => {
+		if (!userInfo.my) return message.warn('请先登入');
+		like(postid, currentPost)(dispacth);
 	};
 
 	//加载redux此id未有的帖子详情
@@ -144,6 +151,9 @@ export default props => {
 							</div>
 							<div styleName="bottom">
 								<span>{formatDate(currentPost.createDate)}</span>
+								{/* <span>阅读 26620</span> */}
+								<span>喜欢 {currentPost.like_count}</span>
+								<span>评论 {comments.length}</span>
 								{userInfo.my && userInfo.my._id === currentPost.user._id ? (
 									<>
 										<span>
@@ -158,9 +168,6 @@ export default props => {
 								) : (
 									''
 								)}
-								{/* <span>阅读 26620</span> */}
-								{/* <span>喜欢 {currentPost.like}</span> */}
-								{/* <span>评论 {currentPost.commentNum}</span> */}
 							</div>
 						</div>
 					</div>
@@ -172,12 +179,16 @@ export default props => {
 						/>
 					</div>
 
-					{/* <div styleName="operation">
-						<Button type="primary" shape="round" size="default">
-							<i className="iconfont icon-like" />
+					<div styleName="operation">
+						<Button type="primary" shape="round" size="default" onClick={likethis}>
+							<i
+								className={`iconfont ${
+									currentPost && currentPost.like ? 'icon-likefill' : 'icon-like'
+								}`}
+							/>
 							喜欢
 						</Button>
-					</div> */}
+					</div>
 
 					<Divider />
 
@@ -258,7 +269,7 @@ const ReplyItem = ({ _id, postid, user, content, createDate, comment_response })
 			<ModalReplyComment
 				show={show}
 				setShow={setShow}
-				toUser={user}
+				to_user={user}
 				commentid={_id}
 				replyComments={replyComments}
 				setReplyComments={setReplyComments}
@@ -284,22 +295,14 @@ const ReplyItem = ({ _id, postid, user, content, createDate, comment_response })
 };
 
 //replyCommentItem
-const ReplyCommentItem = ({
-	user,
-	toUser,
-	response_content,
-	createDate,
-	commentid,
-	replyComments,
-	setReplyComments,
-}) => {
+const ReplyCommentItem = ({ user, to_user, content, createDate, commentid, replyComments, setReplyComments }) => {
 	const [show, setShow] = useState(false);
 	const userInfo = useSelector(state => state.userInfo);
 	return (
 		<div styleName="_item">
 			<div styleName="top">
-				<a href="">{user.username}</a>回复<a href="">{toUser.username}</a>
-				<span styleName="_con">{response_content}</span>
+				<a href="">{user.username}</a>回复<a href="">{to_user.username}</a>
+				<span styleName="_con">{content}</span>
 			</div>
 			<div styleName="bottom">
 				<span styleName="_date">{formatDate(createDate)}</span>
@@ -321,7 +324,7 @@ const ReplyCommentItem = ({
 			<ModalReplyComment
 				show={show}
 				setShow={setShow}
-				toUser={user}
+				to_user={user}
 				commentid={commentid}
 				replyComments={replyComments}
 				setReplyComments={setReplyComments}
@@ -331,13 +334,13 @@ const ReplyCommentItem = ({
 };
 
 //弹窗回复
-const ModalReplyComment = ({ show, setShow, toUser, commentid, replyComments, setReplyComments }) => {
+const ModalReplyComment = ({ show, setShow, to_user, commentid, replyComments, setReplyComments }) => {
 	const [content, setContent] = useState('');
 	const userInfo = useSelector(state => state.userInfo);
 	const onOk = async () => {
 		if (!content) return message.warn('不能为空');
 		let args = `{
-			addCommentReply(commentid:"${commentid}",content:"${content}",touserid:"${toUser._id}"){
+			addCommentReply(commentid:"${commentid}",content:"${content}",touserid:"${to_user._id}"){
 				success
 				msg
 			}
@@ -351,7 +354,7 @@ const ModalReplyComment = ({ show, setShow, toUser, commentid, replyComments, se
 			{
 				createDate: new Date().getTime().toString(),
 				response_content: content,
-				toUser,
+				to_user,
 				user: { _id: userInfo.my._id, username: userInfo.my.username },
 			},
 		]);
@@ -359,7 +362,7 @@ const ModalReplyComment = ({ show, setShow, toUser, commentid, replyComments, se
 	};
 
 	return (
-		<Modal title={`回复:${toUser.username}`} visible={show} onOk={onOk} onCancel={() => setShow(false)}>
+		<Modal title={`回复:${to_user.username}`} visible={show} onOk={onOk} onCancel={() => setShow(false)}>
 			<TextArea rows={4} value={content} onChange={e => setContent(e.target.value)} />
 		</Modal>
 	);

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import MetaTags from 'react-meta-tags';
-import { useSelector, useDispatch } from 'react-redux';
-import { Skeleton } from 'antd';
+import { Skeleton, message } from 'antd';
 
 import doPromise from '@common/doPromise';
 import { delHtmlTag } from '@common/delHtmlTag';
@@ -10,26 +9,23 @@ import { delHtmlTag } from '@common/delHtmlTag';
 //component
 import IsMore from '@components/ismore';
 
-//redux
-import { load_postlist, load_more_postlist } from '@redux/actions/postlist';
+import { searchList } from './loaddata';
 
 //style
 import './style.less';
 
 export default props => {
-	// console.log('home render');
-	const postlist = useSelector(state => state.postlist);
-	const dispatch = useDispatch();
-	const [loading, setLoading] = useState(false);
+	const key = props.match.params.key;
+	const [postlist, setPostList] = useState([]);
 	const [loadmore, setLoadmore] = useState('hasmore');
 	const [page, setPage] = useState(0);
-	// console.log (postlist);
+	// console.log(postlist);
 
 	//loadmore
 	const loadMorePost = async () => {
 		if (loadmore == 'nomore') return false;
 		setLoadmore('loading');
-		const [err, res] = await doPromise(load_more_postlist(page + 1)(dispatch));
+		const [err, res] = await doPromise(searchList(key, 10, page + 1));
 		if (err) return setLoadmore('nomore');
 		if (res.length < 10) return setLoadmore('nomore');
 		setPage(page + 1);
@@ -38,27 +34,26 @@ export default props => {
 
 	//init load
 	const initLoad = async () => {
-		if (postlist.length <= 0) {
-			setLoading(true);
-			const [err, res] = await doPromise(load_postlist()(dispatch));
-			if (!err) setLoading(false);
-			if (res.length < 10) setLoadmore('nomore'); //初始数据小于10条直接loadmore直接为false，不允许触发滚动加载
-		}
+		const [err, res] = await doPromise(searchList(key, 10, 0));
+		if (err) return message.warn(err);
+
+		// console.log(res);
+		setPostList(res);
+		if (res.length < 10) setLoadmore('nomore'); //初始数据小于10条直接loadmore直接为false，不允许触发滚动加载
 	};
 
 	useEffect(() => {
 		initLoad();
-	}, []);
+	}, [key]);
 
 	return (
 		<div styleName="home">
 			<MetaTags>
-				<title>xiaokyo-首页</title>
-				<meta name="description" content="一个简约的交流社区" />
+				<title>搜索-xiaokyo社区</title>
 			</MetaTags>
 
 			<div styleName="left">
-				<Skeleton active loading={loading}>
+				<Skeleton active loading={postlist.length <= 0}>
 					{postlist.map(item => (
 						<Card key={item._id} {...item} />
 					))}
@@ -75,7 +70,8 @@ export default props => {
 };
 
 //单个帖子
-const Card = ({ _id, title, description, user, comment_count = 0, like_count = 0 }) => {
+const Card = ({ _id, title, description, user, commentNum = 0, likeNum = 0 }) => {
+	// console.log('card' + _id);
 	return (
 		<div styleName="card">
 			<div styleName="tit">
@@ -88,11 +84,11 @@ const Card = ({ _id, title, description, user, comment_count = 0, like_count = 0
 				</div>
 				<div styleName="comment">
 					<i className="iconfont icon-comment" />
-					{comment_count}
+					{commentNum}
 				</div>
 				<div styleName="liked">
 					<i className="iconfont icon-like" />
-					{like_count}
+					{likeNum}
 				</div>
 			</div>
 		</div>

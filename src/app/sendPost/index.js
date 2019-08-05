@@ -25,7 +25,7 @@ export default props => {
 	//获取当前id的帖子赋值为初始值
 	const getPostById = async () => {
 		const args = `{
-			getPostById(id:"5d417ee7594dc30528f18aec"){
+			getPostById(id:"${postid}"){
 				_id
 				title
 				content
@@ -69,8 +69,6 @@ export default props => {
 		} else {
 			await createPost(_title, htmlContent);
 		}
-
-		setTimeout(() => (window.location.href = '/'), 1500);
 	};
 
 	//创建新的Post
@@ -87,6 +85,7 @@ export default props => {
 		if (!res.data.addPost.success) return message.warn('添加失败');
 
 		message.success('添加成功');
+		setTimeout(() => (window.location.href = `/post/${postid}`), 1500);
 	};
 
 	//修改Post
@@ -103,6 +102,7 @@ export default props => {
 		if (!res.data.updatePost.success) return message.warn('修改失败');
 
 		message.success('修改成功');
+		setTimeout(() => (window.location.href = `/post/${postid}`), 1500);
 	};
 
 	//tit onchange

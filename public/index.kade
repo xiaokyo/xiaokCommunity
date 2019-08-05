@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="icon" href="/512x512.png" type="image/png" />
-  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1305900_dp62w8001a.css">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1305900_dai1prxq3ud.css">
   <%= htmlWebpackPlugin.options.initmeta %>
 </head>
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { Route, Link, Switch, Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Menu, Dropdown, Icon } from 'antd';
@@ -7,25 +7,26 @@ import { Menu, Dropdown, Icon } from 'antd';
 import routers from '@routers';
 
 //actions
-import { removeUser } from '@redux/actions/userInfo';
+import { logout } from '@redux/actions/userInfo';
 
 //style
 import './style.less';
 
-export default props => {
-	// console.log ('layout render');
+export default () => {
 	const userInfo = useSelector(state => state.userInfo);
 	const dispatch = useDispatch();
 
 	//退出并删除本地token
-	const logout = () => {
-		localStorage.removeItem('accessToken');
-		dispatch(removeUser());
+	const _logout = () => {
+		logout()(dispatch).then(res => {
+			localStorage.removeItem('accessToken');
+			window.location.reload();
+		});
 	};
 
 	// menu item handle click
 	const handleMenuClick = e => {
-		if (e.key == '/logout') return logout();
+		if (e.key == '/logout') return _logout();
 		// props.history.push (e.key);
 	};
 
@@ -56,6 +57,13 @@ export default props => {
 		</Menu>
 	);
 
+	const [key, setKey] = useState('');
+	const searchIptOnChange = e => {
+		let val = e.target.value;
+		setKey(val);
+		// console.log(val);
+	};
+
 	return (
 		<div className="layout">
 			<div className="header">
@@ -68,8 +76,10 @@ export default props => {
 						</div>
 
 						<div className="search">
-							<input type="text" placeholder="搜索" />
-							<i className="iconfont icon-search" />
+							<input type="text" placeholder="搜索" value={key} onChange={searchIptOnChange} />
+							<Link to={`/search/${key}`}>
+								<i className="iconfont icon-search" />
+							</Link>
 						</div>
 					</div>
 
