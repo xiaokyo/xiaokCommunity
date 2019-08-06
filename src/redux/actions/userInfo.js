@@ -32,7 +32,7 @@ export const fetchUserData = accessToken => {
 
 			const [err, res] = await graphql({ args });
 			if (err) return reject(err);
-			if (res.data.verifyToken.username == '') return reject('用户不匹配');
+			if (res.data.verifyToken != null && !res.data.verifyToken.username) return reject('用户不匹配');
 
 			const userInfo = {
 				accessToken,

@@ -49,6 +49,7 @@ export default props => {
 		if (_file.size >= 1 * 1024 * 1024) return message.warn('必须小于1mb');
 		fileOrBlobToDataURL(_file, function(res) {
 			// console.log(res);
+			console.log('translate');
 			setClipImg(res);
 			setVisible(true);
 		});
@@ -135,7 +136,7 @@ export default props => {
 				<div styleName="con">
 					<div styleName="default">点击图片修改头像</div>
 					<div styleName="avatar">
-						<img src={formdata.avatar} onClick={() => setVisible(true)} />
+						<img src={formdata.avatar} />
 						<input type="file" accept="image/*" onChange={fileOnChange} styleName="selectImg" />
 					</div>
 				</div>

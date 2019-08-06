@@ -85,7 +85,7 @@ export default props => {
 		if (!res.data.addPost.success) return message.warn('添加失败');
 
 		message.success('添加成功');
-		setTimeout(() => (window.location.href = `/post/${postid}`), 1500);
+		setTimeout(() => (window.location.href = `/`), 1500);
 	};
 
 	//修改Post

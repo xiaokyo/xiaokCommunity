@@ -85,13 +85,13 @@ export default () => {
 
 					<div className="right_login">
 						{userInfo.my ? (
-							<Dropdown overlay={MenuView} trigger={['click']}>
+							<Dropdown overlay={MenuView} trigger={['click']} placement="bottomRight">
 								<a className="ant-dropdown-link" href="#">
 									<img src={userInfo.my.avatar} />
 								</a>
 							</Dropdown>
 						) : (
-							<div className="right_login">
+							<div>
 								<Link to="/login">登入</Link>
 								<Link to="/register">注册</Link>
 							</div>
