@@ -81,7 +81,7 @@ export const logout = () => {
 				msg
 			}
 		}`;
-			const [err, res] = await graphql({ args });
+			const [err, res] = await graphql({ type: 'mutation', args });
 			if (err) return reject(err);
 			if (!res.data.logout.success) return reject('用户不匹配');
 

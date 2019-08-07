@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import MetaTags from 'react-meta-tags';
-import { Tabs } from 'antd';
+import { Tabs, Button } from 'antd';
 const { TabPane } = Tabs;
 //style
 import './style.less';
@@ -12,14 +12,16 @@ import Loading from '@components/loading';
 import IsMore from '@components/ismore';
 
 //actions
-import { loadProfile } from '@redux/actions/profile';
+import { loadProfile, follow, unFollow } from '@redux/actions/profile';
 
 export default props => {
 	const profile = useSelector(state => state.profile);
+	const userInfo = useSelector(state => state.userInfo);
 	const dispatch = useDispatch();
 	const [page, setPage] = useState(0);
 	const [loadmore, setLoadmore] = useState('hasmore');
 	const { id } = props.match.params;
+
 	useEffect(() => {
 		setLoadmore('loading');
 		loadProfile(id)(dispatch).then(res => {
@@ -28,6 +30,7 @@ export default props => {
 		});
 	}, [id]);
 
+	//加载更多作者的帖子 10条
 	const loadMorePost = async () => {
 		setLoadmore('loading');
 		let _page = page + 1;
@@ -57,6 +60,30 @@ export default props => {
 							<div styleName="item">关注 {profile.user.follow}</div>
 							<div styleName="item">粉丝 {profile.user.fan}</div>
 						</div>
+
+						{userInfo.my && userInfo.my._id != profile.user._id ? (
+							<div styleName="operations">
+								{profile.isFollow ? (
+									<Button
+										size="small"
+										type="primary"
+										onClick={() => unFollow(profile.user._id)(dispatch)}
+									>
+										取消关注
+									</Button>
+								) : (
+									<Button
+										size="small"
+										type="primary"
+										onClick={() => follow(profile.user._id)(dispatch)}
+									>
+										关注
+									</Button>
+								)}
+							</div>
+						) : (
+							''
+						)}
 					</div>
 
 					<Tabs tabPosition={'top'}>
