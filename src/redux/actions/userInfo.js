@@ -1,4 +1,5 @@
 import { graphql } from '@graphql';
+import axios from 'axios';
 
 export const saveUser = data => ({
 	type: 'SAVE_USER',
@@ -30,7 +31,7 @@ export const fetchUserData = accessToken => {
         }
       }`;
 
-			const [err, res] = await graphql({ args });
+			const [err, res] = await graphql({ args, _accessToken: accessToken });
 			if (err) return reject(err);
 			if (res.data.verifyToken != null && !res.data.verifyToken.username) return reject('用户不匹配');
 
@@ -41,6 +42,15 @@ export const fetchUserData = accessToken => {
 			dispatch(saveUser(userInfo));
 			resolve();
 		});
+};
+
+//set token of cookie
+const setAuth = accessToken => {
+	axios.post('/setAuth', {}, { headers: { accessToken } });
+};
+
+const clearAuth = () => {
+	axios.post('/clearAuth');
 };
 
 //{userid,username,accessToken}
@@ -66,6 +76,7 @@ export const login = (username, password) => {
 				my: res.data.login.user,
 			};
 			dispatch(saveUser(userInfo));
+			setAuth(res.data.login.accessToken);
 			await localStorage.setItem('accessToken', res.data.login.accessToken);
 			resolve();
 		});
@@ -86,6 +97,9 @@ export const logout = () => {
 			if (!res.data.logout.success) return reject('用户不匹配');
 
 			dispatch(removeUser());
+			clearAuth();
+			localStorage.removeItem('accessToken');
+			window.location.reload();
 			resolve();
 		});
 };

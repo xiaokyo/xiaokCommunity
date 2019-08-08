@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import MetaTags from 'react-meta-tags';
 import { Button, Input, message, Modal, Divider } from 'antd';
 import Loading from '@components/loading';
 const { TextArea } = Input;
@@ -135,6 +136,10 @@ export default props => {
 				<Loading />
 			) : (
 				<div styleName="post">
+					<MetaTags>
+						<title>{currentPost.title}-xiaokyo</title>
+						<meta name="description" content="一个简约的交流社区" />
+					</MetaTags>
 					<h1 styleName="tit">{currentPost.title}</h1>
 					<div styleName="user_info">
 						<Link to={`/user/${currentPost.user._id}`}>

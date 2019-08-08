@@ -28,6 +28,7 @@ import doPromise from '@common/doPromise';
 import { fetchUserData } from '@redux/actions/userInfo';
 
 const render = async () => {
+	if (store.getState().userInfo.my) return true;
 	const accessToken = localStorage.getItem('accessToken');
 	if (!accessToken) return false;
 	const [err] = await doPromise(fetchUserData(accessToken)(store.dispatch));

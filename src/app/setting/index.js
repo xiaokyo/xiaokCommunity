@@ -87,6 +87,7 @@ export default props => {
 		}; //添加请求头
 		axios.post(config.uploadurl, fd, content).then(response => {
 			// console.log(response.data);
+			if (!response.data.url) return message.error(response.data.msg);
 			setFormdata({ ...formdata, avatar: response.data.url + '?x-oss-process=image/resize,m_lfit,h_100,w_100' });
 			// dispatch(saveMy({ avatar: response.data.url }));
 			setVisible(false);

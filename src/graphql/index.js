@@ -11,10 +11,11 @@ export const client = new ApolloClient({
 });
 
 //封装graphql的请求
-export const graphql = ({ type = 'query', args }) => {
+export const graphql = ({ type = 'query', args, _accessToken = '' }) => {
 	return doPromise(
 		new Promise(async (resolve, reject) => {
 			let accessToken = __CLIENT__ ? localStorage.getItem('accessToken') : '';
+			accessToken = accessToken == '' ? _accessToken : accessToken;
 			let headers = {
 				authorization: `bearer ${accessToken}`,
 			};

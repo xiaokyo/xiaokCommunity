@@ -18,10 +18,7 @@ export default () => {
 
 	//退出并删除本地token
 	const _logout = () => {
-		logout()(dispatch).then(res => {
-			localStorage.removeItem('accessToken');
-			window.location.reload();
-		});
+		logout()(dispatch);
 	};
 
 	// menu item handle click

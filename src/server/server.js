@@ -28,12 +28,35 @@ app.use(cookieParser());
 app.use('/', express.static('./dist'));
 app.use('/', express.static('./public'));
 
+//设置auth cookie
+app.post('/setAuth', async (req, res) => {
+	const access_token = req.headers.accesstoken;
+	// console.log(req.headers, access_token);
+	res.cookie('access_token', access_token, { path: '/', httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 7 });
+	res.send({ success: true });
+});
+
+//清除auth cookie
+app.post('/clearAuth', async (req, res) => {
+	res.clearCookie('access_token');
+	res.send({ success: true });
+});
+
 // 读取模板页面
 const htmlTemplate = fs.readFileSync('./dist/app.html', 'utf-8');
 
+import { fetchUserData } from '@redux/actions/userInfo';
+
 app.get('*', async (req, res) => {
+	let access_token = req.cookies['access_token'] || '';
+	// console.log(`access_token:${access_token}`);
 	const store = createStore({});
 	const dispatch = store.dispatch;
+	if (access_token) {
+		//获取用户信息存入store
+		await fetchUserData(access_token)(dispatch).catch(err => console.log(err));
+		return res.send(renderReplace({ store }));
+	}
 	let currentRoute = null,
 		match = null;
 	routers.some(route => {
@@ -69,14 +92,21 @@ app.get('*', async (req, res) => {
 	);
 
 	const meta = metaTagsInstance.renderToString();
-	const reduxState = JSON.stringify(store.getState()).replace(/</g, '\\x3c');
+	// const reduxState = JSON.stringify(store.getState()).replace(/</g, '\\x3c');
 
+	// let reactDom = htmlTemplate.replace('<!--app-->', AppComponent);
+	// reactDom = reactDom.replace('<!--initState-->', reduxState);
+	// reactDom = reactDom.replace('<!--meta-->', meta);
+	res.send(renderReplace({ store, meta, AppComponent }));
+});
+
+const renderReplace = ({ store, meta = '', AppComponent = '' }) => {
+	const reduxState = JSON.stringify(store.getState()).replace(/</g, '\\x3c');
 	let reactDom = htmlTemplate.replace('<!--app-->', AppComponent);
-	// console.log (reactDom);
 	reactDom = reactDom.replace('<!--initState-->', reduxState);
 	reactDom = reactDom.replace('<!--meta-->', meta);
-	res.send(reactDom);
-});
+	return reactDom;
+};
 
 const port = 8080;
 app.listen(port, function() {
