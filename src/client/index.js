@@ -5,8 +5,6 @@ import { Provider as ReduxProvider } from 'react-redux';
 
 //components
 import Layout from '@app/layout';
-import Home from '@app/home';
-import Notification from '@app/notification';
 
 //store
 import createStore from '@redux';

@@ -33,13 +33,14 @@ export const fetchUserData = accessToken => {
 
 			const [err, res] = await graphql({ args, _accessToken: accessToken });
 			if (err) return reject(err);
-			if (res.data.verifyToken != null && !res.data.verifyToken.username) return reject('用户不匹配');
+			if (res.verifyToken != null && !res.verifyToken.username) return reject('用户不匹配');
 
-			const userInfo = {
-				accessToken,
-				my: res.data.verifyToken,
-			};
-			dispatch(saveUser(userInfo));
+			dispatch(
+				saveUser({
+					accessToken,
+					my: res.verifyToken,
+				})
+			);
 			resolve();
 		});
 };
@@ -57,8 +58,8 @@ const clearAuth = () => {
 export const login = (username, password) => {
 	return dispatch =>
 		new Promise(async (resolve, reject) => {
-			const args = `{
-        login(username:"${username}",password:"${password}"){
+			const args = `login($username:String!,$password:String!){
+        login(username:$username,password:$password){
           code
           accessToken
           user{
@@ -66,18 +67,20 @@ export const login = (username, password) => {
           }
         }
       }`;
-			const [err, res] = await graphql({ type: 'mutation', args });
+			const [err, res] = await graphql({ type: 'mutation', args, variables: { username, password } });
 			if (err) return reject(err);
-			if (res.data.login.code == 0) return reject('用户不匹配');
+			if (res.login.code == 0) return reject('用户不匹配');
 			// console.log (res);
+			const { accessToken, user } = res.login;
 
-			const userInfo = {
-				accessToken: res.data.login.accessToken,
-				my: res.data.login.user,
-			};
-			dispatch(saveUser(userInfo));
-			setAuth(res.data.login.accessToken);
-			await localStorage.setItem('accessToken', res.data.login.accessToken);
+			dispatch(
+				saveUser({
+					accessToken: accessToken,
+					my: user,
+				})
+			);
+			setAuth(accessToken);
+			await localStorage.setItem('accessToken', accessToken);
 			resolve();
 		});
 };
@@ -94,7 +97,7 @@ export const logout = () => {
 		}`;
 			const [err, res] = await graphql({ type: 'mutation', args });
 			if (err) return reject(err);
-			if (!res.data.logout.success) return reject('用户不匹配');
+			if (!res.logout.success) return reject('用户不匹配');
 
 			dispatch(removeUser());
 			clearAuth();

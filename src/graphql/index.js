@@ -11,7 +11,7 @@ export const client = new ApolloClient({
 });
 
 //封装graphql的请求
-export const graphql = ({ type = 'query', args, _accessToken = '' }) => {
+export const graphql = ({ type = 'query', args, variables = {}, _accessToken = '' }) => {
 	return doPromise(
 		new Promise(async (resolve, reject) => {
 			let accessToken = __CLIENT__ ? localStorage.getItem('accessToken') : '';
@@ -24,23 +24,25 @@ export const graphql = ({ type = 'query', args, _accessToken = '' }) => {
 			// console.log(type);
 			if (type == 'mutation') _send = graphqlMutate;
 
-			const [err, res] = await doPromise(_send({ args, headers }));
+			const [err, res] = await doPromise(_send({ args, headers, variables }));
 			if (err) return reject(err);
-			return resolve(res);
+			return resolve(res.data);
 		})
 	);
 };
 
 //query
-const graphqlQuery = async ({ args, headers }) => {
+const graphqlQuery = async ({ args, headers, variables }) => {
 	const [err, res] = await doPromise(
 		client.query({
 			query: gql`
-      query${args}
+      query ${args}
+			
     `,
 			context: {
 				headers,
 			},
+			variables,
 			fetchPolicy: 'no-cache',
 		})
 	);
@@ -49,19 +51,18 @@ const graphqlQuery = async ({ args, headers }) => {
 };
 
 //mutate
-const graphqlMutate = async ({ args, headers }) => {
+const graphqlMutate = async ({ args, headers, variables }) => {
 	const [err, res] = await doPromise(
 		client.mutate({
 			mutation: gql`
-        mutation${args}
+        mutation ${args}
       `,
 			context: {
 				headers,
 			},
+			variables,
 		})
 	);
 	if (err) throw new Error(err);
 	return res;
 };
-
-// graphql ({args: '{users{username password}}'});

@@ -71,7 +71,6 @@ app.get('*', async (req, res) => {
 	//加载redux数据的方法
 	if (currentRoute.loadData) {
 		await currentRoute.loadData()(dispatch, match);
-		// console.log(store.getState());
 		//组件预加载
 		await currentRoute.component.preload();
 	} else {
@@ -92,14 +91,10 @@ app.get('*', async (req, res) => {
 	);
 
 	const meta = metaTagsInstance.renderToString();
-	// const reduxState = JSON.stringify(store.getState()).replace(/</g, '\\x3c');
-
-	// let reactDom = htmlTemplate.replace('<!--app-->', AppComponent);
-	// reactDom = reactDom.replace('<!--initState-->', reduxState);
-	// reactDom = reactDom.replace('<!--meta-->', meta);
 	res.send(renderReplace({ store, meta, AppComponent }));
 });
 
+//模板字段替换
 const renderReplace = ({ store, meta = '', AppComponent = '' }) => {
 	const reduxState = JSON.stringify(store.getState()).replace(/</g, '\\x3c');
 	let reactDom = htmlTemplate.replace('<!--app-->', AppComponent);

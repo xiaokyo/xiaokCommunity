@@ -53,7 +53,7 @@ export default props => {
 	return (
 		<div styleName="home">
 			<MetaTags>
-				<title>xiaokyo-社区首页</title>
+				<title>xiaokyo社区-首页</title>
 				{/* <meta name="keywords" content="xiaokyo,简约社区,xiaok,轻便社区,xiaokyo博客,小k哟" /> */}
 				<meta name="description" content="一个简约的交流社区，xiaokyo社区" />
 			</MetaTags>

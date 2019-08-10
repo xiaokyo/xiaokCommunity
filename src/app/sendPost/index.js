@@ -24,18 +24,18 @@ export default props => {
 
 	//获取当前id的帖子赋值为初始值
 	const getPostById = async () => {
-		const args = `{
-			getPostById(id:"${postid}"){
+		const args = `getPostById($postid:String!){
+			getPostById(id:$postid){
 				_id
 				title
 				content
 			}
 		}`;
 
-		const [err, res] = await graphql({ args });
+		const [err, res] = await graphql({ args, variables: { postid } });
 		if (err) return;
 
-		const { _id, title, content } = res.data.getPostById;
+		const { _id, title, content } = res.getPostById;
 		setTitle(title);
 		seteditorState(BraftEditor.createEditorState(content));
 	};
@@ -73,16 +73,20 @@ export default props => {
 
 	//创建新的Post
 	const createPost = async (_title, htmlContent) => {
-		const args = `{
-      addPost(title:"${_title}",content:"${htmlContent.replace(/"/g, "'")}"){
+		const args = `addPost($title:String!,$content:String!){
+      addPost(title:$title,content:$content){
         success
         msg 
       }
     }`;
 
-		const [err, res] = await graphql({ type: 'mutation', args });
+		const [err, res] = await graphql({
+			type: 'mutation',
+			args,
+			variables: { title: _title, content: htmlContent },
+		});
 		if (err) return message.err(err);
-		if (!res.data.addPost.success) return message.warn('添加失败');
+		if (!res.addPost.success) return message.warn('添加失败');
 
 		message.success('添加成功');
 		setTimeout(() => (window.location.href = `/`), 1500);
@@ -90,16 +94,20 @@ export default props => {
 
 	//修改Post
 	const updatePost = async (_title, htmlContent) => {
-		const args = `{
-      updatePost(_id:"${postid}",title:"${_title}",content:"${htmlContent.replace(/"/g, "'")}"){
+		const args = `updatePost($_id:String!,$title:String!,$content:String!){
+      updatePost(_id:$_id,title:$title,content:$content){
         success
         msg 
       }
     }`;
 
-		const [err, res] = await graphql({ type: 'mutation', args });
+		const [err, res] = await graphql({
+			type: 'mutation',
+			args,
+			variables: { _id: postid, title: _title, content: htmlContent },
+		});
 		if (err) return message.err(err);
-		if (!res.data.updatePost.success) return message.warn('修改失败');
+		if (!res.updatePost.success) return message.warn('修改失败');
 
 		message.success('修改成功');
 		setTimeout(() => (window.location.href = `/post/${postid}`), 1500);

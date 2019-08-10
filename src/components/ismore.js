@@ -1,6 +1,4 @@
 import React from 'react';
-import { Spin, Icon } from 'antd';
-const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
 export default ({ status = 'hasmore', funcLoadMore }) => {
 	switch (status) {
@@ -23,7 +21,7 @@ export default ({ status = 'hasmore', funcLoadMore }) => {
 						alignItems: 'center',
 					}}
 				>
-					<Spin indicator={antIcon} />
+					加载中...
 				</div>
 			);
 		default:

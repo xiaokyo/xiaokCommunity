@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Link, Switch, Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Menu, Dropdown, Icon } from 'antd';
 
 //routers
 import routers from '@routers';
@@ -14,45 +13,6 @@ import './style.less';
 
 export default () => {
 	const userInfo = useSelector(state => state.userInfo);
-	const dispatch = useDispatch();
-
-	//退出并删除本地token
-	const _logout = () => {
-		logout()(dispatch);
-	};
-
-	// menu item handle click
-	const handleMenuClick = e => {
-		if (e.key == '/logout') return _logout();
-		// props.history.push (e.key);
-	};
-
-	// 个人下拉菜单
-	const MenuView = () => (
-		<Menu onClick={handleMenuClick}>
-			<Menu.Item key="/profile">
-				<Link to={`/user/${userInfo.my._id}`} styleName="menu_item">
-					<Icon type="user" />
-					{userInfo.my.username}
-				</Link>
-			</Menu.Item>
-			<Menu.Item key="/setting">
-				<Link to="/setting" styleName="menu_item">
-					<Icon type="setting" />
-					设置
-				</Link>
-			</Menu.Item>
-			<Menu.Divider />
-			<Menu.Item key="/sendPost">
-				<Link to="/sendPost" styleName="menu_item">
-					<Icon type="form" />
-					我要发帖
-				</Link>
-			</Menu.Item>
-			<Menu.Divider />
-			<Menu.Item key="/logout">退出</Menu.Item>
-		</Menu>
-	);
 
 	const [key, setKey] = useState('');
 	const searchIptOnChange = e => {
@@ -82,11 +42,7 @@ export default () => {
 
 					<div className="right_login">
 						{userInfo.my ? (
-							<Dropdown overlay={MenuView} trigger={['click']} placement="bottomRight">
-								<a className="ant-dropdown-link" href="#">
-									<img src={userInfo.my.avatar} />
-								</a>
-							</Dropdown>
+							<UserMenu {...userInfo.my} />
 						) : (
 							<div>
 								<Link to="/login">登入</Link>
@@ -115,6 +71,65 @@ export default () => {
 						}
 					})}
 				</Switch>
+			</div>
+		</div>
+	);
+};
+
+//点击头像显示menu
+const UserMenu = ({ _id, avatar, username }) => {
+	const [show, setShow] = useState(false);
+
+	const dispatch = useDispatch();
+	//退出并删除本地token
+	const _logout = () => {
+		logout()(dispatch);
+	};
+
+	const handleClick = e => {
+		e.nativeEvent.stopImmediatePropagation(); //阻断事件冒泡
+		setShow(!show);
+	};
+
+	//点击其他地方关闭menu
+	const hideMenu = () => {
+		setShow(false);
+	};
+
+	useEffect(() => {
+		document.addEventListener('click', hideMenu);
+		return () => document.removeEventListener('click', hideMenu);
+	}, []);
+
+	return (
+		<div>
+			<div className="user_menu" onClick={handleClick}>
+				<img src={avatar} className="avatar" />
+				<ul className="menu_list" style={{ display: show ? 'block' : 'none' }}>
+					<li>
+						<Link to={`/user/${_id}`}>
+							<i className="iconfont icon-my" />
+							{username}
+						</Link>
+					</li>
+					<li>
+						<Link to={`/setting`}>
+							<i className="iconfont icon-settings_light" />
+							设置
+						</Link>
+					</li>
+					<li>
+						<Link to={`/sendPost`}>
+							<i className="iconfont icon-write" />
+							我要发帖
+						</Link>
+					</li>
+					<li>
+						<a href="#" onClick={_logout}>
+							退出
+						</a>
+					</li>
+				</ul>
 			</div>
 		</div>
 	);

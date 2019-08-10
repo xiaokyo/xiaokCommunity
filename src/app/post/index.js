@@ -29,16 +29,16 @@ export default props => {
 	//删除当前帖子
 	const delPost = async () => {
 		if (!confirm('确认删除此贴?')) return;
-		const args = `{
-			delPost(_id:"${postid}"){
+		const args = `delPost($_id:String!){
+			delPost(_id:$_id){
 				success
 				msg
 			}
 		}`;
 
-		const [err, res] = await graphql({ type: 'mutation', args });
+		const [err, res] = await graphql({ type: 'mutation', args, variables: { _id: postid } });
 		if (err) return;
-		const { success, msg } = res.data.delPost;
+		const { success, msg } = res.delPost;
 		if (!success) return message.warn(msg);
 		message.success(msg);
 		window.location.href = '/';
@@ -46,8 +46,8 @@ export default props => {
 
 	//获取comments
 	const getComments = async () => {
-		const args = `{
-			getComments(postid:"${postid}"){
+		const args = `getComments($postid:String!){
+			getComments(postid:$postid){
 				_id
 				content
 				user{
@@ -71,17 +71,17 @@ export default props => {
 			}
 		}`;
 
-		const [err, res] = await graphql({ args });
+		const [err, res] = await graphql({ args, variables: { postid } });
 		if (err) return;
 		// console.log(res.data.getComments);
-		setComments([...res.data.getComments]);
+		setComments([...res.getComments]);
 	};
 
 	//评论
 	const addComment = async () => {
 		if (!replyVal) return message.warn('请输入想要说的话');
-		const args = `{
-			addComment(postid:"${postid}",content:"${replyVal}"){
+		const args = `addComment($postid:String!,$content:String!){
+			addComment(postid:$postid,content:$content){
 				success
 				comment{
 					_id
@@ -108,11 +108,11 @@ export default props => {
 			}
 		}`;
 
-		const [err, res] = await graphql({ type: 'mutation', args });
+		const [err, res] = await graphql({ type: 'mutation', args, variables: { postid, content: replyVal } });
 		if (err) return;
-		if (!res.data.addComment.success) return;
+		if (!res.addComment.success) return;
 		message.success('回复成功');
-		setComments([res.data.addComment.comment, ...comments]);
+		setComments([res.addComment.comment, ...comments]);
 		setReplyVal('');
 	};
 

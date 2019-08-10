@@ -37,12 +37,6 @@ export default [
 		component: loadCp(() => import('@app/sendPost')),
 	},
 	{
-		path: '/notification',
-		exact: true,
-		private: true,
-		component: loadCp(() => import('@app/notification')),
-	},
-	{
 		path: '/user/:id',
 		exact: false,
 		component: loadCp(() => import('@app/profile')),

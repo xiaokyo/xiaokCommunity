@@ -3,6 +3,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const devMode = process.env.NODE_ENV == 'development' ? true : false;
@@ -47,11 +48,13 @@ const htmlWebpackOptions = devMode
 module.exports = {
 	mode: process.env.NODE_ENV,
 	target: 'web',
-	entry: [path.join(__dirname, '../src/client/index.js')],
+	entry: {
+		app: [path.join(__dirname, '../src/client/index.js')],
+	},
 	output: {
 		path: path.join(__dirname, '../dist'),
-		filename: 'assets/js/[name].js',
-		chunkFilename: 'assets/js/chunks/[name].[hash].js',
+		filename: `assets/js/${devMode ? '[name].bundle' : '[name].[hash]'}.js`,
+		// chunkFilename: 'assets/js/chunks/[name].[hash].js',
 		publicPath: '/',
 	},
 	resolve: {
@@ -146,11 +149,12 @@ module.exports = {
 		}),
 		new CleanWebpackPlugin(),
 		new MiniCssExtractPlugin({
-			filename: 'assets/css/[name].css',
-			chunkFilename: 'assets/css/chunks/[id].css',
+			filename: `assets/css/${devMode ? '[name]' : '[name].[hash]'}.css`,
+			// chunkFilename: 'assets/css/chunks/[id].css',
 			ignoreOrder: true, // Enable to remove warnings about conflicting order
 		}),
 		new OptimizeCssAssetsPlugin(),
+		// new BundleAnalyzerPlugin(),
 	],
 	devServer: devServer,
 };

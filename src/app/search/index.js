@@ -19,7 +19,7 @@ export default props => {
 	const [postlist, setPostList] = useState([]);
 	const [loadmore, setLoadmore] = useState('hasmore');
 	const [page, setPage] = useState(0);
-	// console.log(postlist);
+	console.log(postlist, page);
 
 	//loadmore
 	const loadMorePost = async () => {
@@ -27,6 +27,7 @@ export default props => {
 		setLoadmore('loading');
 		const [err, res] = await doPromise(searchList(key, 10, page + 1));
 		if (err) return setLoadmore('nomore');
+		setPostList([...postlist, ...res]);
 		if (res.length < 10) return setLoadmore('nomore');
 		setPage(page + 1);
 		setLoadmore('hasmore');
@@ -34,12 +35,17 @@ export default props => {
 
 	//init load
 	const initLoad = async () => {
+		setPage(0);
 		const [err, res] = await doPromise(searchList(key, 10, 0));
 		if (err) return message.warn(err);
 
-		// console.log(res);
 		setPostList(res);
-		if (res.length < 10) setLoadmore('nomore'); //初始数据小于10条直接loadmore直接为false，不允许触发滚动加载
+		//初始数据小于10条直接loadmore直接为false，不允许触发滚动加载
+		if (res.length < 10) {
+			setLoadmore('nomore');
+		} else {
+			setLoadmore('hasmore');
+		}
 	};
 
 	useEffect(() => {

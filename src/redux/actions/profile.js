@@ -1,5 +1,4 @@
 import { graphql } from '@graphql';
-import { message } from 'antd';
 
 export const saveProfile = data => ({
 	type: 'SAVE_PROFILE_BY_USER_ID',
@@ -24,16 +23,17 @@ export const actionUnFollow = () => ({
 export const follow = followid => {
 	return dispatch =>
 		new Promise(async (resolve, reject) => {
-			const args = `{
-			follow(_id:"${followid}"){
-				success
-				msg
-			}
-		}`;
+			const args = `
+			follow($_id:String!){
+				follow(_id:$_id){
+					success
+					msg
+				}
+			}`;
 
-			const [err, res] = await graphql({ type: 'mutation', args });
+			const [err, res] = await graphql({ type: 'mutation', args, variables: { _id: followid } });
 			if (err) return reject(err);
-			const { success, msg } = res.data.follow;
+			const { success, msg } = res.follow;
 			if (!success) return reject(msg);
 			dispatch(actionFollow());
 			resolve(msg);
@@ -43,17 +43,17 @@ export const follow = followid => {
 export const unFollow = followid => {
 	return dispatch =>
 		new Promise(async (resolve, reject) => {
-			const args = `{
-			unFollow(_id:"${followid}"){
+			const args = `unFollow($_id:String!){
+			unFollow(_id:$_id){
 				success
 				msg
 			}
 		}`;
 
-			const [err, res] = await graphql({ type: 'mutation', args });
+			const [err, res] = await graphql({ type: 'mutation', args, variables: { _id: followid } });
 			if (err) return reject(err);
-			if (res.data.unFollow == null) return reject(err);
-			const { success, msg } = res.data.unFollow;
+			if (res.unFollow == null) return reject(err);
+			const { success, msg } = res.unFollow;
 			if (!success) return reject(msg);
 			dispatch(actionUnFollow());
 			resolve(msg);
@@ -64,8 +64,8 @@ export const unFollow = followid => {
 export const loadProfile = (userid, limit = 10, skip = 0) => {
 	return dispatch =>
 		new Promise(async (resolve, reject) => {
-			const args = `{
-        homebyuserid(id:"${userid}",limit:${limit},skip:${skip}){
+			const args = `homebyuserid($id:String,$limit:Int,$skip:Int){
+        homebyuserid(id:$id,limit:$limit,skip:$skip){
           user{
 						_id
             username
@@ -80,11 +80,11 @@ export const loadProfile = (userid, limit = 10, skip = 0) => {
           }  
         }
       }`;
-			const [err, res] = await graphql({ args });
+			const [err, res] = await graphql({ args, variables: { id: userid, limit, skip } });
 			if (err) return reject(err);
-			if (!res.data.homebyuserid.user) return reject('用户不存在');
-			if (skip > 0) dispatch(loadMoreProfile(res.data.homebyuserid.posts));
-			if (skip <= 0) dispatch(saveProfile(res.data.homebyuserid));
-			return resolve(res.data.homebyuserid);
+			if (!res.homebyuserid.user) return reject('用户不存在');
+			if (skip > 0) dispatch(loadMoreProfile(res.homebyuserid.posts));
+			if (skip <= 0) dispatch(saveProfile(res.homebyuserid));
+			return resolve(res.homebyuserid);
 		});
 };

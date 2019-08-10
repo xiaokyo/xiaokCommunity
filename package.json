@@ -50,8 +50,11 @@
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.7.0",
     "redux-logger": "^3.0.6",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "^2.0.1",
     "webpack": "^4.35.3",
+    "webpack-ant-icon-loader": "^1.0.8",
+    "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^3.7.2",
     "webpack-node-externals": "^1.7.2"

@@ -97,18 +97,18 @@ export default props => {
 	//修改提交到服务器
 	const _submitUpdate = async () => {
 		const { username, sex, phone, avatar } = formdata;
-		const args = `{
-			updateUser(username:"${username}",sex:"${sex}",phone:"${phone}",avatar:"${avatar}"){
+		const args = `updateUser($username:String!,$sex:String!,$phone:String!,$avatar:String!){
+			updateUser(username:$username,sex:$sex,phone:$phone,avatar:$avatar){
 				success
 				msg
 			}
 		}`;
-		const [err, res] = await graphql({ type: 'mutation', args });
+		const [err, res] = await graphql({ type: 'mutation', args, variables: { username, sex, phone, avatar } });
 
 		if (err) return message.warn('修改失败，请检查后重新操作');
 		// console.log(err, res);
-		if (!res.data.updateUser.success) return message.warn(res.data.updateUser.msg);
-		message.success(res.data.updateUser.msg);
+		if (!res.updateUser.success) return message.warn(res.updateUser.msg);
+		message.success(res.updateUser.msg);
 		dispatch(saveMy(formdata));
 	};
 
@@ -126,7 +126,7 @@ export default props => {
 					src={clipImg ? clipImg : ''}
 					style={{ height: 250, width: '100%', margin: 'auto' }}
 					// Cropper.js options
-					aspectRatio={19 / 19}
+					aspectRatio={10 / 10}
 					guides={false}
 					// crop={() => _crop()}
 				/>

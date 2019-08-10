@@ -22,18 +22,18 @@ const savePost = data => ({ type: 'SAVE_POST_BY_ID', data });
 export const like = (postid, currentPost) => {
 	return dispatch =>
 		new Promise(async (resolve, reject) => {
-			console.log(postid);
-			const args = `{
-			like(postid:"${postid}"){
-				success
-				msg
-			}
-		}`;
-			const [err, res] = await graphql({ type: 'mutation', args });
+			const args = `
+			like($postid:String!){
+				like(postid:$postid){
+					success
+					msg
+				}
+			}`;
+			const [err, res] = await graphql({ type: 'mutation', args, variables: { postid } });
 			if (err) return reject(err);
 
 			dispatch({ type: 'LIKE_POST_BY_ID', data: currentPost });
-			resolve(res);
+			resolve(res.like);
 		});
 };
 
@@ -41,8 +41,9 @@ export const savePostById = id => {
 	return dispatch =>
 		new Promise(async (resolve, reject) => {
 			//请求postbyid
-			const args = `{
-        getPostById(id:"${id}"){
+			const args = `
+			getPostById($id:String!){
+        getPostById(id:$id){
           _id
           title
           content
@@ -57,10 +58,10 @@ export const savePostById = id => {
         }
       }`;
 
-			const [err, res] = await graphql({ args });
+			const [err, res] = await graphql({ args, variables: { id } });
 			if (err) return reject(err);
-			if (res.data.getPostById._id == '') return reject('没有此帖子');
-			dispatch(savePost(res.data.getPostById));
+			if (res.getPostById._id == '') return reject('没有此帖子');
+			dispatch(savePost(res.getPostById));
 			return resolve();
 		});
 };
