@@ -9,7 +9,7 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import MetaTagsServer from 'react-meta-tags/server';
 import { MetaTagsContext } from 'react-meta-tags';
-import { StaticRouter as Router, Route, Link, matchPath } from 'react-router-dom';
+import { StaticRouter as Router, matchPath } from 'react-router-dom';
 import { Provider as ReduxProvider } from 'react-redux';
 import routers from '@routers';
 import createStore from '@redux';

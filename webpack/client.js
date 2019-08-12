@@ -134,10 +134,26 @@ module.exports = {
 		],
 	},
 	optimization: {
-		splitChunks: {
-			chunks: 'all',
-		},
-	},
+    // minimize: false,
+    minimize: devMode ? false : true,
+    // namedModules: true,
+    // noEmitOnErrors: true,
+    splitChunks: {
+      cacheGroups: {
+        styles: {
+          name: 'styles',
+          test: /(\.css|\.less)$/,
+          chunks: 'all',
+          enforce: true
+        }
+        // commons: {
+        //   name: 'vendor',
+        //   test: /[\\/]node_modules[\\/]/,
+        //   chunks: 'all'
+        // }
+      }
+    }
+  },
 	plugins: [
 		new webpack.DefinePlugin({
 			__DEV__: devMode,
@@ -149,7 +165,8 @@ module.exports = {
 		}),
 		new CleanWebpackPlugin(),
 		new MiniCssExtractPlugin({
-			filename: `assets/css/${devMode ? '[name]' : '[name].[hash]'}.css`,
+			// filename: `assets/css/${devMode ? '[name]' : '[name].[hash]'}.css`,
+			filename: `assets/css/[name].[hash].css`,
 			// chunkFilename: 'assets/css/chunks/[id].css',
 			ignoreOrder: true, // Enable to remove warnings about conflicting order
 		}),
