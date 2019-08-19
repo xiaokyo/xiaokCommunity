@@ -7,8 +7,9 @@ import userInfo from './reducer/userInfo';
 import postlist from './reducer/postlist';
 import posts from './reducer/posts';
 import profile from './reducer/profile';
+import notification from './reducer/notification';
 
-const reducer = combineReducers({ userInfo, postlist, posts, profile });
+const reducer = combineReducers({ userInfo, postlist, posts, profile, notification });
 
 //middleware
 let middleware = [thunk];

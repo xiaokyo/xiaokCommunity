@@ -12,8 +12,11 @@
 头像裁剪上传<br/>
 评论帖子<br/>
 回复评论<br/>
+消息通知<br/>
 
 ## 快速使用
+由于后台代码未开源，暂时无法提供测试，访问[xiaokyoCommunity](https://xiaok.club)浏览
+
     yarn install
     yarn build
     yarn start

@@ -49,6 +49,12 @@ export default [
 		component: loadCp(() => import('@app/setting')),
 	},
 	{
+		path: '/notification',
+		exact: true,
+		private: true,
+		component: loadCp(() => import('@app/notification')),
+	},
+	{
 		path: '/login',
 		exact: true,
 		component: loadCp(() => import('@app/login')),

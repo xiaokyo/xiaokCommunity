@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Route, Link, Switch, Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
+//components
+import Notice from '@components/notice';
+
 //routers
 import routers from '@routers';
 
@@ -72,6 +75,7 @@ export default () => {
 					})}
 				</Switch>
 			</div>
+			{userInfo.my ? <Notice /> : ''}
 		</div>
 	);
 };

@@ -4,4 +4,5 @@ export default {
 	uploadurl: `${_host}/upload`,
 	graphql: `${_host}/graphql`,
 	ossurl: '//xiaokyoimg.oss-cn-hangzhou.aliyuncs.com/',
+	socketUri: `${_host}/notification`,
 };
