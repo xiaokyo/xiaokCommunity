@@ -19,9 +19,10 @@ export default Form.create({ name: 'login' })(props => {
 		props.form.validateFields((err, values) => {
 			if (!err) {
 				// console.log ('Received values of form: ', values);
-				const { username, password } = values;
+				const { email, password } = values;
 				const fromPath = props.location.state ? props.location.state.from.pathname : '/';
-				login(username, password)(dispatch)
+
+				login(email, password)(dispatch)
 					.then(res => {
 						message.success('登入成功');
 						props.history.push(fromPath);
@@ -45,21 +46,16 @@ export default Form.create({ name: 'login' })(props => {
 			<div styleName="_box">
 				<Form onSubmit={handleSubmit} className="login-form">
 					<Form.Item>
-						{getFieldDecorator('username', {
-							rules: [{ required: true, message: '请输入用户名！' }],
-						})(
-							<Input
-								// prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-								placeholder="用户名"
-							/>
-						)}
+						{getFieldDecorator('email', {
+							rules: [{ required: true, message: '请输入邮箱/用户名！' }],
+						})(<Input prefix={<i className="iconfont icon-my" />} placeholder="输入邮箱/用户名" />)}
 					</Form.Item>
 					<Form.Item>
 						{getFieldDecorator('password', {
 							rules: [{ required: true, message: '请输入密码！' }],
 						})(
-							<Input
-								// prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+							<Input.Password
+								prefix={<i className="iconfont icon-lock" />}
 								type="password"
 								placeholder="密码"
 							/>

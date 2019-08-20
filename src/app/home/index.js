@@ -4,7 +4,7 @@ import MetaTags from 'react-meta-tags';
 import { useSelector, useDispatch } from 'react-redux';
 import { Skeleton } from 'antd';
 
-import doPromise from '@common/doPromise';
+import to from '@common/to';
 import { delHtmlTag } from '@common/delHtmlTag';
 
 //component
@@ -29,7 +29,7 @@ export default props => {
 	const loadMorePost = async () => {
 		if (loadmore == 'nomore') return false;
 		setLoadmore('loading');
-		const [err, res] = await doPromise(load_more_postlist(page + 1)(dispatch));
+		const [err, res] = await to(load_more_postlist(page + 1)(dispatch));
 		if (err) return setLoadmore('nomore');
 		if (res.length < 10) return setLoadmore('nomore');
 		setPage(page + 1);
@@ -40,7 +40,7 @@ export default props => {
 	const initLoad = async () => {
 		if (postlist.length <= 0) {
 			setLoading(true);
-			const [err, res] = await doPromise(load_postlist()(dispatch));
+			const [err, res] = await to(load_postlist()(dispatch));
 			if (!err) setLoading(false);
 			if (res.length < 10) setLoadmore('nomore'); //初始数据小于10条直接loadmore直接为false，不允许触发滚动加载
 		}

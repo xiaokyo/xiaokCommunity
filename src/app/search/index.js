@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import MetaTags from 'react-meta-tags';
 import { Skeleton, message } from 'antd';
 
-import doPromise from '@common/doPromise';
+import to from '@common/to';
 import { delHtmlTag } from '@common/delHtmlTag';
 
 //component
@@ -25,7 +25,7 @@ export default props => {
 	const loadMorePost = async () => {
 		if (loadmore == 'nomore') return false;
 		setLoadmore('loading');
-		const [err, res] = await doPromise(searchList(key, 10, page + 1));
+		const [err, res] = await to(searchList(key, 10, page + 1));
 		if (err) return setLoadmore('nomore');
 		setPostList([...postlist, ...res]);
 		if (res.length < 10) return setLoadmore('nomore');
@@ -36,7 +36,7 @@ export default props => {
 	//init load
 	const initLoad = async () => {
 		setPage(0);
-		const [err, res] = await doPromise(searchList(key, 10, 0));
+		const [err, res] = await to(searchList(key, 10, 0));
 		if (err) return message.warn(err);
 
 		setPostList(res);

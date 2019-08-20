@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Select, Input, message, Modal } from 'antd';
+import { Button, Select, Input, message, Modal, Form } from 'antd';
 const { Option } = Select;
 import axios from 'axios';
 
@@ -12,6 +12,12 @@ import { fileOrBlobToDataURL, dataURLToBlob } from '@common/base64';
 
 //actions
 import { saveMy } from '@redux/actions/userInfo';
+
+//actions
+import { sendEmailAsync, bindEmailAsync } from '@redux/actions/userInfo';
+
+//common
+import to from '@common/to';
 
 //cropper
 import Cropper from 'react-cropper';
@@ -27,6 +33,7 @@ export default props => {
 	const cropper = useRef(null);
 	const { my } = useSelector(state => state.userInfo);
 	const dispatch = useDispatch();
+	const [bindEmailVisible, setBindEmailVisible] = useState(false);
 	const [clipImg, setClipImg] = useState();
 	const [visible, setVisible] = useState(false);
 	const [formdata, setFormdata] = useState({
@@ -59,12 +66,6 @@ export default props => {
 	const usernameOnChange = e => {
 		let val = e.currentTarget.value;
 		setFormdata({ ...formdata, username: val });
-	};
-
-	//phone onchange
-	const phoneOnChange = e => {
-		let val = e.currentTarget.value;
-		setFormdata({ ...formdata, phone: val });
 	};
 
 	//sex onchange
@@ -132,6 +133,8 @@ export default props => {
 				/>
 			</Modal>
 
+			<EmailBind visible={bindEmailVisible} cancelFunc={setBindEmailVisible} />
+
 			<div styleName="_item">
 				<div styleName="name">头像</div>
 				<div styleName="con">
@@ -160,9 +163,15 @@ export default props => {
 				</div>
 			</div>
 			<div styleName="_item">
-				<div styleName="name">手机号码</div>
+				<div styleName="name">邮箱</div>
 				<div styleName="con">
-					<Input type="tel" number={11} allowClear value={formdata.phone} onChange={phoneOnChange} />
+					{my.email ? (
+						my.email
+					) : (
+						<span style={{ cursor: 'pointer' }} onClick={() => setBindEmailVisible(true)}>
+							点击绑定邮箱
+						</span>
+					)}
 				</div>
 			</div>
 
@@ -175,3 +184,97 @@ export default props => {
 		</div>
 	);
 };
+
+//绑定邮箱ui
+const EmailBind = Form.create({ name: 'register' })(props => {
+	const { visible = true, cancelFunc } = props;
+	const { getFieldDecorator } = props.form;
+	const dispatch = useDispatch();
+	const emailRef = useRef();
+	const [codeState, setCodeState] = useState('发送验证码');
+	const [seconds, setSeconds] = useState(60);
+	const [inter, setInter] = useState(null);
+
+	// 处理form提交
+	const handleSubmit = e => {
+		e.preventDefault();
+		props.form.validateFields((err, values) => {
+			if (!err) {
+				const { email, emailCode } = values;
+				//发送绑定邮箱请求
+				bindEmailAsync(email, emailCode)(dispatch)
+					.then(res => {
+						message.success(res);
+						cancelFunc(false);
+					})
+					.catch(err => message.warn(err));
+			}
+		});
+	};
+
+	//unmount的时候清除定时器
+	useEffect(() => {
+		return () => {
+			if (inter) {
+				window.clearInterval(inter);
+			}
+		};
+	}, [inter]);
+
+	//sendEmailCode
+	const sendEmailCode = async () => {
+		if (codeState != '发送验证码') return;
+		let email = emailRef.current.state.value;
+		if (!email) return message.warn('请输入邮箱!');
+		let [err, res] = await to(sendEmailAsync(email));
+		if (err) return message.warn(err.message);
+		limitClickSend();
+		message.success(res);
+	};
+
+	//60秒发送一次邮件
+	const limitClickSend = () => {
+		let _seconds = seconds;
+		setCodeState(`${_seconds}s`);
+		let _inter = setInterval(() => {
+			if (_seconds <= 0) {
+				setCodeState(`发送验证码`);
+				setSeconds(60);
+				return window.clearInterval(_inter);
+			}
+			_seconds = _seconds - 1;
+			setSeconds(_seconds);
+			setCodeState(`${_seconds}s`);
+		}, 1000);
+		setInter(_inter);
+	};
+
+	return (
+		<Modal title="绑定邮箱" visible={visible} width={350} onOk={handleSubmit} onCancel={() => cancelFunc(false)}>
+			<div styleName="bind_email">
+				<Form className="login-form">
+					<Form.Item>
+						{getFieldDecorator('email', {
+							rules: [{ required: true, message: '请输入邮箱！' }],
+						})(<Input prefix={<i className="iconfont icon-mail" />} ref={emailRef} placeholder="邮箱" />)}
+					</Form.Item>
+					<Form.Item>
+						{getFieldDecorator('emailCode', {
+							rules: [{ required: true, message: '请输入验证码！' }],
+						})(
+							<Input
+								prefix={<i className="iconfont icon-yanzhengma" />}
+								suffix={
+									<span className="sendState" onClick={sendEmailCode}>
+										{codeState}
+									</span>
+								}
+								placeholder="验证码"
+							/>
+						)}
+					</Form.Item>
+				</Form>
+			</div>
+		</Modal>
+	);
+});

@@ -4,6 +4,8 @@ export default (state = {}, action) => {
 			return { ...state, ...action.data };
 		case 'SAVE_MY':
 			return { ...state, my: { ...state.my, ...action.data } };
+		case 'EDIT_EMAIL':
+			return { ...state, my: { ...state.my, email: action.data } };
 		case 'REMOVE_USER':
 			return {};
 		default:

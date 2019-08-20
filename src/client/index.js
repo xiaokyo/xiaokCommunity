@@ -22,14 +22,14 @@ const jsx = (
 const app = document.getElementById('app');
 
 // render
-import doPromise from '@common/doPromise';
+import to from '@common/to';
 import { fetchUserData } from '@redux/actions/userInfo';
 
 const render = async () => {
 	if (store.getState().userInfo.my) return true;
 	const accessToken = localStorage.getItem('accessToken');
 	if (!accessToken) return false;
-	const [err] = await doPromise(fetchUserData(accessToken)(store.dispatch));
+	const [err] = await to(fetchUserData(accessToken)(store.dispatch));
 	if (err) return false;
 	return true;
 };
