@@ -22,28 +22,28 @@ for (let i in common.alias) {
 
 const devServer = devMode
 	? {
-			contentBase: path.join(__dirname, '../dist'), // boolean | string | array, static file location
-			compress: true, // enable gzip compression
-			historyApiFallback: true, // true for index.html upon 404, object for multiple paths
-			hot: true, // hot module replacement. Depends on
-			host: '0.0.0.0',
-			proxy: {
-				'/graphql': 'http://localhost:3000/graphql',
-			},
-	  }
+		contentBase: path.join(__dirname, '../dist'), // boolean | string | array, static file location
+		compress: true, // enable gzip compression
+		historyApiFallback: true, // true for index.html upon 404, object for multiple paths
+		hot: true, // hot module replacement. Depends on
+		host: '0.0.0.0',
+		proxy: {
+			'/graphql': 'http://localhost:3000/graphql',
+		},
+	}
 	: {};
 
 const htmlWebpackOptions = devMode
 	? {
-			initmeta: '<title>xiaokyo</title>',
-			initState: '{}',
-			filename: 'index.html',
-	  }
+		initmeta: '<title>xiaokyo</title>',
+		initState: '{}',
+		filename: 'index.html',
+	}
 	: {
-			initmeta: '<!--meta-->',
-			initState: '<!--initState-->',
-			filename: 'app.html',
-	  };
+		initmeta: '<!--meta-->',
+		initState: '<!--initState-->',
+		filename: 'app.html',
+	};
 
 module.exports = {
 	mode: process.env.NODE_ENV,
@@ -52,10 +52,10 @@ module.exports = {
 		app: [path.join(__dirname, '../src/client/index.js')],
 	},
 	output: {
-		path: path.join(__dirname, '../dist'),
-		filename: `assets/js/${devMode ? '[name].bundle' : '[name].[hash]'}.js`,
-		// chunkFilename: 'assets/js/chunks/[name].[hash].js',
-		publicPath: '/',
+		path: path.join(__dirname, '../dist/assets'),
+		filename: `${devMode ? '[name].bundle' : '[name].[hash]'}.js`,
+		// chunkFilename: 'chunks/[name].[hash].js',
+		publicPath: devMode ? '/' : '//cdn.xiaok.club/',
 	},
 	resolve: {
 		alias,
@@ -126,7 +126,7 @@ module.exports = {
 						loader: 'url-loader',
 						options: {
 							limit: 8192, //小于8kg的会进行base64的保存方式导出到js
-							name: 'assets/files/[hash].[ext]',
+							name: '[hash].[ext]',
 						},
 					},
 				],
@@ -134,26 +134,26 @@ module.exports = {
 		],
 	},
 	optimization: {
-    // minimize: false,
-    minimize: devMode ? false : true,
-    // namedModules: true,
-    // noEmitOnErrors: true,
-    splitChunks: {
-      cacheGroups: {
-        styles: {
-          name: 'styles',
-          test: /(\.css|\.less)$/,
-          chunks: 'all',
-          enforce: true
-        }
-        // commons: {
-        //   name: 'vendor',
-        //   test: /[\\/]node_modules[\\/]/,
-        //   chunks: 'all'
-        // }
-      }
-    }
-  },
+		// minimize: false,
+		minimize: devMode ? false : true,
+		// namedModules: true,
+		// noEmitOnErrors: true,
+		splitChunks: {
+			cacheGroups: {
+				styles: {
+					name: 'styles',
+					test: /(\.css|\.less)$/,
+					chunks: 'all',
+					enforce: true
+				}
+				// commons: {
+				//   name: 'vendor',
+				//   test: /[\\/]node_modules[\\/]/,
+				//   chunks: 'all'
+				// }
+			}
+		}
+	},
 	plugins: [
 		new webpack.DefinePlugin({
 			__DEV__: devMode,
@@ -166,7 +166,7 @@ module.exports = {
 		new CleanWebpackPlugin(),
 		new MiniCssExtractPlugin({
 			// filename: `assets/css/${devMode ? '[name]' : '[name].[hash]'}.css`,
-			filename: `assets/css/[name].[hash].css`,
+			filename: `[name].[hash].css`,
 			// chunkFilename: 'assets/css/chunks/[id].css',
 			ignoreOrder: true, // Enable to remove warnings about conflicting order
 		}),

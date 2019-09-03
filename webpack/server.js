@@ -2,8 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const devMode = process.env.NODE_ENV == 'development' ? true : false;
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const nodeExternals = require('webpack-node-externals');
 
@@ -93,7 +91,7 @@ module.exports = {
 				use: [
 					{
 						loader: 'url-loader',
-						options: { limit: 8192, name: '../assets/files/[hash].[ext]' },
+						options: { limit: 8192, name: '../assets/[hash].[ext]' },
 					},
 				],
 			},
