@@ -19,7 +19,7 @@ export default props => {
 	const [postlist, setPostList] = useState([]);
 	const [loadmore, setLoadmore] = useState('hasmore');
 	const [page, setPage] = useState(0);
-	console.log(postlist, page);
+	// console.log(postlist, page);
 
 	//loadmore
 	const loadMorePost = async () => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Link, Switch, Redirect } from 'react-router-dom';
+import { Route, Link, Switch, Redirect, withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 //components
@@ -14,7 +14,8 @@ import { logout } from '@redux/actions/userInfo';
 //style
 import './style.less';
 
-export default () => {
+export default withRouter((props) => {
+	// console.log(props);
 	const userInfo = useSelector(state => state.userInfo);
 
 	const [key, setKey] = useState('');
@@ -23,6 +24,18 @@ export default () => {
 		setKey(val);
 		// console.log(val);
 	};
+
+	//回车触发搜索
+	const searchIptOnkeyup = (e) => {
+		if (e.keyCode == 13) {
+			props.history.push(`/search/${key}`)
+		}
+	}
+
+	useEffect(() => {
+
+		return () => { }
+	}, [])
 
 	return (
 		<div className="layout">
@@ -36,7 +49,7 @@ export default () => {
 						</div>
 
 						<div className="search">
-							<input type="text" placeholder="搜索" value={key} onChange={searchIptOnChange} />
+							<input type="text" placeholder="搜索" value={key} onChange={searchIptOnChange} onKeyUp={searchIptOnkeyup} />
 							<Link to={`/search/${key}`}>
 								<i className="iconfont icon-search" />
 							</Link>
@@ -47,11 +60,11 @@ export default () => {
 						{userInfo.my ? (
 							<UserMenu {...userInfo.my} />
 						) : (
-							<div>
-								<Link to="/login">登入</Link>
-								<Link to="/register">注册</Link>
-							</div>
-						)}
+								<div>
+									<Link to="/login">登入</Link>
+									<Link to="/register">注册</Link>
+								</div>
+							)}
 					</div>
 				</div>
 			</div>
@@ -78,7 +91,7 @@ export default () => {
 			{userInfo.my ? <Notice /> : ''}
 		</div>
 	);
-};
+});
 
 //点击头像显示menu
 const UserMenu = ({ _id, avatar, username }) => {
@@ -150,13 +163,13 @@ function PrivateRoute({ component: Component, ...rest }) {
 				userInfo.my ? (
 					<Component {...props} />
 				) : (
-					<Redirect
-						to={{
-							pathname: '/login',
-							state: { from: props.location },
-						}}
-					/>
-				)
+						<Redirect
+							to={{
+								pathname: '/login',
+								state: { from: props.location },
+							}}
+						/>
+					)
 			}
 		/>
 	);
