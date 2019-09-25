@@ -43,7 +43,7 @@ app.post('/clearAuth', async (req, res) => {
 });
 
 // 读取模板页面
-const htmlTemplate = fs.readFileSync('./dist/app.html', 'utf-8');
+const htmlTemplate = fs.readFileSync('./dist/assets/app.html', 'utf-8');
 
 import { fetchUserData } from '@redux/actions/userInfo';
 
