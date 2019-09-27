@@ -64,6 +64,7 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./webpack/client.js --progress",
     "pro": "cross-env NODE_ENV=production webpack --config ./webpack/client.js --progress",
     "server": "cross-env NODE_ENV=production webpack --config ./webpack/server.js --progress",
+    "build": "rm -rf dist && yarn pro && yarn server",
     "start": "rm -rf dist && yarn pro && yarn server && nodemon ./dist/server/server.js"
   },
   "browserslist": "> 0.25%, not dead"
