@@ -2,8 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Form, Input, Button, message } from 'antd';
 
-// layout
-import Layout from '@app/layout/main'
+
 
 //actions
 import { login } from '@redux/actions/userInfo';
@@ -44,7 +43,7 @@ export default Form.create({ name: 'login' })(props => {
 	// };
 
 	return (
-		<Layout>
+		<>
 			<div styleName="login">
 				<h1>登录</h1>
 				<div styleName="_box">
@@ -78,6 +77,6 @@ export default Form.create({ name: 'login' })(props => {
 					{/* <div onClick={qqAuth}>qq登录</div> */}
 				</div>
 			</div>
-		</Layout>
+		</>
 	);
 });

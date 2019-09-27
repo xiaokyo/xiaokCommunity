@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Button, message, Upload } from 'antd';
 
-// layout
-import Layout from '@app/layout/main'
+
 
 //brafteditor
 import BraftEditor from 'braft-editor';
@@ -200,7 +199,7 @@ export default props => {
 	];
 
 	return (
-		<Layout>
+		<>
 			<div className="sendPost">
 				<div className="tit">
 					<Input placeholder="想个标题吧~" value={title} allowClear onChange={titOnChange} />
@@ -217,6 +216,6 @@ export default props => {
 					发布
 			</Button>
 			</div>
-		</Layout>
+		</>
 	);
 };

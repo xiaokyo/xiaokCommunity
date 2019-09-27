@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Form, Input, Button, message } from 'antd';
 
-// layout
-import Layout from '@app/layout/main'
+
 
 //style
 import './style.less';
@@ -96,7 +95,7 @@ export default Form.create({ name: 'register' })(props => {
 	};
 
 	return (
-		<Layout>
+		<>
 			<div styleName="register">
 				<h1>注册</h1>
 				<div styleName="_box">
@@ -165,6 +164,6 @@ export default Form.create({ name: 'register' })(props => {
 					</Form>
 				</div>
 			</div>
-		</Layout>
+		</>
 	);
 });

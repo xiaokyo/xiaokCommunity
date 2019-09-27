@@ -1,6 +1,5 @@
 import React from 'react';
-// import { Spin, Icon } from 'antd';
-// const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+import { Spin } from 'antd';
 export default props => (
 	<div
 		style={{
@@ -11,6 +10,7 @@ export default props => (
 			alignItems: 'center',
 		}}
 	>
-		{/* <Spin indicator={antIcon} tip="Loading..." /> */}
+		<Spin />
+		{/* loading... */}
 	</div>
 );

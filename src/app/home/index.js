@@ -7,8 +7,7 @@ import { Skeleton } from 'antd';
 import to from '@common/to';
 import { delHtmlTag } from '@common/delHtmlTag';
 
-// layout
-import Layout from '@app/layout/main'
+
 
 //component
 import IsMore from '@components/ismore';
@@ -54,7 +53,7 @@ export default props => {
 	}, []);
 
 	return (
-		<Layout>
+		<>
 			<div styleName="home">
 				<MetaTags>
 					<title>xiaokyo社区-首页</title>
@@ -76,7 +75,7 @@ export default props => {
 					<div styleName="adv">adv</div>
 				</div>
 			</div>
-		</Layout>
+		</>
 	);
 };
 

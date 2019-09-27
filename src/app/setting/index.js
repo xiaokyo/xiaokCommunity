@@ -4,8 +4,7 @@ import { Button, Select, Input, message, Modal, Form } from 'antd';
 const { Option } = Select;
 import axios from 'axios';
 
-// layout
-import Layout from '@app/layout/main'
+
 
 //config
 import config from '@config';
@@ -117,7 +116,7 @@ export default props => {
 	};
 
 	return (
-		<Layout>
+		<>
 			<div styleName="setting">
 				<Modal
 					title="头像裁剪"
@@ -186,7 +185,7 @@ export default props => {
 					{/* <Button type="default">取消</Button> */}
 				</div>
 			</div>
-		</Layout>
+		</>
 	);
 };
 

@@ -5,8 +5,7 @@ import MetaTags from 'react-meta-tags';
 import { Tabs, Button } from 'antd';
 const { TabPane } = Tabs;
 
-// layout
-import Layout from '@app/layout/main'
+
 
 //style
 import './style.less';
@@ -46,7 +45,7 @@ export default props => {
 	};
 
 	return (
-		<Layout>
+		<>
 			{!profile.user ? (
 				<Loading />
 			) : (
@@ -100,7 +99,7 @@ export default props => {
 						<IsMore status={loadmore} funcLoadMore={loadMorePost} />
 					</div>
 				)}
-		</Layout>
+		</>
 	);
 };
 

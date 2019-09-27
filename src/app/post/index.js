@@ -7,8 +7,7 @@ import Loading from '@components/loading';
 const { TextArea } = Input;
 import { formatDate } from '@common/formatDate';
 
-// layout
-import Layout from '@app/layout/main'
+
 
 //style
 import 'braft-editor/dist/output.css';
@@ -135,7 +134,7 @@ export default props => {
 	}, []);
 
 	return (
-		<Layout>
+		<>
 			<div>
 				{!currentPost.title ? (
 					<Loading />
@@ -234,7 +233,7 @@ export default props => {
 						</div>
 					)}
 			</div>
-		</Layout>
+		</>
 	);
 };
 
