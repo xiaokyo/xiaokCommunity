@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Button, message, Upload } from 'antd';
 
+// layout
+import Layout from '@app/layout/main'
+
 //brafteditor
 import BraftEditor from 'braft-editor';
 import { ContentUtils } from 'braft-utils';
@@ -197,21 +200,23 @@ export default props => {
 	];
 
 	return (
-		<div className="sendPost">
-			<div className="tit">
-				<Input placeholder="想个标题吧~" value={title} allowClear onChange={titOnChange} />
-			</div>
-			<div className="editor">
-				<BraftEditor
-					controls={controls}
-					value={editorState}
-					onChange={handleEditorChange}
-					extendControls={extendControls}
-				/>
-			</div>
-			<Button type="primary" shape="round" onClick={submitPost}>
-				发布
+		<Layout>
+			<div className="sendPost">
+				<div className="tit">
+					<Input placeholder="想个标题吧~" value={title} allowClear onChange={titOnChange} />
+				</div>
+				<div className="editor">
+					<BraftEditor
+						controls={controls}
+						value={editorState}
+						onChange={handleEditorChange}
+						extendControls={extendControls}
+					/>
+				</div>
+				<Button type="primary" shape="round" onClick={submitPost}>
+					发布
 			</Button>
-		</div>
+			</div>
+		</Layout>
 	);
 };

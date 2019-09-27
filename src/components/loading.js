@@ -1,6 +1,5 @@
 import React from 'react';
-// import { Spin } from 'antd';
-// import { LoadingOutline } from '@ant-design/icons/lib/dist';
+// import { Spin, Icon } from 'antd';
 // const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 export default props => (
 	<div
@@ -13,6 +12,5 @@ export default props => (
 		}}
 	>
 		{/* <Spin indicator={antIcon} tip="Loading..." /> */}
-		加载中...
 	</div>
 );

@@ -4,6 +4,9 @@ import { Button, Select, Input, message, Modal, Form } from 'antd';
 const { Option } = Select;
 import axios from 'axios';
 
+// layout
+import Layout from '@app/layout/main'
+
 //config
 import config from '@config';
 
@@ -54,7 +57,7 @@ export default props => {
 		if (!_file) return;
 		// console.log(_file.size);
 		if (_file.size >= 1 * 1024 * 1024) return message.warn('必须小于1mb');
-		fileOrBlobToDataURL(_file, function(res) {
+		fileOrBlobToDataURL(_file, function (res) {
 			// console.log(res);
 			console.log('translate');
 			setClipImg(res);
@@ -114,74 +117,76 @@ export default props => {
 	};
 
 	return (
-		<div styleName="setting">
-			<Modal
-				title="头像裁剪"
-				visible={visible}
-				onOk={_crop}
-				// confirmLoading={confirmLoading}
-				onCancel={handleCancel}
-			>
-				<Cropper
-					ref={cropper}
-					src={clipImg ? clipImg : ''}
-					style={{ height: 250, width: '100%', margin: 'auto' }}
-					// Cropper.js options
-					aspectRatio={10 / 10}
-					guides={false}
+		<Layout>
+			<div styleName="setting">
+				<Modal
+					title="头像裁剪"
+					visible={visible}
+					onOk={_crop}
+					// confirmLoading={confirmLoading}
+					onCancel={handleCancel}
+				>
+					<Cropper
+						ref={cropper}
+						src={clipImg ? clipImg : ''}
+						style={{ height: 250, width: '100%', margin: 'auto' }}
+						// Cropper.js options
+						aspectRatio={10 / 10}
+						guides={false}
 					// crop={() => _crop()}
-				/>
-			</Modal>
+					/>
+				</Modal>
 
-			<EmailBind visible={bindEmailVisible} cancelFunc={setBindEmailVisible} />
+				<EmailBind visible={bindEmailVisible} cancelFunc={setBindEmailVisible} />
 
-			<div styleName="_item">
-				<div styleName="name">头像</div>
-				<div styleName="con">
-					<div styleName="default">点击图片修改头像</div>
-					<div styleName="avatar">
-						<img src={formdata.avatar} />
-						<input type="file" accept="image/*" onChange={fileOnChange} styleName="selectImg" />
+				<div styleName="_item">
+					<div styleName="name">头像</div>
+					<div styleName="con">
+						<div styleName="default">点击图片修改头像</div>
+						<div styleName="avatar">
+							<img src={formdata.avatar} />
+							<input type="file" accept="image/*" onChange={fileOnChange} styleName="selectImg" />
+						</div>
 					</div>
 				</div>
-			</div>
-			<div styleName="_item">
-				<div styleName="name">昵称</div>
-				<div styleName="con">
-					<Input type="text" allowClear value={formdata.username} onChange={usernameOnChange} />
+				<div styleName="_item">
+					<div styleName="name">昵称</div>
+					<div styleName="con">
+						<Input type="text" allowClear value={formdata.username} onChange={usernameOnChange} />
+					</div>
 				</div>
-			</div>
-			<div styleName="_item">
-				<div styleName="name">性别</div>
-				<div styleName="con">
-					{/* <div styleName="default">男</div> */}
-					<Select labelInValue defaultValue={{ key: formdata.sex }} onChange={sexOnChange}>
-						<Option value="0">保密</Option>
-						<Option value="1">男</Option>
-						<Option value="2">女</Option>
-					</Select>
+				<div styleName="_item">
+					<div styleName="name">性别</div>
+					<div styleName="con">
+						{/* <div styleName="default">男</div> */}
+						<Select labelInValue defaultValue={{ key: formdata.sex }} onChange={sexOnChange}>
+							<Option value="0">保密</Option>
+							<Option value="1">男</Option>
+							<Option value="2">女</Option>
+						</Select>
+					</div>
 				</div>
-			</div>
-			<div styleName="_item">
-				<div styleName="name">邮箱</div>
-				<div styleName="con">
-					{my.email ? (
-						my.email
-					) : (
-						<span style={{ cursor: 'pointer' }} onClick={() => setBindEmailVisible(true)}>
-							点击绑定邮箱
+				<div styleName="_item">
+					<div styleName="name">邮箱</div>
+					<div styleName="con">
+						{my.email ? (
+							my.email
+						) : (
+								<span style={{ cursor: 'pointer' }} onClick={() => setBindEmailVisible(true)}>
+									点击绑定邮箱
 						</span>
-					)}
+							)}
+					</div>
+				</div>
+
+				<div styleName="setting_btns">
+					<Button type="primary" onClick={_submitUpdate}>
+						保存
+				</Button>
+					{/* <Button type="default">取消</Button> */}
 				</div>
 			</div>
-
-			<div styleName="setting_btns">
-				<Button type="primary" onClick={_submitUpdate}>
-					保存
-				</Button>
-				{/* <Button type="default">取消</Button> */}
-			</div>
-		</div>
+		</Layout>
 	);
 };
 

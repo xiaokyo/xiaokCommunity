@@ -6,6 +6,10 @@ import { Button, Input, message, Modal, Divider } from 'antd';
 import Loading from '@components/loading';
 const { TextArea } = Input;
 import { formatDate } from '@common/formatDate';
+
+// layout
+import Layout from '@app/layout/main'
+
 //style
 import 'braft-editor/dist/output.css';
 import './style.less';
@@ -131,104 +135,106 @@ export default props => {
 	}, []);
 
 	return (
-		<div>
-			{!currentPost.title ? (
-				<Loading />
-			) : (
-				<div styleName="post">
-					<MetaTags>
-						<title>{currentPost.title}-xiaokyo</title>
-						<meta name="description" content="一个简约的交流社区" />
-					</MetaTags>
-					<h1 styleName="tit">{currentPost.title}</h1>
-					<div styleName="user_info">
-						<Link to={`/user/${currentPost.user._id}`}>
-							<img src={currentPost.user.avatar} styleName="avatar" />
-						</Link>
-						<div styleName="con">
-							<div styleName="top">
-								<div styleName="nickname">
-									<Link to={`/user/${currentPost.user._id}`}>{currentPost.user.username}</Link>
-								</div>
-								{/* <Button type="primary" shape="round" size="small">
+		<Layout>
+			<div>
+				{!currentPost.title ? (
+					<Loading />
+				) : (
+						<div styleName="post">
+							<MetaTags>
+								<title>{currentPost.title}-xiaokyo</title>
+								<meta name="description" content="一个简约的交流社区" />
+							</MetaTags>
+							<h1 styleName="tit">{currentPost.title}</h1>
+							<div styleName="user_info">
+								<Link to={`/user/${currentPost.user._id}`}>
+									<img src={currentPost.user.avatar} styleName="avatar" />
+								</Link>
+								<div styleName="con">
+									<div styleName="top">
+										<div styleName="nickname">
+											<Link to={`/user/${currentPost.user._id}`}>{currentPost.user.username}</Link>
+										</div>
+										{/* <Button type="primary" shape="round" size="small">
                     <i className="iconfont icon-add" />关注
                   </Button> */}
-							</div>
-							<div styleName="bottom">
-								<span>{formatDate(currentPost.createDate)}</span>
-								{/* <span>阅读 26620</span> */}
-								<span>喜欢 {currentPost.like_count}</span>
-								<span>评论 {comments.length}</span>
-								{userInfo.my && userInfo.my._id === currentPost.user._id ? (
-									<>
-										<span>
-											<Link to={`/sendPost?postid=${postid}`}>编辑</Link>
-										</span>
-										<span>
-											<a href="#" onClick={delPost}>
-												删除
+									</div>
+									<div styleName="bottom">
+										<span>{formatDate(currentPost.createDate)}</span>
+										{/* <span>阅读 26620</span> */}
+										<span>喜欢 {currentPost.like_count}</span>
+										<span>评论 {comments.length}</span>
+										{userInfo.my && userInfo.my._id === currentPost.user._id ? (
+											<>
+												<span>
+													<Link to={`/sendPost?postid=${postid}`}>编辑</Link>
+												</span>
+												<span>
+													<a href="#" onClick={delPost}>
+														删除
 											</a>
-										</span>
-									</>
-								) : (
-									''
-								)}
+												</span>
+											</>
+										) : (
+												''
+											)}
+									</div>
+								</div>
+							</div>
+
+							<div styleName="content">
+								<div
+									className="braft-output-content"
+									dangerouslySetInnerHTML={{ __html: currentPost.content }}
+								/>
+							</div>
+
+							<div styleName="operation">
+								<Button type="primary" shape="round" size="default" onClick={likethis}>
+									<i
+										className={`iconfont ${
+											currentPost && currentPost.like ? 'icon-likefill' : 'icon-like'
+											}`}
+									/>
+									喜欢
+						</Button>
+							</div>
+
+							<Divider />
+
+							<div styleName="comment_input">
+								<div styleName="comment_tit">评论一下吧~汪</div>
+								<div styleName="comment_con">
+									<TextArea rows={4} value={replyVal} onChange={e => setReplyVal(e.target.value)} />
+								</div>
+								<div styleName="comment_operation">
+									<Button
+										type="primary"
+										shape="round"
+										size="large"
+										onClick={() => {
+											if (!userInfo.my) return message.warn('请先登入');
+											addComment();
+										}}
+									>
+										回复
+							</Button>
+								</div>
+							</div>
+
+							<div styleName="reply_con">
+								<div styleName="reply_tit">看看都有谁评论了~汪({comments.length})</div>
+								<ul styleName="reply_list">
+									{comments.map(item => (
+										<ReplyItem key={item._id} {...item} />
+									))}
+								</ul>
+								{comments.length <= 0 ? '暂无评论' : ''}
 							</div>
 						</div>
-					</div>
-
-					<div styleName="content">
-						<div
-							className="braft-output-content"
-							dangerouslySetInnerHTML={{ __html: currentPost.content }}
-						/>
-					</div>
-
-					<div styleName="operation">
-						<Button type="primary" shape="round" size="default" onClick={likethis}>
-							<i
-								className={`iconfont ${
-									currentPost && currentPost.like ? 'icon-likefill' : 'icon-like'
-								}`}
-							/>
-							喜欢
-						</Button>
-					</div>
-
-					<Divider />
-
-					<div styleName="comment_input">
-						<div styleName="comment_tit">评论一下吧~汪</div>
-						<div styleName="comment_con">
-							<TextArea rows={4} value={replyVal} onChange={e => setReplyVal(e.target.value)} />
-						</div>
-						<div styleName="comment_operation">
-							<Button
-								type="primary"
-								shape="round"
-								size="large"
-								onClick={() => {
-									if (!userInfo.my) return message.warn('请先登入');
-									addComment();
-								}}
-							>
-								回复
-							</Button>
-						</div>
-					</div>
-
-					<div styleName="reply_con">
-						<div styleName="reply_tit">看看都有谁评论了~汪({comments.length})</div>
-						<ul styleName="reply_list">
-							{comments.map(item => (
-								<ReplyItem key={item._id} {...item} />
-							))}
-						</ul>
-						{comments.length <= 0 ? '暂无评论' : ''}
-					</div>
-				</div>
-			)}
-		</div>
+					)}
+			</div>
+		</Layout>
 	);
 };
 
@@ -258,17 +264,17 @@ const ReplyItem = ({ _id, postid, user, content, createDate, comment_response })
 				{userInfo.my && userInfo.my._id === user._id ? (
 					''
 				) : (
-					<div
-						styleName="reply_btn"
-						onClick={() => {
-							if (!userInfo.my) return message.warn('请先登入');
-							setShow(!show);
-						}}
-					>
-						<i className="iconfont icon-comment" />
-						回复
+						<div
+							styleName="reply_btn"
+							onClick={() => {
+								if (!userInfo.my) return message.warn('请先登入');
+								setShow(!show);
+							}}
+						>
+							<i className="iconfont icon-comment" />
+							回复
 					</div>
-				)}
+					)}
 			</div>
 
 			<ModalReplyComment
@@ -293,8 +299,8 @@ const ReplyItem = ({ _id, postid, user, content, createDate, comment_response })
 					))}
 				</div>
 			) : (
-				''
-			)}
+					''
+				)}
 		</li>
 	);
 };
@@ -314,17 +320,17 @@ const ReplyCommentItem = ({ user, to_user, content, createDate, commentid, reply
 				{userInfo.my && userInfo.my._id === user._id ? (
 					''
 				) : (
-					<div
-						styleName="_reply_btn"
-						onClick={() => {
-							if (!userInfo.my) return message.warn('请先登入');
-							setShow(!show);
-						}}
-					>
-						<i className="iconfont icon-comment" />
-						<span>回复</span>
-					</div>
-				)}
+						<div
+							styleName="_reply_btn"
+							onClick={() => {
+								if (!userInfo.my) return message.warn('请先登入');
+								setShow(!show);
+							}}
+						>
+							<i className="iconfont icon-comment" />
+							<span>回复</span>
+						</div>
+					)}
 			</div>
 			<ModalReplyComment
 				show={show}

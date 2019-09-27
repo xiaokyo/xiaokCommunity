@@ -6,6 +6,9 @@ import { Skeleton, message } from 'antd';
 import to from '@common/to';
 import { delHtmlTag } from '@common/delHtmlTag';
 
+// layout
+import Layout from '@app/layout/main'
+
 //component
 import IsMore from '@components/ismore';
 
@@ -53,25 +56,27 @@ export default props => {
 	}, [key]);
 
 	return (
-		<div styleName="home">
-			<MetaTags>
-				<title>搜索-xiaokyo社区</title>
-			</MetaTags>
+		<Layout>
+			<div styleName="home">
+				<MetaTags>
+					<title>搜索-xiaokyo社区</title>
+				</MetaTags>
 
-			<div styleName="left">
-				<Skeleton active loading={postlist.length <= 0}>
-					{postlist.map(item => (
-						<Card key={item._id} {...item} />
-					))}
-				</Skeleton>
+				<div styleName="left">
+					<Skeleton active loading={postlist.length <= 0}>
+						{postlist.map(item => (
+							<Card key={item._id} {...item} />
+						))}
+					</Skeleton>
 
-				<IsMore status={loadmore} funcLoadMore={loadMorePost} />
+					<IsMore status={loadmore} funcLoadMore={loadMorePost} />
+				</div>
+
+				<div styleName="right">
+					<div styleName="adv">adv</div>
+				</div>
 			</div>
-
-			<div styleName="right">
-				<div styleName="adv">adv</div>
-			</div>
-		</div>
+		</Layout>
 	);
 };
 

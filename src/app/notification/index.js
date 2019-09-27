@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+
+// layout
+import Layout from '@app/layout/main'
+
 //style
 import './style.less';
 //common
@@ -19,15 +23,17 @@ export default props => {
 	}, []);
 
 	return (
-		<div styleName="notification">
-			<h1>动态</h1>
-			<ul>
-				{notification.map(item => {
-					return <SingleItem key={item._id} singleItem={item} />;
-				})}
-			</ul>
-			{noread.length <= 0 ? <span>暂无更多未读消息</span> : ''}
-		</div>
+		<Layout>
+			<div styleName="notification">
+				<h1>动态</h1>
+				<ul>
+					{notification.map(item => {
+						return <SingleItem key={item._id} singleItem={item} />;
+					})}
+				</ul>
+				{noread.length <= 0 ? <span>暂无更多未读消息</span> : ''}
+			</div>
+		</Layout>
 	);
 };
 

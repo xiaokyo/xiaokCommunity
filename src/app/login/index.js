@@ -2,6 +2,9 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Form, Input, Button, message } from 'antd';
 
+// layout
+import Layout from '@app/layout/main'
+
 //actions
 import { login } from '@redux/actions/userInfo';
 
@@ -41,38 +44,40 @@ export default Form.create({ name: 'login' })(props => {
 	// };
 
 	return (
-		<div styleName="login">
-			<h1>登录</h1>
-			<div styleName="_box">
-				<Form onSubmit={handleSubmit} className="login-form">
-					<Form.Item>
-						{getFieldDecorator('email', {
-							rules: [{ required: true, message: '请输入邮箱/用户名！' }],
-						})(<Input prefix={<i className="iconfont icon-my" />} placeholder="输入邮箱/用户名" />)}
-					</Form.Item>
-					<Form.Item>
-						{getFieldDecorator('password', {
-							rules: [{ required: true, message: '请输入密码！' }],
-						})(
-							<Input.Password
-								prefix={<i className="iconfont icon-lock" />}
-								type="password"
-								placeholder="密码"
-							/>
-						)}
-					</Form.Item>
-					<Form.Item>
-						{/* <a className="login-form-forgot" href="">
+		<Layout>
+			<div styleName="login">
+				<h1>登录</h1>
+				<div styleName="_box">
+					<Form onSubmit={handleSubmit} className="login-form">
+						<Form.Item>
+							{getFieldDecorator('email', {
+								rules: [{ required: true, message: '请输入邮箱/用户名！' }],
+							})(<Input prefix={<i className="iconfont icon-my" />} placeholder="输入邮箱/用户名" />)}
+						</Form.Item>
+						<Form.Item>
+							{getFieldDecorator('password', {
+								rules: [{ required: true, message: '请输入密码！' }],
+							})(
+								<Input.Password
+									prefix={<i className="iconfont icon-lock" />}
+									type="password"
+									placeholder="密码"
+								/>
+							)}
+						</Form.Item>
+						<Form.Item>
+							{/* <a className="login-form-forgot" href="">
               Forgot password
             </a> */}
-						<Button type="primary" htmlType="submit" className="login-form-button">
-							确定
+							<Button type="primary" htmlType="submit" className="login-form-button">
+								确定
 						</Button>
-					</Form.Item>
-				</Form>
+						</Form.Item>
+					</Form>
 
-				{/* <div onClick={qqAuth}>qq登录</div> */}
+					{/* <div onClick={qqAuth}>qq登录</div> */}
+				</div>
 			</div>
-		</div>
+		</Layout>
 	);
 });

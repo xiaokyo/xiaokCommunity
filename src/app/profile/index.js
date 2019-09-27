@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 import MetaTags from 'react-meta-tags';
 import { Tabs, Button } from 'antd';
 const { TabPane } = Tabs;
+
+// layout
+import Layout from '@app/layout/main'
+
 //style
 import './style.less';
 
@@ -42,61 +46,61 @@ export default props => {
 	};
 
 	return (
-		<>
+		<Layout>
 			{!profile.user ? (
 				<Loading />
 			) : (
-				<div styleName="profile">
-					<MetaTags>
-						<title>{profile.user.username}-个人中心</title>
-						<meta name="description" content="一个简约的交流社区" />
-					</MetaTags>
-					<div styleName="user_info">
-						<div styleName="avatar">
-							<img src={profile.user.avatar} />
-						</div>
-						<div styleName="username">{profile.user.username}</div>
-						<div styleName="bottom_con">
-							<div styleName="item">关注 {profile.user.follow}</div>
-							<div styleName="item">粉丝 {profile.user.fan}</div>
-						</div>
-
-						{userInfo.my && userInfo.my._id != profile.user._id ? (
-							<div styleName="operations">
-								{profile.isFollow ? (
-									<Button
-										size="small"
-										type="primary"
-										onClick={() => unFollow(profile.user._id)(dispatch)}
-									>
-										取消关注
-									</Button>
-								) : (
-									<Button
-										size="small"
-										type="primary"
-										onClick={() => follow(profile.user._id)(dispatch)}
-									>
-										关注
-									</Button>
-								)}
+					<div styleName="profile">
+						<MetaTags>
+							<title>{profile.user.username}-个人中心</title>
+							<meta name="description" content="一个简约的交流社区" />
+						</MetaTags>
+						<div styleName="user_info">
+							<div styleName="avatar">
+								<img src={profile.user.avatar} />
 							</div>
-						) : (
-							''
-						)}
-					</div>
+							<div styleName="username">{profile.user.username}</div>
+							<div styleName="bottom_con">
+								<div styleName="item">关注 {profile.user.follow}</div>
+								<div styleName="item">粉丝 {profile.user.fan}</div>
+							</div>
 
-					<Tabs tabPosition={'top'}>
-						<TabPane tab="帖子" key="1">
-							{profile.posts.map(item => (
-								<Post key={item._id} {...item} avatar={profile.user.avatar} />
-							))}
-						</TabPane>
-					</Tabs>
-					<IsMore status={loadmore} funcLoadMore={loadMorePost} />
-				</div>
-			)}
-		</>
+							{userInfo.my && userInfo.my._id != profile.user._id ? (
+								<div styleName="operations">
+									{profile.isFollow ? (
+										<Button
+											size="small"
+											type="primary"
+											onClick={() => unFollow(profile.user._id)(dispatch)}
+										>
+											取消关注
+									</Button>
+									) : (
+											<Button
+												size="small"
+												type="primary"
+												onClick={() => follow(profile.user._id)(dispatch)}
+											>
+												关注
+									</Button>
+										)}
+								</div>
+							) : (
+									''
+								)}
+						</div>
+
+						<Tabs tabPosition={'top'}>
+							<TabPane tab="帖子" key="1">
+								{profile.posts.map(item => (
+									<Post key={item._id} {...item} avatar={profile.user.avatar} />
+								))}
+							</TabPane>
+						</Tabs>
+						<IsMore status={loadmore} funcLoadMore={loadMorePost} />
+					</div>
+				)}
+		</Layout>
 	);
 };
 

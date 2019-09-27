@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Form, Input, Button, message } from 'antd';
 
+// layout
+import Layout from '@app/layout/main'
+
 //style
 import './style.less';
 import { graphql } from '@graphql';
@@ -93,73 +96,75 @@ export default Form.create({ name: 'register' })(props => {
 	};
 
 	return (
-		<div styleName="register">
-			<h1>注册</h1>
-			<div styleName="_box">
-				<Form onSubmit={handleSubmit} className="login-form">
-					<Form.Item>
-						{getFieldDecorator('username', {
-							rules: [{ required: true, message: '请输入用户名！' }],
-						})(<Input prefix={<i className="iconfont icon-my" />} placeholder="用户名" />)}
-					</Form.Item>
-					<Form.Item>
-						{getFieldDecorator('email', {
-							rules: [{ required: true, message: '请输入邮箱！' }],
-						})(
-							<Input
-								prefix={<i className="iconfont icon-mail" />}
-								ref={emailRef}
-								placeholder="你的邮箱"
-							/>
-						)}
-					</Form.Item>
-					<Form.Item>
-						{getFieldDecorator('emailCode', {
-							rules: [{ required: true, message: '请输入验证码！' }],
-						})(
-							<Input
-								prefix={<i className="iconfont icon-yanzhengma" />}
-								suffix={
-									<span className="sendState" onClick={sendEmailCode}>
-										{codeState}
-									</span>
-								}
-								placeholder="验证码"
-							/>
-						)}
-					</Form.Item>
-					<Form.Item>
-						{getFieldDecorator('password', {
-							rules: [{ required: true, message: '请输入密码！' }],
-						})(
-							<Input.Password
-								prefix={<i className="iconfont icon-lock" />}
-								type="password"
-								placeholder="密码"
-							/>
-						)}
-					</Form.Item>
-					<Form.Item>
-						{getFieldDecorator('confrimPassword', {
-							rules: [{ required: true, message: '请确认密码！' }],
-						})(
-							<Input.Password
-								prefix={<i className="iconfont icon-lock" />}
-								type="password"
-								placeholder="确认密码"
-							/>
-						)}
-					</Form.Item>
-					<Form.Item>
-						{/* <a className="login-form-forgot" href="">
+		<Layout>
+			<div styleName="register">
+				<h1>注册</h1>
+				<div styleName="_box">
+					<Form onSubmit={handleSubmit} className="login-form">
+						<Form.Item>
+							{getFieldDecorator('username', {
+								rules: [{ required: true, message: '请输入用户名！' }],
+							})(<Input prefix={<i className="iconfont icon-my" />} placeholder="用户名" />)}
+						</Form.Item>
+						<Form.Item>
+							{getFieldDecorator('email', {
+								rules: [{ required: true, message: '请输入邮箱！' }],
+							})(
+								<Input
+									prefix={<i className="iconfont icon-mail" />}
+									ref={emailRef}
+									placeholder="你的邮箱"
+								/>
+							)}
+						</Form.Item>
+						<Form.Item>
+							{getFieldDecorator('emailCode', {
+								rules: [{ required: true, message: '请输入验证码！' }],
+							})(
+								<Input
+									prefix={<i className="iconfont icon-yanzhengma" />}
+									suffix={
+										<span className="sendState" onClick={sendEmailCode}>
+											{codeState}
+										</span>
+									}
+									placeholder="验证码"
+								/>
+							)}
+						</Form.Item>
+						<Form.Item>
+							{getFieldDecorator('password', {
+								rules: [{ required: true, message: '请输入密码！' }],
+							})(
+								<Input.Password
+									prefix={<i className="iconfont icon-lock" />}
+									type="password"
+									placeholder="密码"
+								/>
+							)}
+						</Form.Item>
+						<Form.Item>
+							{getFieldDecorator('confrimPassword', {
+								rules: [{ required: true, message: '请确认密码！' }],
+							})(
+								<Input.Password
+									prefix={<i className="iconfont icon-lock" />}
+									type="password"
+									placeholder="确认密码"
+								/>
+							)}
+						</Form.Item>
+						<Form.Item>
+							{/* <a className="login-form-forgot" href="">
               Forgot password
             </a> */}
-						<Button type="primary" htmlType="submit" className="login-form-button">
-							确定
+							<Button type="primary" htmlType="submit" className="login-form-button">
+								确定
 						</Button>
-					</Form.Item>
-				</Form>
+						</Form.Item>
+					</Form>
+				</div>
 			</div>
-		</div>
+		</Layout>
 	);
 });

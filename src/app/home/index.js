@@ -7,6 +7,9 @@ import { Skeleton } from 'antd';
 import to from '@common/to';
 import { delHtmlTag } from '@common/delHtmlTag';
 
+// layout
+import Layout from '@app/layout/main'
+
 //component
 import IsMore from '@components/ismore';
 
@@ -51,27 +54,29 @@ export default props => {
 	}, []);
 
 	return (
-		<div styleName="home">
-			<MetaTags>
-				<title>xiaokyo社区-首页</title>
-				{/* <meta name="keywords" content="xiaokyo,简约社区,xiaok,轻便社区,xiaokyo博客,小k哟" /> */}
-				<meta name="description" content="一个简约的交流社区，xiaokyo社区" />
-			</MetaTags>
+		<Layout>
+			<div styleName="home">
+				<MetaTags>
+					<title>xiaokyo社区-首页</title>
+					{/* <meta name="keywords" content="xiaokyo,简约社区,xiaok,轻便社区,xiaokyo博客,小k哟" /> */}
+					<meta name="description" content="一个简约的交流社区，xiaokyo社区" />
+				</MetaTags>
 
-			<div styleName="left">
-				<Skeleton active loading={loading}>
-					{postlist.map(item => (
-						<Card key={item._id} {...item} />
-					))}
-				</Skeleton>
+				<div styleName="left">
+					<Skeleton active loading={loading}>
+						{postlist.map(item => (
+							<Card key={item._id} {...item} />
+						))}
+					</Skeleton>
 
-				<IsMore status={loadmore} funcLoadMore={loadMorePost} />
+					<IsMore status={loadmore} funcLoadMore={loadMorePost} />
+				</div>
+
+				<div styleName="right">
+					<div styleName="adv">adv</div>
+				</div>
 			</div>
-
-			<div styleName="right">
-				<div styleName="adv">adv</div>
-			</div>
-		</div>
+		</Layout>
 	);
 };
 
