@@ -1,11 +1,15 @@
-<div align=center style="padding-top:30px;"><img width = '150' height ='150' src ="./public/512x512.png"/></div>
-<h1 align=center style="font-size:40px;">xiaokyo</h1>
+<div align="center" style="padding-top:30px;"><img width = '150' height ='150' src ="./public/512x512.png"/></div>
+<h1 align="center" style="font-size:40px;">xiaokyo</h1>
+
+<div align="center">
 
 ![npm](https://img.shields.io/badge/npm-v6.9.0-green)
 ![node](https://img.shields.io/badge/node-v10.16.3-red)
 ![antd](https://img.shields.io/badge/antd-^3.20.3-orange)
 ![express](https://img.shields.io/badge/express-^4.17.1-blue)
 ![graphql](https://img.shields.io/badge/graphql-^14.4.2-green)
+
+</div>
 
 ## 已实现功能
 
