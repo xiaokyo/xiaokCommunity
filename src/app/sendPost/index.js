@@ -8,9 +8,36 @@ import BraftEditor from 'braft-editor';
 import { ContentUtils } from 'braft-utils';
 import { ImageUtils } from 'braft-finder';
 import CodeHighlighter from 'braft-extensions/dist/code-highlighter'
-BraftEditor.use(CodeHighlighter({
-  // includeEditors: ['editor-with-code-highlighter'],
-}))
+
+import 'prismjs/components/prism-bash'
+import 'prismjs/components/prism-json'
+import 'prismjs/components/prism-less'
+
+// 通过opitons.
+const options = {
+	syntaxs: [
+		{
+			name: 'JavaScript',
+			syntax: 'javascript'
+		}, {
+			name: 'HTML',
+			syntax: 'html'
+		}, {
+			name: 'CSS',
+			syntax: 'css'
+		}, {
+			name: 'bash/cmd',
+			syntax: 'bash'
+		}, {
+			name: 'JSON',
+			syntax: 'json'
+		}, {
+			name: 'LESS',
+			syntax: 'less'
+		}
+	]
+}
+BraftEditor.use(CodeHighlighter(options))
 
 import { graphql } from '@graphql';
 import fetch from 'node-fetch';
