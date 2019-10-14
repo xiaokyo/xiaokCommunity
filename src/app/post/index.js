@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import MetaTags from 'react-meta-tags';
-import { Button, Input, message, Modal, Divider } from 'antd';
+import { Button, Input, message, Modal, Divider, Anchor } from 'antd';
 import Loading from '@components/loading';
 const { TextArea } = Input;
+const { Link: ALink } = Anchor;
 import { formatDate } from '@common/formatDate';
-
-
 
 //style
 import 'braft-editor/dist/output.css';
@@ -16,7 +15,6 @@ import './style.less';
 
 //prismjs
 import prism from 'prismjs/prism';
-
 
 //graphql
 import { graphql } from '@graphql';
@@ -34,11 +32,7 @@ export default props => {
 	const [replyVal, setReplyVal] = useState('');
 	const [comments, setComments] = useState([]);
 
-	// prism.hooks.add('before-highlight', function (env) {
-	// 	env.element.innerHTML = env.element.innerHTML.replace(/<br\s*\/?>/g, '\n');
-	// 	env.code = env.element.textContent.replace(/^(?:\r?\n|\r)/, '');
-	// });
-
+	const [anchorList] = useAnchor(currentPost && currentPost.content || '')
 	//删除当前帖子
 	const delPost = async () => {
 		if (!confirm('确认删除此贴?')) return;
@@ -162,6 +156,7 @@ export default props => {
 								<title>{currentPost.title}-xiaokyo</title>
 								<meta name="description" content="一个简约的交流社区" />
 							</MetaTags>
+							<AnchorFixed list={anchorList} />
 							<h1 styleName="tit">{currentPost.title}</h1>
 							<div styleName="user_info">
 								<Link to={`/user/${currentPost.user._id}`}>
@@ -214,7 +209,7 @@ export default props => {
 											}`}
 									/>
 									喜欢
-						</Button>
+								</Button>
 							</div>
 
 							<Divider />
@@ -395,3 +390,79 @@ const ModalReplyComment = ({ show, setShow, to_user, commentid, replyComments, s
 		</Modal>
 	);
 };
+
+const AnchorFixed = ({ list }) => {
+	return (
+		<div styleName="anchor">
+			<Anchor offsetTop={100} showInkInFixed={true}>
+				{list && list.map(item => {
+					let style = { paddingLeft: 0 }
+					if (item.nodeName === 'H2') style['paddingLeft'] = 10
+					if (item.nodeName === 'H3') style['paddingLeft'] = 15
+					return <div style={style}><ALink key={item.anchorLink} href={`#${item.anchorLink}`} title={item.title} /></div>
+				})}
+			</Anchor>
+		</div>
+	)
+}
+
+//所有标题加id和锚点返回
+const useAnchor = (content) => {
+	const [list, setList] = useState([])
+	useEffect(() => {
+		main()
+	}, [content])
+
+	const main = () => {
+		const childs = getNodeChilds()
+		if (childs.length <= 0) return
+		getHtags(childs)
+	}
+
+	//获取文本里的子节点
+	const getNodeChilds = () => {
+		const box = document.getElementsByClassName('braft-output-content')[0]
+		const childs = box && box.childNodes || []
+		return childs
+	}
+
+	const getHtags = (childs) => {
+		// console.log(childs)
+		let anchorList = [], count = 0
+		for (let i = 0; i < childs.length; i++) {
+			let item = childs[i]
+			let nodeName = item.nodeName
+			let title = item.innerText
+			let anchorLink = `header_anchor${count}`
+			let obj = {
+				title,
+				anchorLink,
+				nodeName
+			}
+			switch (nodeName) {
+				case 'H1':
+					item.setAttribute('id', anchorLink)
+					anchorList.push(obj)
+					count++
+					break
+				case 'H2':
+					item.setAttribute('id', anchorLink)
+					anchorList.push(obj)
+					count++
+					break
+				case 'H3':
+					item.setAttribute('id', anchorLink)
+					anchorList.push(obj)
+					count++
+					break
+				default:
+					break
+			}
+		}
+
+		console.log(anchorList)
+		setList([...anchorList])
+	}
+
+	return [list]
+}

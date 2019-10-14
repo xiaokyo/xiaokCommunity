@@ -32,7 +32,7 @@ export default props => {
 				alignItems: 'center',
 			}}
 		>
-			<Link to="/notification">
+			<Link to="/notification" style={{ textDecoration: 'none' }}>
 				<i className="iconfont icon-notice" style={{ fontSize: 25, color: '#fff' }} />
 				{noreadArr.length > 0 ? (
 					<span
@@ -54,8 +54,8 @@ export default props => {
 						{noreadArr.length}
 					</span>
 				) : (
-					''
-				)}
+						''
+					)}
 			</Link>
 		</div>
 	);
