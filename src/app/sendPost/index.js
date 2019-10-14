@@ -7,6 +7,10 @@ import { Input, Button, message, Upload } from 'antd';
 import BraftEditor from 'braft-editor';
 import { ContentUtils } from 'braft-utils';
 import { ImageUtils } from 'braft-finder';
+import CodeHighlighter from 'braft-extensions/dist/code-highlighter'
+BraftEditor.use(CodeHighlighter({
+  // includeEditors: ['editor-with-code-highlighter'],
+}))
 
 import { graphql } from '@graphql';
 import fetch from 'node-fetch';
@@ -16,6 +20,7 @@ import config from '@config';
 
 //style
 import 'braft-editor/dist/index.css';
+import 'braft-extensions/dist/code-highlighter.css'
 import './style.less';
 
 export default props => {

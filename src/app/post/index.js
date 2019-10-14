@@ -11,7 +11,12 @@ import { formatDate } from '@common/formatDate';
 
 //style
 import 'braft-editor/dist/output.css';
+import 'prismjs/themes/prism-okaidia.css';
 import './style.less';
+
+//prismjs
+import prism from 'prismjs/prism';
+
 
 //graphql
 import { graphql } from '@graphql';
@@ -28,6 +33,11 @@ export default props => {
 	const currentPost = getPostById(postid)(posts);
 	const [replyVal, setReplyVal] = useState('');
 	const [comments, setComments] = useState([]);
+
+	// prism.hooks.add('before-highlight', function (env) {
+	// 	env.element.innerHTML = env.element.innerHTML.replace(/<br\s*\/?>/g, '\n');
+	// 	env.code = env.element.textContent.replace(/^(?:\r?\n|\r)/, '');
+	// });
 
 	//删除当前帖子
 	const delPost = async () => {
@@ -132,6 +142,14 @@ export default props => {
 		}
 		getComments();
 	}, []);
+
+	useEffect(() => {
+		Prism.hooks.add('before-highlight', function (env) {
+			env.element.innerHTML = env.element.innerHTML.replace(/<br\s*\/?>/g, '\n');
+			env.code = env.element.textContent.replace(/^(?:\r?\n|\r)/, '');
+		});
+		prism.highlightAll();
+	})
 
 	return (
 		<>
