@@ -147,7 +147,7 @@ export default props => {
 
 	return (
 		<>
-			<div>
+			<div className="radius">
 				{!currentPost.title ? (
 					<Loading />
 				) : (
@@ -391,16 +391,19 @@ const ModalReplyComment = ({ show, setShow, to_user, commentid, replyComments, s
 	);
 };
 
+//锚点
 const AnchorFixed = ({ list }) => {
 	return (
 		<div styleName="anchor">
 			<Anchor offsetTop={100} showInkInFixed={true}>
+				<p style={{ paddingLeft: 15 }}>目录</p>
 				{list && list.map(item => {
 					let style = { paddingLeft: 0 }
 					if (item.nodeName === 'H2') style['paddingLeft'] = 10
 					if (item.nodeName === 'H3') style['paddingLeft'] = 15
-					return <div style={style}><ALink key={item.anchorLink} href={`#${item.anchorLink}`} title={item.title} /></div>
+					return <div key={item.anchorLink} style={style}><ALink href={`#${item.anchorLink}`} title={item.title} /></div>
 				})}
+				{list.length <= 0 && <p style={{ paddingLeft: 15 }}>空</p>}
 			</Anchor>
 		</div>
 	)

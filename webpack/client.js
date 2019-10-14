@@ -29,6 +29,7 @@ const devServer = devMode
 		host: '0.0.0.0',
 		proxy: {
 			'/graphql': 'http://127.0.0.1:4000',
+			'/socket.io': 'http://127.0.0.1:4000'
 		},
 	}
 	: {};

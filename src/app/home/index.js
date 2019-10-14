@@ -7,8 +7,6 @@ import { Skeleton } from 'antd';
 import to from '@common/to';
 import { delHtmlTag } from '@common/delHtmlTag';
 
-
-
 //component
 import IsMore from '@components/ismore';
 
@@ -61,7 +59,7 @@ export default props => {
 					<meta name="description" content="一个简约的交流社区，xiaokyo社区" />
 				</MetaTags>
 
-				<div styleName="left">
+				<div styleName="left" className="radius">
 					<Skeleton active loading={loading}>
 						{postlist.map(item => (
 							<Card key={item._id} {...item} />
@@ -72,7 +70,12 @@ export default props => {
 				</div>
 
 				<div styleName="right">
-					<div styleName="adv">adv</div>
+					<div styleName="opensource" className="radius">
+						<a href="https://github.com/xiaokyo/xiaokCommunity" target="_blank"><i className="iconfont icon-GitHub"></i>github项目地址</a>
+					</div>
+					<div styleName="adv" className="radius">
+						<img src="https://www.gtloli.app/ext20190609/files/background/011.jpg" />
+					</div>
 				</div>
 			</div>
 		</>

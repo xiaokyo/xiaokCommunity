@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Form, Input, Button, message } from 'antd';
 
-
-
 //style
 import './style.less';
 import { graphql } from '@graphql';

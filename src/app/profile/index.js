@@ -5,8 +5,6 @@ import MetaTags from 'react-meta-tags';
 import { Tabs, Button } from 'antd';
 const { TabPane } = Tabs;
 
-
-
 //style
 import './style.less';
 

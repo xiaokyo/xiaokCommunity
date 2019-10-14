@@ -17,7 +17,7 @@ import './style.less';
 export default withRouter((props) => {
 	// console.log(props);
 	const userInfo = useSelector(state => state.userInfo);
-
+	console.log(props)
 	const [key, setKey] = useState('');
 	const searchIptOnChange = e => {
 		let val = e.target.value;
@@ -68,7 +68,7 @@ export default withRouter((props) => {
 					</div>
 				</div>
 			</div>
-			<div className="container">
+			<div className={`container ${props.location.pathname === '/' || props.location.pathname === '/search' ? 'index' : ''}`}>
 				<Switch>
 					{routers.map((route, index) => {
 						if (route.private) {

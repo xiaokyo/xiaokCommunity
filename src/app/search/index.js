@@ -61,7 +61,7 @@ export default props => {
 					<title>搜索-xiaokyo社区</title>
 				</MetaTags>
 
-				<div styleName="left">
+				<div className="radius" style={{ padding: '0 20px' }}>
 					<Skeleton active loading={postlist.length <= 0}>
 						{postlist.map(item => (
 							<Card key={item._id} {...item} />
@@ -69,10 +69,6 @@ export default props => {
 					</Skeleton>
 
 					<IsMore status={loadmore} funcLoadMore={loadMorePost} />
-				</div>
-
-				<div styleName="right">
-					<div styleName="adv">adv</div>
 				</div>
 			</div>
 		</>

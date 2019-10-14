@@ -4,8 +4,6 @@ import { Button, Select, Input, message, Modal, Form } from 'antd';
 const { Option } = Select;
 import axios from 'axios';
 
-
-
 //config
 import config from '@config';
 

@@ -2,8 +2,6 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Form, Input, Button, message } from 'antd';
 
-
-
 //actions
 import { login } from '@redux/actions/userInfo';
 
