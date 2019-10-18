@@ -20,11 +20,13 @@ for (let i in common.alias) {
 module.exports = {
 	mode: process.env.NODE_ENV,
 	target: 'node',
-	entry: [path.join(__dirname, '../src/server/index.js')],
+	entry: {
+		server: path.join(__dirname, '../src/server/index.js')
+	},
 	output: {
 		path: path.join(__dirname, '../dist/server'),
 		filename: 'server.js',
-		chunkFilename: '[id].server.js',
+		// chunkFilename: '[id].server.js',
 		publicPath: '/',
 		libraryTarget: 'commonjs2',
 	},

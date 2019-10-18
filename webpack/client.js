@@ -7,7 +7,6 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const devMode = process.env.NODE_ENV == 'development' ? true : false;
-
 //babelOptions
 const babelOptions = require('../babel.config');
 
@@ -19,20 +18,6 @@ let alias = {};
 for (let i in common.alias) {
 	alias[i] = path.resolve(__dirname, common.alias[i]);
 }
-
-const devServer = devMode
-	? {
-		contentBase: path.join(__dirname, '../dist'), // boolean | string | array, static file location
-		compress: true, // enable gzip compression
-		historyApiFallback: true, // true for index.html upon 404, object for multiple paths
-		hot: true, // hot module replacement. Depends on
-		host: '0.0.0.0',
-		proxy: {
-			'/graphql': 'http://127.0.0.1:4000',
-			'/socket.io': 'http://127.0.0.1:4000'
-		},
-	}
-	: {};
 
 const htmlWebpackOptions = devMode
 	? {
@@ -46,11 +31,14 @@ const htmlWebpackOptions = devMode
 		filename: 'app.html',
 	};
 
+const appEntry = [path.join(__dirname, '../src/client/index.js')]
+devMode && appEntry.push('webpack-hot-middleware/client?noInfo=true&reload=true')
+
 module.exports = {
 	mode: process.env.NODE_ENV,
 	target: 'web',
 	entry: {
-		app: [path.join(__dirname, '../src/client/index.js')],
+		app: appEntry,
 	},
 	output: {
 		path: path.join(__dirname, '../dist/assets'),
@@ -165,6 +153,7 @@ module.exports = {
 			template: path.join(__dirname, '../public/index.kade'),
 		}),
 		new CleanWebpackPlugin(),
+		new webpack.HotModuleReplacementPlugin(),
 		new MiniCssExtractPlugin({
 			// filename: `assets/css/${devMode ? '[name]' : '[name].[hash]'}.css`,
 			filename: `[name].[hash].css`,
@@ -174,5 +163,4 @@ module.exports = {
 		new OptimizeCssAssetsPlugin(),
 		// new BundleAnalyzerPlugin(),
 	],
-	devServer: devServer,
 };

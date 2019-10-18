@@ -20,16 +20,17 @@
     "helmet": "^3.19.0",
     "node-fetch": "^2.6.0",
     "prismjs": "^1.17.1",
-    "react": "^16.8.6",
+    "react": "^16.10.2",
     "react-cropper": "^1.2.0",
-    "react-dom": "^16.8.6",
+    "react-dom": "^16.10.2",
     "react-loadable": "^5.5.0",
     "react-meta-tags": "^0.7.4",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "xiaokyo-affix": "^1.0.8"
   },
   "devDependencies": {
     "@babel/core": "^7.5.4",
@@ -45,6 +46,7 @@
     "css-loader": "^3.0.0",
     "file-loader": "^4.0.0",
     "html-webpack-plugin": "^3.2.0",
+    "http-proxy-middleware": "^0.20.0",
     "less": "^3.9.0",
     "less-loader": "^5.0.0",
     "mini-css-extract-plugin": "^0.8.0",
@@ -60,15 +62,17 @@
     "webpack-ant-icon-loader": "^1.0.8",
     "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.6",
+    "webpack-dev-middleware": "^3.7.2",
     "webpack-dev-server": "^3.7.2",
+    "webpack-hot-middleware": "^2.25.0",
     "webpack-node-externals": "^1.7.2"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./webpack/client.js --progress",
+    "dev": "cross-env NODE_ENV=development node server.js",
     "pro": "cross-env NODE_ENV=production webpack --config ./webpack/client.js --progress",
     "server": "cross-env NODE_ENV=production webpack --config ./webpack/server.js --progress",
     "build": "rm -rf dist && yarn pro && yarn server",
-    "start": "rm -rf dist && yarn pro && yarn server && nodemon ./dist/server/server.js",
+    "start": "cross-env NODE_ENV=production node server.js",
     "pm2": "yarn build && pm2 startOrReload ecosystem.config.js"
   },
   "browserslist": "> 0.25%, not dead"
