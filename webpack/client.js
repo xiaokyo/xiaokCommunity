@@ -31,14 +31,11 @@ const htmlWebpackOptions = devMode
 		filename: 'app.html',
 	};
 
-const appEntry = [path.join(__dirname, '../src/client/index.js')]
-devMode && appEntry.push('webpack-hot-middleware/client?noInfo=true&reload=true')
-
 module.exports = {
 	mode: process.env.NODE_ENV,
 	target: 'web',
 	entry: {
-		app: appEntry,
+		app: './src/client/index.js',
 	},
 	output: {
 		path: path.join(__dirname, '../dist/assets'),
@@ -153,7 +150,6 @@ module.exports = {
 			template: path.join(__dirname, '../public/index.kade'),
 		}),
 		new CleanWebpackPlugin(),
-		new webpack.HotModuleReplacementPlugin(),
 		new MiniCssExtractPlugin({
 			// filename: `assets/css/${devMode ? '[name]' : '[name].[hash]'}.css`,
 			filename: `[name].[hash].css`,

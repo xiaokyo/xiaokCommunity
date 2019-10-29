@@ -1,3 +1,7 @@
+import express from 'express';
+import helmet from 'helmet';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import fs from 'fs';
 
 //react
@@ -13,12 +17,37 @@ import createStore from '@redux';
 //components
 import Layout from '@app/layout';
 
+const app = express();
+
+app.use(helmet()); //阻挡一些web的安全隐患
+app.use(bodyParser.json({ limit: '20mb' }));
+app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }));
+app.use(cookieParser());
+
+// 静态资源
+app.use('/', express.static('./dist'));
+app.use('/', express.static('./public'));
+
+//设置auth cookie
+app.post('/setAuth', async (req, res) => {
+	const access_token = req.headers.accesstoken;
+	// console.log(req.headers, access_token);
+	res.cookie('access_token', access_token, { path: '/', httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 7 });
+	res.send({ success: true });
+});
+
+//清除auth cookie
+app.post('/clearAuth', async (req, res) => {
+	res.clearCookie('access_token');
+	res.send({ success: true });
+});
+
 // 读取模板页面
 const htmlTemplate = fs.readFileSync('./dist/assets/app.html', 'utf-8');
 
 import { fetchUserData } from '@redux/actions/userInfo';
 
-export const getRenderPage = async (req, res) => {
+app.get('*', async (req, res) => {
 	let access_token = req.cookies['access_token'] || '';
 	// console.log(`access_token:${access_token}`);
 	const store = createStore({});
@@ -63,7 +92,7 @@ export const getRenderPage = async (req, res) => {
 
 	const meta = metaTagsInstance.renderToString();
 	res.send(renderReplace({ store, meta, AppComponent }));
-}
+});
 
 //模板字段替换
 const renderReplace = ({ store, meta = '', AppComponent = '' }) => {
@@ -73,3 +102,12 @@ const renderReplace = ({ store, meta = '', AppComponent = '' }) => {
 	reactDom = reactDom.replace('<!--meta-->', meta);
 	return reactDom;
 };
+
+function useServer(port = 8080) {
+	app.listen(port, function () {
+		console.log(`xiaokCommunity on port ${port}!`);
+	});
+}
+
+export default useServer
+// module.exports = { useServer }
