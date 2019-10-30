@@ -9,7 +9,6 @@ import { delHtmlTag } from '@common/delHtmlTag';
 
 //component
 import IsMore from '@components/ismore';
-import Affix from 'xiaokyo-affix';
 
 //redux
 import { load_postlist, load_more_postlist } from '@redux/actions/postlist';
@@ -70,16 +69,14 @@ export default props => {
 					<IsMore status={loadmore} funcLoadMore={loadMorePost} />
 				</div>
 
-				<Affix offsetTop={85}>
-					<div styleName="right">
-						<div styleName="opensource" className="radius">
-							<a href="https://github.com/xiaokyo/xiaokCommunity" target="_blank"><i className="iconfont icon-GitHub"></i>github项目地址</a>
-						</div>
-						<div styleName="adv" className="radius">
-							<img src="https://www.gtloli.app/ext20190609/files/background/011.jpg" />
-						</div>
+				<div styleName="right">
+					<div styleName="opensource" className="radius">
+						<a href="https://github.com/xiaokyo/xiaokCommunity" target="_blank"><i className="iconfont icon-GitHub"></i>github项目地址</a>
 					</div>
-				</Affix>
+					<div styleName="adv" className="radius">
+						<img src="https://www.gtloli.app/ext20190609/files/background/011.jpg" />
+					</div>
+				</div>
 			</div>
 		</>
 	);
