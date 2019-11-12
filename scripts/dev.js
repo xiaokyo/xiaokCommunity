@@ -55,8 +55,9 @@ const start = async () => {
     }
   })
 
-  await compilerPromise(clientCompiler)
   await compilerPromise(serverCompiler)
+  await compilerPromise(clientCompiler)
+
 
   const script = nodemon({
     script: 'dist/server/server.js',
