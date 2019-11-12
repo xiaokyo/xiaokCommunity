@@ -38,7 +38,7 @@ const htmlWebpackOptions = devMode
 	? {
 		initmeta: '<title>xiaokyo</title>',
 		initState: '{}',
-		filename: 'index.html',
+		filename: 'app.html',
 	}
 	: {
 		initmeta: '<!--meta-->',
@@ -174,5 +174,5 @@ module.exports = {
 		new OptimizeCssAssetsPlugin(),
 		// new BundleAnalyzerPlugin(),
 	],
-	devServer: devServer,
+	// devServer: devServer,
 };

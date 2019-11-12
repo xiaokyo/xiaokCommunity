@@ -57,14 +57,15 @@
     "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "^2.0.1",
     "webpack": "^4.35.3",
-    "webpack-ant-icon-loader": "^1.0.8",
     "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.6",
-    "webpack-dev-server": "^3.7.2",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-dev-middleware": "^3.7.2",
+    "webpack-hot-middleware": "^2.25.0",
+    "webpack-node-externals": "^1.7.2",
+    "write-file-webpack-plugin": "^4.5.1"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./webpack/client.js --progress",
+    "dev": "cross-env NODE_ENV=development node ./scripts/dev.js",
     "pro": "cross-env NODE_ENV=production webpack --config ./webpack/client.js --progress",
     "server": "cross-env NODE_ENV=production webpack --config ./webpack/server.js --progress",
     "build": "rm -rf dist && yarn pro && yarn server",
