@@ -105,5 +105,5 @@ const renderReplace = ({ store, meta = '', AppComponent = '' }) => {
 
 const port = 8080;
 app.listen(port, function () {
-	console.log(`xiaokCommunity on port ${port}!`);
+	console.log(`xiaokCommunity on port http://localhost:${port}`);
 });

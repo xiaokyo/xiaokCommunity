@@ -37,7 +37,8 @@ const start = async () => {
   const serverCompiler = compiler.compilers[1]
 
   app.use(webpackDevMiddle(clientCompiler, {
-    publicPath: webpackConfig.output.publicPath
+    publicPath: webpackConfig.output.publicPath,
+    logLevel: 'silent',// 静默日志
   }))
 
   app.use(webpackHotMiddle(clientCompiler))
@@ -61,7 +62,7 @@ const start = async () => {
 
   const script = nodemon({
     script: 'dist/server/server.js',
-    ignore: ['src', 'scripts', 'config', './*.*', 'dist/assets']
+    ignore: ['src', 'scripts', 'config', './*.*']
   })
 
   script.on('restart', () => {

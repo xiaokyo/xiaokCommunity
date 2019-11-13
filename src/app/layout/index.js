@@ -17,7 +17,7 @@ import './style.less';
 export default withRouter((props) => {
 	// console.log(props);
 	const userInfo = useSelector(state => state.userInfo);
-	console.log(props)
+	// console.log(props)
 	const [key, setKey] = useState('');
 	const searchIptOnChange = e => {
 		let val = e.target.value;

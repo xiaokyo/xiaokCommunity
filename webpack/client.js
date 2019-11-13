@@ -6,6 +6,7 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin')
 const devMode = process.env.NODE_ENV == 'development' ? true : false;
 
 //babelOptions
@@ -54,8 +55,7 @@ module.exports = {
 	},
 	output: {
 		path: path.join(__dirname, '../dist/assets'),
-		filename: `${devMode ? '[name].bundle' : '[name].[hash]'}.js`,
-		// chunkFilename: 'chunks/[name].[hash].js',
+		filename: `${devMode ? '[name].bundle' : '[name].[contenthash:8]'}.js`,
 		publicPath: devMode ? '/' : '//cdn.xiaok.club/',
 	},
 	resolve: {
@@ -127,7 +127,7 @@ module.exports = {
 						loader: 'url-loader',
 						options: {
 							limit: 8192, //小于8kg的会进行base64的保存方式导出到js
-							name: `${devMode ? `[name].[ext]` : `[hash].[ext]`}`,
+							name: `${devMode ? `[name].[ext]` : `[contenthash:8].[ext]`}`,
 						},
 					},
 				],
@@ -135,10 +135,7 @@ module.exports = {
 		],
 	},
 	optimization: {
-		// minimize: false,
 		minimize: devMode ? false : true,
-		// namedModules: true,
-		// noEmitOnErrors: true,
 		splitChunks: {
 			cacheGroups: {
 				styles: {
@@ -164,11 +161,15 @@ module.exports = {
 			...htmlWebpackOptions,
 			template: path.join(__dirname, '../public/index.kade'),
 		}),
+		new AddAssetHtmlWebpackPlugin({
+			filepath: path.resolve(__dirname, '../dist/assets/vendor.dll.js') // 对应的 dll 文件路径
+		}),
+		new webpack.DllReferencePlugin({// dll文件引入
+			manifest: path.resolve(__dirname, '../dist/vendor-manifest.json')
+		}),
 		new CleanWebpackPlugin(),
 		new MiniCssExtractPlugin({
-			// filename: `assets/css/${devMode ? '[name]' : '[name].[hash]'}.css`,
-			filename: `${devMode ? `[name]` : `[name].[hash]`}.css`,
-			// chunkFilename: 'assets/css/chunks/[id].css',
+			filename: `${devMode ? `[name]` : `[name].[contenthash:8]`}.css`,
 			ignoreOrder: true, // Enable to remove warnings about conflicting order
 		}),
 		new OptimizeCssAssetsPlugin(),
