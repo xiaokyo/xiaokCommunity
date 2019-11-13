@@ -27,7 +27,7 @@ const start = async () => {
   const isDev = process.env.NODE_ENV == 'development' ? true : false
 
   if (isDev) {
-    webpackConfig.entry.app.unshift('webpack-hot-middleware/client?noInfo=true&reload=true')
+    webpackConfig.entry.app.unshift('webpack-hot-middleware/client?path=/__what&timeout=2000&overlay=false&reload=true')
     webpackConfig.plugins.push(new webpack.HotModuleReplacementPlugin())
     webpackConfig.plugins.push(new WriteFileWebpackPlugin())
   }
@@ -41,7 +41,10 @@ const start = async () => {
     logLevel: 'silent',// 静默日志
   }))
 
-  app.use(webpackHotMiddle(clientCompiler))
+  app.use(webpackHotMiddle(clientCompiler, {
+    path: "/__what",
+    heartbeat: 2000
+  }))
 
   app.listen(8079)
 
