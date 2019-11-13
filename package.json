@@ -70,7 +70,7 @@
     "pro": "cross-env NODE_ENV=production webpack --config ./webpack/client.js --progress",
     "server": "cross-env NODE_ENV=production webpack --config ./webpack/server.js --progress",
     "build:dll": "webpack --config ./webpack/dll.js",
-    "build": "rm -rf dist && yarn pro && yarn server",
+    "build": "rm -rf dist && yarn build:dll && yarn pro && yarn server",
     "start": "nodemon ./dist/server/server.js",
     "pm2": "yarn build && pm2 startOrReload ecosystem.config.js"
   },

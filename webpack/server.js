@@ -91,7 +91,7 @@ module.exports = {
 				use: [
 					{
 						loader: 'url-loader',
-						options: { limit: 8192 },
+						options: { limit: 8192, name: `${devMode ? `[name].[ext]` : `[contenthash:8].[ext]`}` },
 					},
 				],
 			},
