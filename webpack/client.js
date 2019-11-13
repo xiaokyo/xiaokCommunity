@@ -127,7 +127,7 @@ module.exports = {
 						loader: 'url-loader',
 						options: {
 							limit: 8192, //小于8kg的会进行base64的保存方式导出到js
-							name: '[hash].[ext]',
+							name: `${devMode ? `[name].[ext]` : `[hash].[ext]`}`,
 						},
 					},
 				],
@@ -167,7 +167,7 @@ module.exports = {
 		new CleanWebpackPlugin(),
 		new MiniCssExtractPlugin({
 			// filename: `assets/css/${devMode ? '[name]' : '[name].[hash]'}.css`,
-			filename: `[name].[hash].css`,
+			filename: `${devMode ? `[name]` : `[name].[hash]`}.css`,
 			// chunkFilename: 'assets/css/chunks/[id].css',
 			ignoreOrder: true, // Enable to remove warnings about conflicting order
 		}),

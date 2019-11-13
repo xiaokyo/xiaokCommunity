@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }));
 app.use(cookieParser());
 
 // 静态资源
-app.use('/', express.static('./dist'));
+app.use('/', express.static('./dist/assets'));
 app.use('/', express.static('./public'));
 
 //设置auth cookie
@@ -104,6 +104,6 @@ const renderReplace = ({ store, meta = '', AppComponent = '' }) => {
 };
 
 const port = 8080;
-app.listen(port, function() {
+app.listen(port, function () {
 	console.log(`xiaokCommunity on port ${port}!`);
 });
