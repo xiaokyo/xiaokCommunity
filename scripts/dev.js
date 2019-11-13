@@ -62,7 +62,7 @@ const start = async () => {
 
   const script = nodemon({
     script: 'dist/server/server.js',
-    ignore: ['src', 'scripts', 'config', './*.*']
+    ignore: ['src', 'scripts', 'config', './*.*', 'dist/assets']
   })
 
   script.on('restart', () => {

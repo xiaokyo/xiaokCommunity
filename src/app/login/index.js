@@ -49,7 +49,7 @@ export default Form.create({ name: 'login' })(props => {
 						<Form.Item>
 							{getFieldDecorator('email', {
 								rules: [{ required: true, message: '请输入邮箱/用户名！' }],
-							})(<Input prefix={<i className="iconfont icon-my" />} placeholder="输入邮箱/用户名" />)}
+							})(<Input prefix={<i className="iconfont icon-my" />} placeholder="邮箱/用户名" />)}
 						</Form.Item>
 						<Form.Item>
 							{getFieldDecorator('password', {
