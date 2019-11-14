@@ -1,6 +1,7 @@
 const express = require('express')
 const webpack = require('webpack')
 const WriteFileWebpackPlugin = require('write-file-webpack-plugin')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const webpackDevMiddle = require('webpack-dev-middleware')
 const webpackHotMiddle = require('webpack-hot-middleware')
 const nodemon = require('nodemon')
@@ -27,9 +28,10 @@ const start = async () => {
   const isDev = process.env.NODE_ENV == 'development' ? true : false
 
   if (isDev) {
-    webpackConfig.entry.app.unshift('webpack-hot-middleware/client?path=/__what&timeout=2000&overlay=false&reload=true')
+    webpackConfig.entry.app.unshift('webpack-hot-middleware/client?path=http://localhost:8079/__hot_update&timeout=2000&overlay=false&reload=true')
     webpackConfig.plugins.push(new webpack.HotModuleReplacementPlugin())
     webpackConfig.plugins.push(new WriteFileWebpackPlugin())
+    webpackConfig.plugins.push(new FriendlyErrorsWebpackPlugin())
   }
 
   const compiler = webpack([webpackConfig, serverWebpackConfig])
@@ -42,7 +44,7 @@ const start = async () => {
   }))
 
   app.use(webpackHotMiddle(clientCompiler, {
-    path: "/__what",
+    path: "/__hot_update",
     heartbeat: 2000
   }))
 
