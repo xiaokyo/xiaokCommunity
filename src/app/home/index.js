@@ -73,9 +73,9 @@ export default props => {
 					<div styleName="opensource" className="radius">
 						<a href="https://github.com/xiaokyo/xiaokCommunity" target="_blank"><i className="iconfont icon-GitHub"></i>github项目地址</a>
 					</div>
-					<div styleName="adv" className="radius">
+					{/* <div styleName="adv" className="radius">
 						<img src="https://www.gtloli.app/ext20190609/files/background/011.jpg" />
-					</div>
+					</div> */}
 				</div>
 			</div>
 		</>
