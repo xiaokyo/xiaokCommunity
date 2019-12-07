@@ -9,6 +9,7 @@ import { delHtmlTag } from '@common/delHtmlTag';
 
 //component
 import IsMore from '@components/ismore';
+import PostBtn from '@components/post'
 
 //redux
 import { load_postlist, load_more_postlist } from '@redux/actions/postlist';
@@ -77,6 +78,8 @@ export default props => {
 						<img src="https://www.gtloli.app/ext20190609/files/background/011.jpg" />
 					</div> */}
 				</div>
+
+					<PostBtn/>
 			</div>
 		</>
 	);
