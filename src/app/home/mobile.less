@@ -1,3 +1,6 @@
+.mobile-post{
+  display: none;
+}
 @media screen and (max-width:720px) {
   .home {
     position: relative;
@@ -9,6 +12,56 @@
     .right {
       display: none;
     }
-
   }
+}
+
+:global{
+  // mobile-post
+  .mobile-post{
+    display: block!important;
+    position: fixed;
+    bottom:84px;
+    right:20px;
+    z-index:20;
+    width:50px;
+    height:50px;
+    border-radius: 50%;
+    overflow: hidden;
+    line-height: 1;
+
+    .post-btn{
+      background: linear-gradient(to right, #ecccac, #e3a86c);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+  }
+
+  .drawerPost{
+    .ant-drawer-content-wrapper{
+      overflow: hidden;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    } 
+
+    .closeDrawer{
+      margin-top:20px;
+    }
+
+    .post-btn-group{
+      ._btn{
+        flex-direction: column;
+
+        &:nth-of-type(1){
+          margin-right:120px;
+        }
+      }
+    }
+  }
+  // mobile post
+
+
+  // flex
+  .flex{display: flex;}
+  .fxc{justify-content: center;}
+  .fyc{align-items: center;}
 }
