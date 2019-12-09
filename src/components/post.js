@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { Drawer } from "antd";
+import React, { useState } from "react"
+import {withRouter} from 'react-router-dom'
+import { Drawer } from "antd"
 
-export default props => {
+export default withRouter(({history}) => {
   const [visible, setVisible] = useState(false);
   const showDrawer = () => setVisible(true);
   const onClose = () => setVisible(false);
@@ -9,7 +10,7 @@ export default props => {
   return (
     <div className="mobile-post">
       <i
-        className="iconfont iconbianji post-btn"
+        className="iconfont icon-bianji post-btn"
         style={{ fontSize: 50 }}
         onClick={showDrawer}
       />
@@ -25,25 +26,25 @@ export default props => {
         <div className="flex fyc fxc post-btn-group">
           <div
             className="_btn flex fyc"
-            onClick={() => PostRouter("/personal-index?page=question")}
+            onClick={() => history.push("/sendPost")}
           >
             <i
-              className="iconfont icontiwen"
-              style={{ fontSize: 50, color: "#7495FF" }}
+              className="iconfont icon-tiwen"
+              style={{ fontSize: 50, color: "#e3a86c" }}
             />
             <span>提问</span>
           </div>
-          <div className="_btn flex fyc" onClick={() => PostRouter("/article")}>
+          <div className="_btn flex fyc" onClick={() => history.push("/sendPost")}>
             <i
-              className="iconfont iconfawen"
-              style={{ fontSize: 50, color: "#7495FF" }}
+              className="iconfont icon-fawen"
+              style={{ fontSize: 50, color: "#e3a86c" }}
             />
             <span>发布</span>
           </div>
         </div>
         <div className="closeDrawer flex fyc fxc">
           <i
-            className="iconfont iconguanbi1"
+            className="iconfont icon-guanbi1"
             style={{ fontSize: 14, color: "#333333" }}
             onClick={onClose}
           />
@@ -51,4 +52,4 @@ export default props => {
       </Drawer>
     </div>
   );
-};
+})
