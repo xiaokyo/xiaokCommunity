@@ -57,7 +57,6 @@ export default withRouter(({ _id, avatar, username, history }) => {
                 <i className="iconfont icon-people" />
                 <span>我的主页</span>
               </div>
-              <Badge count={noreadArr.length} />
             </li>
             <li onClick={() => routerPush('/notification')}>
               <div>
