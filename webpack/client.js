@@ -21,19 +21,19 @@ for (let i in common.alias) {
 	alias[i] = path.resolve(__dirname, common.alias[i]);
 }
 
-const devServer = devMode
-	? {
-		contentBase: path.join(__dirname, '../dist'), // boolean | string | array, static file location
-		compress: true, // enable gzip compression
-		historyApiFallback: true, // true for index.html upon 404, object for multiple paths
-		hot: true, // hot module replacement. Depends on
-		host: '0.0.0.0',
-		proxy: {
-			'/graphql': 'http://127.0.0.1:4000',
-			'/socket.io': 'http://127.0.0.1:4000'
-		},
-	}
-	: {};
+// const devServer = devMode
+// 	? {
+// 		contentBase: path.join(__dirname, '../dist'), // boolean | string | array, static file location
+// 		compress: true, // enable gzip compression
+// 		historyApiFallback: true, // true for index.html upon 404, object for multiple paths
+// 		hot: true, // hot module replacement. Depends on
+// 		host: '0.0.0.0',
+// 		proxy: {
+// 			'/graphql': 'http://127.0.0.1:4000',
+// 			'/socket.io': 'http://127.0.0.1:4000'
+// 		},
+// 	}
+// 	: {};
 
 const htmlWebpackOptions = devMode
 	? {
