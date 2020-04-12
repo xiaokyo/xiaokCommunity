@@ -11,8 +11,16 @@ import { sendEmailAsync } from '@redux/actions/userInfo';
 //common
 import to from '@common/to';
 
-export default Form.create({ name: 'register' })(props => {
-	const { getFieldDecorator } = props.form;
+const layout = {
+	labelCol: { span: 8 },
+	wrapperCol: { span: 16 },
+};
+const tailLayout = {
+	wrapperCol: { offset: 8, span: 16 },
+};
+
+export default props => {
+	// const { getFieldDecorator } = props.form;
 	const [codeState, setCodeState] = useState('发送验证码');
 	const [seconds, setSeconds] = useState(60);
 	const [inter, setInter] = useState(null);
@@ -45,20 +53,37 @@ export default Form.create({ name: 'register' })(props => {
 	}, [inter]);
 
 	// 处理form提交
-	const handleSubmit = e => {
-		e.preventDefault();
-		props.form.validateFields((err, values) => {
-			if (!err) {
-				// console.log ('Received values of form: ', values);
-				const { username, password, email, emailCode, confrimPassword } = values;
+	// const handleSubmit = e => {
+	// 	e.preventDefault();
+	// 	props.form.validateFields((err, values) => {
+	// 		if (!err) {
+	// 			// console.log ('Received values of form: ', values);
+	// 			const { username, password, email, emailCode, confrimPassword } = values;
 
-				if (password != confrimPassword) return message.warning('两次输入的密码不相同');
+	// 			if (password != confrimPassword) return message.warning('两次输入的密码不相同');
 
-				//发送注册graphql
-				regUser(username, password, email, emailCode);
-			}
-		});
-	};
+	// 			//发送注册graphql
+	// 			regUser(username, password, email, emailCode);
+	// 		}
+	// 	});
+	// };
+
+	const [form] = Form.useForm()
+	// const { getFieldDecorator } = form;
+	// const dispatch = useDispatch();
+
+	const onFinish = values => {
+		const { username, password, email, emailCode, confrimPassword } = values;
+
+		if (password != confrimPassword) return message.warning('两次输入的密码不相同');
+
+		//发送注册graphql
+		regUser(username, password, email, emailCode);
+	}
+
+	const onFinishFailed = ({ values, errorFields, outOfDate }) => {
+
+	}
 
 	//sendEmailCode
 	const sendEmailCode = async () => {
@@ -97,8 +122,65 @@ export default Form.create({ name: 'register' })(props => {
 			<div styleName="register">
 				<h1>注册</h1>
 				<div styleName="_box">
-					<Form onSubmit={handleSubmit} className="login-form">
-						<Form.Item>
+					<Form {...layout} onFinish={onFinish} onFinishFailed={onFinishFailed} className="login-form">
+						<Form.Item
+							label="用户名"
+							name="username"
+							rules={[{ required: true, message: '请输入用户名！' }]}
+						>
+							<Input prefix={<i className="iconfont icon-my" />} />
+						</Form.Item>
+
+						<Form.Item
+							label="邮箱"
+							name="email"
+							rules={[{ required: true, message: '请输入邮箱！' }]}
+						>
+							<Input
+								prefix={<i className="iconfont icon-mail" />}
+								ref={emailRef}
+							/>
+						</Form.Item>
+
+						<Form.Item
+							label="验证码"
+							name="emailCode"
+							rules={[{ required: true, message: '请输入验证码！' }]}
+						>
+							<Input
+								prefix={<i className="iconfont icon-yanzhengma" />}
+								suffix={
+									<span className="sendState" onClick={sendEmailCode}>
+										{codeState}
+									</span>
+								}
+							/>
+						</Form.Item>
+
+						<Form.Item
+							label="密码"
+							name="password"
+							rules={[{ required: true, message: '请输入密码！' }]}
+						>
+							<Input
+								prefix={<i className="iconfont icon-lock" />}
+								type="password"
+							/>
+						</Form.Item>
+
+						<Form.Item
+							label="确认密码"
+							name="confrimPassword"
+							rules={[{ required: true, message: '请输入确认密码！' }]}
+						>
+							<Input
+								prefix={<i className="iconfont icon-lock" />}
+								type="password"
+								placeholder="确认密码"
+							/>
+						</Form.Item>
+
+						{/* <Form.Item>
 							{getFieldDecorator('username', {
 								rules: [{ required: true, message: '请输入用户名！' }],
 							})(<Input prefix={<i className="iconfont icon-my" />} placeholder="用户名" />)}
@@ -150,11 +232,8 @@ export default Form.create({ name: 'register' })(props => {
 									placeholder="确认密码"
 								/>
 							)}
-						</Form.Item>
+						</Form.Item> */}
 						<Form.Item>
-							{/* <a className="login-form-forgot" href="">
-              Forgot password
-            </a> */}
 							<Button type="primary" htmlType="submit" className="login-form-button">
 								确定
 						</Button>
@@ -164,4 +243,4 @@ export default Form.create({ name: 'register' })(props => {
 			</div>
 		</>
 	);
-});
+};

@@ -84,7 +84,7 @@ export default withRouter(({ _id, avatar, username, history }) => {
           <div className="logout">
             <Button
               type="danger"
-              icon="poweroff"
+              // icon="poweroff"
               onClick={() => _logout()}
             >
               退出登录

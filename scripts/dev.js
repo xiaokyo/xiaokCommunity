@@ -28,7 +28,7 @@ const start = async () => {
   const isDev = process.env.NODE_ENV == 'development' ? true : false
 
   if (isDev) {
-    webpackConfig.entry.app.unshift('webpack-hot-middleware/client?path=http://192.168.0.16:8079/__hot_update&timeout=2000&overlay=false&reload=true')
+    webpackConfig.entry.app.unshift('webpack-hot-middleware/client?path=http://localhost:8079/__hot_update&timeout=2000&overlay=false&reload=true')
     webpackConfig.plugins.push(new webpack.HotModuleReplacementPlugin())
     webpackConfig.plugins.push(new WriteFileWebpackPlugin())
     webpackConfig.plugins.push(new FriendlyErrorsWebpackPlugin())

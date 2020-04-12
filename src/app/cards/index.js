@@ -132,8 +132,8 @@ const useCustomForm = ({ form, queryCards, dispatch }) => {
 
 	// 删除
 	const delCard = async (_id) => {
-		const confirm = confirm('确定要删除吗？')
-		if (!confirm) return
+		const flag = confirm('确定要删除吗？')
+		if (!flag) return
 		const res = await deleteCard({ _id })()
 		if (!res.success) return message.error(res.msg || '服务器错误')
 		message.success(res.msg || '操作成功')
