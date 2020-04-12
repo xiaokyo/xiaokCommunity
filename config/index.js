@@ -1,4 +1,4 @@
-const LOCAL_HOST = "http://localhost:4000"
+const LOCAL_HOST = "http://192.168.0.16:4000"
 
 const getHost = (url = '') => {
 	const isServer = typeof window === 'undefined'

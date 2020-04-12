@@ -58,6 +58,14 @@ export default withRouter(({ _id, avatar, username, history }) => {
                 <span>我的主页</span>
               </div>
             </li>
+
+            <li onClick={() => routerPush('/creditCards')}>
+              <div>
+                <i className="iconfont icon-qiapian" />
+                <span>我的卡片</span>
+              </div>
+            </li>
+            
             <li onClick={() => routerPush('/notification')}>
               <div>
                 <i className="iconfont icon-notice" />

@@ -8,8 +8,9 @@ import postlist from './reducer/postlist';
 import posts from './reducer/posts';
 import profile from './reducer/profile';
 import notification from './reducer/notification';
+import creditCards from './reducer/creditCards';
 
-const reducer = combineReducers({ userInfo, postlist, posts, profile, notification });
+const reducer = combineReducers({ userInfo, postlist, posts, profile, notification, creditCards });
 
 //middleware
 let middleware = [thunk];
