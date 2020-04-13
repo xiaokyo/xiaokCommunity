@@ -9,6 +9,7 @@ import { delHtmlTag } from '@common/delHtmlTag';
 
 //component
 import IsMore from '@components/ismore';
+import PostBtn from '@components/post'
 
 //redux
 import { load_postlist, load_more_postlist } from '@redux/actions/postlist';
@@ -73,10 +74,15 @@ export default props => {
 					<div styleName="opensource" className="radius">
 						<a href="https://github.com/xiaokyo/xiaokCommunity" target="_blank"><i className="iconfont icon-GitHub"></i>github项目地址</a>
 					</div>
-					<div styleName="adv" className="radius">
+					{/* <div styleName="adv" className="radius">
 						<img src="https://www.gtloli.app/ext20190609/files/background/011.jpg" />
+					</div> */}
+					<div styleName="opensource" className="radius">
+						<a href="http://beian.miit.gov.cn/" target="_blank">浙ICP备17029188号-1</a>
 					</div>
 				</div>
+
+				<PostBtn />
 			</div>
 		</>
 	);

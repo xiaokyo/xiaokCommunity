@@ -1,0 +1,46 @@
+[
+  {
+    "bankName": "中国银行",
+    "icon": "icon-yinhanglogo-13"
+  },
+  {
+    "bankName": "工商银行",
+    "icon": "icon-yinhanglogo-9"
+  },
+  {
+    "bankName": "浦发银行",
+    "icon": "icon-yinhanglogo-10"
+  },
+  {
+    "bankName": "邮政银行",
+    "icon": "icon-yinhanglogo-11"
+  },
+  {
+    "bankName": "民生银行",
+    "icon": "icon-yinhanglogo-12"
+  },
+  {
+    "bankName": "交通银行",
+    "icon": "icon-yinhanglogo-3"
+  },
+  {
+    "bankName": "杭州银行",
+    "icon": "icon-yinhanglogo-1"
+  },
+  {
+    "bankName": "中信银行",
+    "icon": "icon-yinhanglogo-7"
+  },
+  {
+    "bankName": "农业银行",
+    "icon": "icon-yinhanglogo-5"
+  },
+  {
+    "bankName": "兴业银行",
+    "icon": "icon-yinhanglogo-4"
+  },
+  {
+    "bankName": "蚂蚁花呗",
+    "icon": "icon-huabei"
+  }
+]

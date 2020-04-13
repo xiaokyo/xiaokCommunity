@@ -55,6 +55,12 @@ export default [
 		component: loadCp(() => import('@app/notification')),
 	},
 	{
+		path: '/creditCards',
+		exact: true,
+		private: true,
+		component: loadCp(() => import('@app/cards')),
+	},
+	{
 		path: '/login',
 		exact: true,
 		component: loadCp(() => import('@app/login')),

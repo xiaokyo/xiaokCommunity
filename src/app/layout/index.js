@@ -3,7 +3,7 @@ import { Route, Link, Switch, Redirect, withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 //components
-import Notice from '@components/notice';
+import AvatarMenu from './components/avatarMenu'
 
 //routers
 import routers from '@routers';
@@ -17,7 +17,7 @@ import './style.less';
 export default withRouter((props) => {
 	// console.log(props);
 	const userInfo = useSelector(state => state.userInfo);
-	console.log(props)
+	// console.log(props)
 	const [key, setKey] = useState('');
 	const searchIptOnChange = e => {
 		let val = e.target.value;
@@ -31,11 +31,6 @@ export default withRouter((props) => {
 			props.history.push(`/search/${key}`)
 		}
 	}
-
-	useEffect(() => {
-
-		return () => { }
-	}, [])
 
 	return (
 		<div className="layout">
@@ -58,7 +53,7 @@ export default withRouter((props) => {
 
 					<div className="right_login">
 						{userInfo.my ? (
-							<UserMenu {...userInfo.my} />
+							<AvatarMenu {...userInfo.my} />
 						) : (
 								<div>
 									<Link to="/login">登入</Link>
@@ -88,7 +83,7 @@ export default withRouter((props) => {
 					})}
 				</Switch>
 			</div>
-			{userInfo.my ? <Notice /> : ''}
+			{/* {userInfo.my ? <Notice /> : ''} */}
 		</div>
 	);
 });
@@ -121,7 +116,7 @@ const UserMenu = ({ _id, avatar, username }) => {
 	return (
 		<div>
 			<div className="user_menu" onClick={handleClick}>
-				<img src={avatar} className="avatar" />
+				<img src={avatar || `/avatar.png`} className="avatar" />
 				<ul className="menu_list" style={{ display: show ? 'block' : 'none' }}>
 					<li>
 						<Link to={`/user/${_id}`}>

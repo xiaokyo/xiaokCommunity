@@ -7,6 +7,7 @@ module.exports = {
 		'@routers': '../src/routers',
 		'@graphql': '../src/graphql',
 		'@config': '../config',
+		'@socket': '../src/socket',
 	},
 	localIdentName: '[local]--[hash:base64:8]',
 };

@@ -187,15 +187,42 @@ export default props => {
 	);
 };
 
+const layout = {
+	labelCol: { span: 8 },
+	wrapperCol: { span: 16 },
+};
+const tailLayout = {
+	wrapperCol: { offset: 8, span: 16 },
+};
+
 //绑定邮箱ui
-const EmailBind = Form.create({ name: 'register' })(props => {
+const EmailBind = props => {
 	const { visible = true, cancelFunc } = props;
-	const { getFieldDecorator } = props.form;
+	// const { getFieldDecorator } = props.form;
+	const [form] = Form.useForm()
 	const dispatch = useDispatch();
 	const emailRef = useRef();
 	const [codeState, setCodeState] = useState('发送验证码');
 	const [seconds, setSeconds] = useState(60);
 	const [inter, setInter] = useState(null);
+
+	const onFinish = values => {
+		const { email, password } = values;
+		const fromPath = props.location.state ? props.location.state.from.pathname : '/';
+
+		login(email, password)(dispatch)
+			.then(res => {
+				message.success('登入成功');
+				props.history.push(fromPath);
+			})
+			.catch(err => {
+				message.warning(err);
+			});
+	}
+
+	const onFinishFailed = ({ values, errorFields, outOfDate }) => {
+
+	}
 
 	// 处理form提交
 	const handleSubmit = e => {
@@ -254,29 +281,33 @@ const EmailBind = Form.create({ name: 'register' })(props => {
 	return (
 		<Modal title="绑定邮箱" visible={visible} width={350} onOk={handleSubmit} onCancel={() => cancelFunc(false)}>
 			<div styleName="bind_email">
-				<Form className="login-form">
-					<Form.Item>
-						{getFieldDecorator('email', {
-							rules: [{ required: true, message: '请输入邮箱！' }],
-						})(<Input prefix={<i className="iconfont icon-mail" />} ref={emailRef} placeholder="邮箱" />)}
+				<Form {...layout} onFinish={onFinish} onFinishFailed={onFinishFailed} className="login-form">
+					<Form.Item
+						label="邮箱"
+						name="email"
+						rules={[{ required: true, message: '请输入邮箱！' }]}
+					>
+						<Input
+							prefix={<i className="iconfont icon-mail" />}
+							ref={emailRef}
+						/>
 					</Form.Item>
-					<Form.Item>
-						{getFieldDecorator('emailCode', {
-							rules: [{ required: true, message: '请输入验证码！' }],
-						})(
-							<Input
-								prefix={<i className="iconfont icon-yanzhengma" />}
-								suffix={
-									<span className="sendState" onClick={sendEmailCode}>
-										{codeState}
-									</span>
-								}
-								placeholder="验证码"
-							/>
-						)}
+					<Form.Item
+						label="邮箱"
+						name="email"
+						rules={[{ required: true, message: '请输入验证码！' }]}
+					>
+						<Input
+							prefix={<i className="iconfont icon-yanzhengma" />}
+							suffix={
+								<span className="sendState" onClick={sendEmailCode}>
+									{codeState}
+								</span>
+							}
+						/>
 					</Form.Item>
 				</Form>
 			</div>
 		</Modal>
 	);
-});
+};
