@@ -4,7 +4,6 @@ import to from '@common/to';
 import fetch from 'node-fetch';
 import config from '@config';
 
-console.log('graphql', config.graphql)
 //新建graphql客户链接
 export const client = new ApolloClient({
 	uri: config.graphql,
