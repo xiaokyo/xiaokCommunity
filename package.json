@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.2",
-    "kest": "^1.0.9"
+    "kest": "^1.1.0"
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development kest dev",

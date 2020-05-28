@@ -4817,10 +4817,10 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-kest@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.npmjs.org/kest/-/kest-1.0.9.tgz#008ac235752d1bbb61adbee1b266e0ccaf5669f9"
-  integrity sha512-FRrnL8mHTUZS4OmV8JzaQLwcdbxHikaMT6XDohicekv+661GThVp0MnAGyXSz48sS92Fb8lhtHE6BE1HwpXhGA==
+kest@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npmjs.org/kest/-/kest-1.1.0.tgz#b7ba227af9a9059a6da8e41162e50dcebbda6148"
+  integrity sha512-Ub6WLWInuIaw9pZL47hFmw9QIWa0P3Fb6U8xlkvrCXUObVdwuQSn787GF05oA4W4LqqWfqKlXzmKDxlQvl8NoA==
   dependencies:
     "@babel/core" "^7.5.4"
     "@babel/plugin-transform-runtime" "^7.5.0"
