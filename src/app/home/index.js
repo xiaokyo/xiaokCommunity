@@ -78,7 +78,7 @@ export default props => {
 						<img src="https://www.gtloli.app/ext20190609/files/background/011.jpg" />
 					</div> */}
 					<div styleName="opensource" className="radius">
-						<a href="http://beian.miit.gov.cn/" target="_blank">浙ICP备17029188号-1</a>
+						<a href="http://beian.miit.gov.cn/" target="_blank">浙ICP备17029188号-2</a>
 					</div>
 				</div>
 
