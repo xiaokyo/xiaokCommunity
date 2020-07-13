@@ -9,6 +9,7 @@ getPosts($limit:Int,$skip:Int){
 		_id
 		title
 		description
+		content
 		like_count
 		comment_count
 		createDate

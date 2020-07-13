@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.2",
+    "http-proxy-middleware": "^1.0.5",
     "kest": "^1.1.0"
   },
   "scripts": {

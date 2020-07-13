@@ -89,13 +89,13 @@ export default props => {
 };
 
 //单个帖子
-const Card = ({ _id, title, description, user, comment_count = 0, like_count = 0 }) => {
+const Card = ({ _id, title, content, description, user, comment_count = 0, like_count = 0 }) => {
 	return (
 		<div styleName="card">
 			<div styleName="tit">
 				<Link to={`/post/${_id}`}>{title}</Link>
 			</div>
-			<div styleName="desc">{delHtmlTag(description)}</div>
+			<div styleName="desc">{delHtmlTag(content)}</div>
 			<div styleName="bottom">
 				<div styleName="nickname">
 					<Link to={`/user/${user._id}`}>{user.username}</Link>
