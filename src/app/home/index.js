@@ -89,7 +89,7 @@ export default props => {
 };
 
 //单个帖子
-const Card = ({ _id, title, content, description, user, comment_count = 0, like_count = 0 }) => {
+const Card = ({ _id, title, content, user, comment_count = 0, like_count = 0 }) => {
 	return (
 		<div styleName="card">
 			<div styleName="tit">

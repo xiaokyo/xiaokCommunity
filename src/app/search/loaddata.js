@@ -5,7 +5,7 @@ export const searchList = async (key, limit, skip) => {
     searchPosts(key:$key,limit:$limit,skip:$skip){
       _id
       title
-      description
+      content
       user{
         _id
         username

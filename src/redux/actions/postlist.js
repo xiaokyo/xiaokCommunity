@@ -8,7 +8,6 @@ getPosts($limit:Int,$skip:Int){
 	getPosts(limit:$limit,skip:$skip){
 		_id
 		title
-		description
 		content
 		like_count
 		comment_count
