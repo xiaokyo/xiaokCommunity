@@ -78,7 +78,7 @@ export default props => {
 						<img src="https://www.gtloli.app/ext20190609/files/background/011.jpg" />
 					</div> */}
 					<div styleName="opensource" className="radius">
-						<a href="http://beian.miit.gov.cn/" target="_blank">浙ICP备17029188号-1</a>
+						<a href="http://beian.miit.gov.cn/" target="_blank">浙ICP备17029188号-2</a>
 					</div>
 				</div>
 
@@ -89,13 +89,13 @@ export default props => {
 };
 
 //单个帖子
-const Card = ({ _id, title, description, user, comment_count = 0, like_count = 0 }) => {
+const Card = ({ _id, title, content, user, comment_count = 0, like_count = 0 }) => {
 	return (
 		<div styleName="card">
 			<div styleName="tit">
 				<Link to={`/post/${_id}`}>{title}</Link>
 			</div>
-			<div styleName="desc">{delHtmlTag(description)}</div>
+			<div styleName="desc">{delHtmlTag(content)}</div>
 			<div styleName="bottom">
 				<div styleName="nickname">
 					<Link to={`/user/${user._id}`}>{user.username}</Link>
