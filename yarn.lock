@@ -4721,10 +4721,10 @@ json5@^2.1.2:
   dependencies:
     minimist "^1.2.5"
 
-kest@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.npmjs.org/kest/-/kest-1.1.2.tgz#1d9a4f1a6f3344653cac9628376b13b47a28b09e"
-  integrity sha512-oO6O89Sz69s9Evy5rzI1bVWvb7tf/xwRGVsQSX2DRat8dl8v/SKmcV1e1o+A42XiCMaT1bHoy7Mga2cpBfFYVQ==
+kest@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.npmjs.org/kest/-/kest-1.1.4.tgz#bac97118f7e14b40c826b40c2a40f357c4bd6bb4"
+  integrity sha512-hpbelpapYbhqGqlfG2YVmv0zcFGUchH42dzEnlafqfcXvXZZcyI8I4r54L4Zs39f+VizUtg2BXLiOKJRihWERQ==
   dependencies:
     "@babel/core" "^7.5.4"
     "@babel/plugin-transform-runtime" "^7.5.0"
