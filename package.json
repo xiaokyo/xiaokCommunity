@@ -20,7 +20,7 @@
     "helmet": "^3.19.0",
     "moment": "^2.24.0",
     "node-fetch": "^2.6.0",
-    "prismjs": "^1.17.1",
+    "prismjs": "^1.25.0",
     "react": "^16.8.6",
     "react-cropper": "^1.2.0",
     "react-dom": "^16.8.6",
