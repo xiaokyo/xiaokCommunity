@@ -14,7 +14,7 @@
     "braft-extensions": "^0.0.19",
     "cookie-parser": "^1.4.4",
     "draft-js-prism": "^1.0.6",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
     "helmet": "^3.19.0",
